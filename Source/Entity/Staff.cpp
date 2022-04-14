@@ -27,12 +27,12 @@ class Staff{
     }
 
     //setter function for each data members
-    void setPost();
-    void setName();
-    void setAdr();
-    void setStf_id();
-    void setAge();
-    void setPhone();
+    void setPost(string pst);
+    void setName(string Nm);
+    void setAdr(string add);
+    void setStf_id(int id);
+    void setAge(int Age);
+    void setPhone(long long int ph);
 
     //getter Function
     string getPost();
@@ -44,34 +44,28 @@ class Staff{
 
 };
 
-void Staff::setPost(){
-    cout<<"Post: ";
-    cin>>Post;
+void Staff::setPost(string pst){
+    Post = pst;
 }
 
-void Staff::setName(){
-    cout<<"Name: ";
-    cin>>name;
+void Staff::setName(string Nm){
+    name = Nm;
 }
 
-void Staff::setAdr(){
-    cout<<"Address: ";
-    cin>>address;
+void Staff::setAdr(string add){
+    address = add;
 }
 
-void Staff::setStf_id(){
-    cout<<"Staff ID: ";
-    cin>>Staff_id;
+void Staff::setStf_id(int id){
+    Staff_id = id;
 }
 
-void Staff::setAge(){
-    cout<<"Age: ";
-    cin>>age;
+void Staff::setAge(int Age){
+    age = Age;
 }
 
-void Staff::setPhone(){
-    cout<<"Phone: ";
-    cin>>phone;
+void Staff::setPhone(long long int ph){
+    phone = ph;
 }
 
 string Staff::getPost(){
