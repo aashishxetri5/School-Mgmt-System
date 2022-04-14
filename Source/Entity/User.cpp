@@ -59,8 +59,8 @@ class User{
         }
 
         //setter
-        void set_email(){}
-        void set_password(){}
+        void set_email(string){}
+        void set_password(string){}
 
         //getter 
         string get_email(){}
@@ -72,15 +72,13 @@ class User{
 };
 
 
-void User::set_email(){
-    cout << "Email: ";
-    cin  >> email;
+void User::set_email(string e){
+    email = e;
 
 }
 
-void User::set_password(){
-    cout << "Password: ";
-    cin >> password;
+void User::set_password(string p){
+    password = p;
 }
 
 string User::get_email(){
