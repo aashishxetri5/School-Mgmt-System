@@ -11,7 +11,7 @@ Person class.
 #include <string>
 #include "Person.cpp"
 
-class Student {
+class Student : public Person {
     int grade; //Current Standard
     unsigned short int day, month, year; //For DOB
 
@@ -19,8 +19,14 @@ public:
 
     Student() {}
 
-    // This constructor can be used when passing the data to the other functions while adding the new data.
-    Student(int grade, unsigned short int day, unsigned short int month, unsigned short int year) {
+    /*
+    This constructor can be used when passing the data to the other functions while adding the new data.
+    Recevies all the data of a student and passes the data other than the data members of this class to the parent class.
+    */
+    Student(int userId, string firstname, string lastname, string email, string address, string phone_num, 
+    int grade, unsigned short int day, unsigned short int month, unsigned short int year) : 
+    Person(userId, firstname, lastname, email, address, phone_num) {
+
         this->grade = grade;
         this->day = day;
         this->month = month;
