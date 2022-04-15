@@ -20,16 +20,6 @@ public:
         this -> phone_num = phone_num;    
     }
 
-    //For copying data.
-    Person(const Person &person) {
-        userId = person.userId;
-        firstname = person.firstname;
-        lastname = person.lastname;
-        email = person.email;
-        address = person.address;
-        phone_num = person.phone_num;
-    }
-
     void setUserId(int userId);
 
     int getUserId();

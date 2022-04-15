@@ -59,12 +59,12 @@ class User{
         }
 
         //setter
-        void set_email(string){}
-        void set_password(string){}
+        void set_email(string);
+        void set_password(string);
 
         //getter 
-        string get_email(){}
-        string get_password(){}
+        string get_email();
+        string get_password();
 
     //    bool operator == (User obj){}
 
@@ -74,7 +74,6 @@ class User{
 
 void User::set_email(string e){
     email = e;
-
 }
 
 void User::set_password(string p){
@@ -89,21 +88,4 @@ string User::get_password(){
     return password;
 }
 
-//bool User::operator == (User obj){}
-
-
-/*
-void login(){
-    User login_user;
-
-    cout << "Email: ";
-    login_user.get_email();
-    
-    cout << "Password: ";
-    login_user.get_password();
-
-    
-}
-
-*/
 

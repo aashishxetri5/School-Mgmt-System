@@ -11,83 +11,52 @@ Person class.
 
 using namespace std;
 
-// class Staff: public Person{}
-class Staff{
-    string Post, name, address;
-    int Staff_id, age;
-    long long int phone;
-    public:
-    Staff(string Pst, string nm, string add, int Stf_id, int ag, long long int phn){
-        Post = Pst;
-        name = nm;
-        address = add;
-        Staff_id = Stf_id;
-        age = ag;
-        phone = phn;
+class Staff : public Person{
+    string subject;
+    int salary;
+public:
+    Staff() {}
+    
+    Staff(int userId, string firstname, string lastname, string email, string address, string phone_num, string subject, int salary) : 
+    Person(userId, firstname, lastname, email, address, phone_num) {
+        this -> subject = subject;
+        this -> salary = salary;
+    }
+
+    Staff(const Staff &staff) {
+        userId = staff.Person::userId;
+        firstname = staff.Person::firstname;
+        lastname = staff.Person::lastname;
+        email = staff.Person::email;
+        address = staff.Person::address;
+        phone_num = staff.Person::phone_num;
+        salary = staff.salary;
+        subject = staff.subject;
     }
 
     //setter function for each data members
-    void setPost(string pst);
-    void setName(string Nm);
-    void setAdr(string add);
-    void setStf_id(int id);
-    void setAge(int Age);
-    void setPhone(long long int ph);
+    void setSubject(string subject);
 
-    //getter Function
-    string getPost();
-    string getName();
-    string getAdr();
-    int getStf_id();
-    int getAge();
-    long long int getPhone();
+    string getSubject();
+
+    void setSalary(int salary);
+
+    int getSalary();
 
 };
 
-void Staff::setPost(string pst){
-    Post = pst;
+void Staff::setSubject(string subject){
+    this -> subject = subject;
 }
 
-void Staff::setName(string Nm){
-    name = Nm;
+string Staff::getSubject(){
+    return subject;
 }
 
-void Staff::setAdr(string add){
-    address = add;
+void Staff::setSalary(int salary){
+    this -> salary = salary;
 }
 
-void Staff::setStf_id(int id){
-    Staff_id = id;
-}
-
-void Staff::setAge(int Age){
-    age = Age;
-}
-
-void Staff::setPhone(long long int ph){
-    phone = ph;
-}
-
-string Staff::getPost(){
-    return Post;
-}
-
-string Staff::getName(){
-    return name;
-}
-
-string Staff::getAdr(){
-    return address;
-}
-
-int Staff::getStf_id(){
-    return Staff_id;
-}
-
-int Staff::getAge(){
-    return age;
-}
-
-long long int Staff::getPhone(){
-    return phone;
+int Staff::getSalary(){
+    return salary;
 }

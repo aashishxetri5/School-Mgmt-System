@@ -35,6 +35,12 @@ public:
 
     //Copy constructor. Copies value from one object to other.
     Student(const Student &student) {
+        userId = student.Person::userId;
+        firstname = student.Person::firstname;
+        lastname = student.Person::lastname;
+        email = student.Person::email;
+        address = student.Person::address;
+        phone_num = student.Person::phone_num;
         grade = student.grade;
         day = student.day;
         month = student.month;
