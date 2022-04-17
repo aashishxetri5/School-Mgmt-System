@@ -1,8 +1,15 @@
-#include <iostream>
 #include <windows.h>
-#include <conio.h>
 
-using namespace std;
+#include "../View/Menu.cpp"
+
+//Global variable declaration
+
+//Function Decalrations
+void welcome();
+
+// Variable and object Declaration
+
+User *user = new User();
 
 int main() {
     /*
@@ -12,7 +19,36 @@ int main() {
 	HWND wh = GetConsoleWindow();
 	MoveWindow(wh, 40, 20, 1200, 650, TRUE);
 
+	Menu menu;
+	menu.welcome(user->getUserType());
+
+	switch(menu.loginMenu()) {
+		case 1:
+			user->setUserType("Student");
+        	break;
+    	case 2:
+    	    user->setUserType("Teacher");
+    	    break;
+    	case 3:
+			user->setUserType("Admin");
+    	    break;
+    	case 0:
+    		cout << "\n" << "\tExiting Program...";
+    		exit(0);
+    	default:
+    	    cout << "\n" << "\tInvalid Choice!!\n\t";
+    	    system("pause");
+    	    main();
+	}
+
+	if(!menu.login(user)) {
+		user = nullptr;
+		user = new User(); //Assigning new user. This resets the user object.
+		main();
+	}
 
     getch();
     return 0;
 }
+
+
