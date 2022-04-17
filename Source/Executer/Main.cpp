@@ -20,17 +20,17 @@ int main() {
 	MoveWindow(wh, 40, 20, 1200, 650, TRUE);
 
 	Menu menu;
-	menu.welcome((*user).getUserType());
+	menu.welcome(user->getUserType());
 
 	switch(menu.loginMenu()) {
 		case 1:
-			(*user).setUserType("Student");
+			user->setUserType("Student");
         	break;
     	case 2:
-    	    (*user).setUserType("Teacher");
+    	    user->setUserType("Teacher");
     	    break;
     	case 3:
-			(*user).setUserType("Admin");
+			user->setUserType("Admin");
     	    break;
     	case 0:
     		cout << "\n" << "\tExiting Program...";
