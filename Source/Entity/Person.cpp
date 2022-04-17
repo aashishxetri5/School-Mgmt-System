@@ -13,7 +13,7 @@ public:
     //Constructor for accepting data while entry. It is initialized from its child class and rarely initialized with by creating an object.
     Person(int userId, string firstname, string lastname, string email, string address, string phone_num) {
         this -> userId = userId;
-        this ->firstname =firstname;
+        this -> firstname = firstname;
         this -> lastname = lastname;
         this -> email = email;
         this -> address = address;
