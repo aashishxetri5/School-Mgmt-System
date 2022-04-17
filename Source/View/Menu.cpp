@@ -36,7 +36,7 @@ public:
         char temp;
 
         cout << "\tEnter your username: ";
-        (*user).set_username();
+        user->set_username();
 
         cout << "\tEnter your password: ";
         /* Accepts Password and displays '*' instead of entered character. */
@@ -45,7 +45,7 @@ public:
             printf("*");
             loginPassword = loginPassword + temp;
         }
-        (*user).set_password(&loginPassword);
+        user->set_password(&loginPassword);
 
         if(!LoginController().isValidUser(user)) {
             cout << "\n\tOopsies!! Login Failed.\n\n\t";
