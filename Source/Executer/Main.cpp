@@ -27,16 +27,16 @@ int main() {
 			user->setUserType("Student");
         	break;
     	case 2:
-    	    user->setUserType("Teacher");
+    	    user->setUserType("Staff");
     	    break;
     	case 3:
 			user->setUserType("Admin");
     	    break;
     	case 0:
-    		cout << "\n" << "\tExiting Program...";
+    		cout << "\n\tExiting Program...";
     		exit(0);
     	default:
-    	    cout << "\n" << "\tInvalid Choice!!\n\t";
+    	    cout << "\n\tInvalid Choice!!\n\t";
     	    system("pause");
     	    main();
 	}
@@ -45,6 +45,15 @@ int main() {
 		user = nullptr;
 		user = new User(); //Assigning new user. This resets the user object.
 		main();
+	} else {
+		system("pause");
+		
+		//Keeps calling the mainOptions (the main menu) until a valid menu option is selected.
+		while( true ) {
+			if(menu.mainOptions(user)){
+				break;
+			}
+		}
 	}
 
     getch();
