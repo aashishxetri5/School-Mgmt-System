@@ -40,52 +40,59 @@ Also, create a parameterized constructor having all the data members.
 
 using namespace std;
 
-void login();
-
 class User{
-    string email, password;
+    string username, password, userType;
 
-    public:
-        User(){}
+public:
+    User(){
+        userType = "";
+    }
 
-        User(string e, string p){
-            email = e;
-            password = p;
-        }
-
-        User(const User &obj){
-            email = obj.email;
-            password = obj.password;
-        }
-
-        //setter
-        void set_email(string);
-        void set_password(string);
-
-        //getter 
-        string get_email();
-        string get_password();
-
-    //    bool operator == (User obj){}
-
+    User(string uname, string pwd){
+        username = uname;
+        password = pwd;
+    }
+    
+    User(const User &userObj){
+        username = userObj.username;
+        password = userObj.password;
+        userType = userObj.userType;
+    }
+    
+    //setter
+    void set_username();
+    void set_password(string*);
+    void setUserType(string);
+    
+    //getter 
+    string get_username();
+    string get_password();
+    string getUserType();
      
 };
 
 
-void User::set_email(string e){
-    email = e;
+void User::set_username() {
+    cin >> this->username;
 }
 
-void User::set_password(string p){
-    password = p;
+void User::set_password(string *pwd) {
+    password = *pwd;
 }
 
-string User::get_email(){
-    return email;
+void User::setUserType(string usertype) {
+    userType = usertype;
 }
 
-string User::get_password(){
+string User::get_username() {
+    return username;
+}
+
+string User::get_password() {
     return password;
 }
 
+string User::getUserType() {
+    return userType;
+}
 
