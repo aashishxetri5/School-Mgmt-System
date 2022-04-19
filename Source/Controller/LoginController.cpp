@@ -20,7 +20,7 @@ public:
         Compares the username and the password with that of the data in file.
         If matched, the compare() returns 0 else it returns -1. On this basis the login is validated.
         */
-        if(!user->get_username().compare("User") && !user->get_password().compare("123456789")) {
+        if(!user->get_username().compare("User") && !user->get_password().compare("123")) {
             cout << "\n\tHurray!! Login Successful.\n\n\t";
             return true;
         }
@@ -28,5 +28,7 @@ public:
         return false;
         
     }
+
+    void addLoginCredential(string username, string password);
 
 };
