@@ -43,6 +43,12 @@ public:
 
     int getSalary();
 
+    //write to the file
+    friend ostream& operator << (ostream& stream, Staff sObj);
+
+    //read from the file
+    friend istream& operator >> (istream& stream, Staff &sObj);
+
 };
 
 void Staff::setSubject(string subject){
@@ -59,4 +65,29 @@ void Staff::setSalary(int salary){
 
 int Staff::getSalary(){
     return salary;
+}
+
+
+//write to the file
+ostream& operator << (ostream& stream, Staff sObj){
+    stream << sObj.userId;
+    stream << sObj.firstname;
+    stream << sObj.lastname;
+    stream << sObj.email;
+    stream << sObj.address;
+    stream << sObj.phone_num;
+    stream << sObj.salary;
+    stream << sObj.subject;
+}
+
+    //read from the file
+istream& operator >> (istream& stream, Staff &sObj){
+    stream >> sObj.userId;
+    stream >> sObj.firstname;
+    stream >> sObj.lastname;
+    stream >> sObj.email;
+    stream >> sObj.address;
+    stream >> sObj.phone_num;
+    stream >> sObj.salary;
+    stream >> sObj.subject;
 }
