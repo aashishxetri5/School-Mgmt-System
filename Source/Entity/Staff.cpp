@@ -24,12 +24,12 @@ public:
     }
 
     Staff(const Staff &staff) {
-        userId = staff.Person::userId;
-        firstname = staff.Person::firstname;
-        lastname = staff.Person::lastname;
-        email = staff.Person::email;
-        address = staff.Person::address;
-        phone_num = staff.Person::phone_num;
+        userId = staff.userId;
+        firstname = staff.firstname;
+        lastname = staff.lastname;
+        email = staff.email;
+        address = staff.address;
+        phone_num = staff.phone_num;
         salary = staff.salary;
         subject = staff.subject;
     }
