@@ -30,7 +30,7 @@ int main() {
     	    user->setUserType("Staff");
     	    break;
     	case 3:
-			user->setUserType("Admin");
+			user->setUserType("Admin"); 
     	    break;
     	case 0:
     		cout << "\n\tExiting Program...";
