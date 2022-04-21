@@ -68,6 +68,12 @@ public:
     string get_username();
     string get_password();
     string getUserType();
+
+    //write to the file
+    friend ostream& operator << (ostream &stream, User uObj);
+
+    //read from the file
+    friend istream& operator >> (istream &stream, User &uobj);
      
 };
 
@@ -96,3 +102,22 @@ string User::getUserType() {
     return userType;
 }
 
+
+//writes the data members of the user object to the file 
+ostream& operator << (ostream& stream, User uObj){
+
+    stream << uObj.userType << "\n";
+    stream << uObj.username << "\t"; 
+	stream << uObj.password << "\t";
+	return stream;
+}
+
+
+//read from the file and sets the value of the Object
+istream& operator >> (istream& stream, User &uObj){
+
+    stream >> uObj.userType;
+    stream >> uObj.username;
+    stream >> uObj.password;
+
+}
