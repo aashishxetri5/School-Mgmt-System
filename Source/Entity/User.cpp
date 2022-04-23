@@ -77,9 +77,7 @@ public:
 
     //read from the file
     friend istream& operator >> (istream &stream, User &uobj);
-    
-    void user_data();
-    void register_user();
+   
     
 };
 
@@ -126,83 +124,4 @@ istream& operator >> (istream& stream, User &uObj){
     stream >> uObj.username;
     stream >> uObj.password;
 
-}
-
-void User::user_data(){
-
-        Person person;
-
-        string temp_data, temp_data2, temp_data3;
-        int grade;
-
-        cout << "First Name: ";
-        cin >> temp_data;
-        temp.setFirstname(temp_data);
-
-        cout << "Last Name: ";
-        cin >> temp_data;
-        temp.setLastname(temp_data);
-
-        cout << "Email: ";
-        cin >> temp_data;
-        temp.setEmail(temp_data);
-
-        cout << "Address: ";
-        cin >> temp_data;
-        temp.setAddress(temp_data);
-
-        cout << "Phone Number: ";
-        cin >> temp_data;
-        temp.setPhonenum(temp_data);
-
-    //SInce the staff and the student is the child of the parent
-    //some of the data member of them overlap
-    //thus down casting of the parent is done inorder to avoid redundancy {writing seperate setter code for both child}.
-
-    if(userType == "Student"){
-        Student student = (Student) &person;   //downCasting
-
-        cout << "Grade: ";
-        cin >> grade;
-        student.setGrade(grade);
-
-        cout << "Date [DD/MM/YY]: ";
-        cin >> temp_data >> temp_data2 >> temp_data3;
-        student.setData(temp_data, temp_data2, temp_data3);
-    }
-
-    else if(userType == "Staff"){
-        Staff staff = (Staff) &person;
-        string temp_data;
-        int temp;
-
-        cout << "Subject: ";
-        cin >> temp_data;
-        staff.setSubject(temp_data);
-
-        cout << "Salary: ";
-        cin >> temp;
-        staff.setSalary(temp);
-
-    }
-        
-}
-
-User::void register_user(){
-    
-    //shall have the file handlig part to store the data of the registeres user.
-
-    //For the student types
-
-    //For the Staff Type
-}
-
-
-int main(){
-    User user;
-
-    Menu menu;
-    menu.welcome(user.getUserType());
-    menu.loginMenu();
-    user.register_user();
 }
