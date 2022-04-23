@@ -1,3 +1,33 @@
+/* 
+
+Registration:
+	1.Gets the type of user.
+	2.Gets the data of the user.
+
+		if unique data members:
+			1. Username
+			2. Userid
+		else
+			exception
+			
+	3.Store the data of the user to the file
+	4.transfer the control to the logged in user.
+
+Things to be added:
+
+1. Logic to check whether the username is taken or not.
+   [as no two person can have identical username | userId ?]
+
+2. Store the credintials of the user.
+	[Unsure to store in the same file where their data is stored]
+
+
+
+
+
+*/
+
+
 #include <iostream>
 #include <fstream>
 #include "./Entity/User.cpp"
