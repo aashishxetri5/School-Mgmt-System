@@ -35,8 +35,11 @@ Also, create a parameterized constructor having all the data members.
         -New pass
 
 */ 
-
+#include "../View/Menu.cpp"
+#include "Student.cpp"
+#include "Staff.cpp"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -74,7 +77,8 @@ public:
 
     //read from the file
     friend istream& operator >> (istream &stream, User &uobj);
-     
+   
+    
 };
 
 
