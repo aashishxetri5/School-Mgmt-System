@@ -12,7 +12,7 @@ Person class.
 
 class Student : public Person {
     int grade; //Current Standard
-    unsigned short int day, month, year; //For DOB
+    string dob;
 
 public:
 
@@ -23,13 +23,10 @@ public:
     Recevies all the data of a student and passes the data other than the data members of this class to the parent class.
     */
     Student(int userId, string firstname, string lastname, string email, string address, string phone_num, 
-    int grade, unsigned short int day, unsigned short int month, unsigned short int year) : 
-    Person(userId, firstname, lastname, email, address, phone_num) {
+    int grade, string dob) : Person(userId, firstname, lastname, email, address, phone_num) {
 
         this->grade = grade;
-        this->day = day;
-        this->month = month;
-        this->year;
+        this->dob = dob;
     }
 
     //Copy constructor. Copies value from one object to other.
@@ -41,17 +38,15 @@ public:
         address = student.address;
         phone_num = student.phone_num;
         grade = student.grade;
-        day = student.day;
-        month = student.month;
-        year = student.year;
+        dob = student.dob;
     }
 
-    void setGrade(int grade); //Sets the the grade of student
+    void setGrade(int); //Sets the the grade of student
 
     int getGrade(); //Returns the Grade of the student
     
     //Accepts the date in partitioned form
-    void setDate(unsigned short int day, unsigned short int month, unsigned short int year);
+    void setDate(string);
 
     std::string getDate(); //Returns the date in string format
 
@@ -61,17 +56,15 @@ void Student::setGrade(int grade){
     this->grade = grade;
 }
 
-int  Student::getGrade() {
+int Student::getGrade() {
     return grade;
 }
 
-void  Student::setDate(unsigned short int day, unsigned short int month, unsigned short int year) {
-    this->day = day;
-    this->month = month;
-    this->year = year;
+void Student::setDate(string dob) {
+    this->dob = dob;
 }
 
-std::string  Student::getDate() {
+string Student::getDate() {
     //This returns the date in string type in format MM-DD-YYYY
-    return ( std::to_string(month) +"-" + std::to_string(day) + "-" + std::to_string(year) );
+    return dob;
 }

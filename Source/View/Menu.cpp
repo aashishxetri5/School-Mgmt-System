@@ -1,7 +1,8 @@
 //This shall contain functions for the menu.
 #include <conio.h>
 
-#include "../Controller/LoginController.cpp"
+#include "..\Controller\LoginController.cpp"
+#include "..\Controller\registration.cpp"
 
 class Menu {
     int menuChoice;
@@ -137,7 +138,8 @@ public:
 			break;
 		case 4:
             cout << "add rec";
-			// addRecord();
+			Registration reg;
+			reg.get_data(userType);
 			break;
 		case 5:
             cout << "delete record";

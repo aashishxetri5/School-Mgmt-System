@@ -5,7 +5,7 @@ This shall have the properties/details for a user to be logged in.
 Create Getters and setters for each data member.
 Also, create a parameterized constructor having all the data members.
 
-/*
+*/
 
 /*
     User
@@ -35,11 +35,7 @@ Also, create a parameterized constructor having all the data members.
         -New pass
 
 */ 
-#include "../View/Menu.cpp"
-#include "Student.cpp"
-#include "Staff.cpp"
 #include <iostream>
-#include <string>
 
 using namespace std;
 
