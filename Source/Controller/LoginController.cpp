@@ -1,3 +1,6 @@
+#ifndef LOGINCONTROLLER_CPP
+#define LOGINCONTROLLER_CPP
+
 #include "../Entity/User.cpp"
 
 class LoginController {
@@ -32,3 +35,5 @@ public:
     void addLoginCredential(string username, string password);
 
 };
+
+#endif

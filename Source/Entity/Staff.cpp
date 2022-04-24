@@ -6,12 +6,13 @@ Also, create a parameterized constructor having all the data members. This class
 Person class.
 
 */
-
+#ifndef STAFF_CPP
+#define STAFF_CPP
 #include"Person.cpp"
 
 using namespace std;
 
-class Staff : public Person{
+class Staff : public  Person{
     string subject;
     int salary;
 public:
@@ -70,14 +71,16 @@ int Staff::getSalary(){
 
 //write to the file
 ostream& operator << (ostream& stream, Staff sObj){
-    stream << sObj.userId;
-    stream << sObj.firstname;
-    stream << sObj.lastname;
-    stream << sObj.email;
-    stream << sObj.address;
-    stream << sObj.phone_num;
-    stream << sObj.salary;
-    stream << sObj.subject;
+    stream << sObj.userId << "\t";
+    stream << sObj.firstname << "\t";
+    stream << sObj.lastname << "\t";
+    stream << sObj.email << "\t";
+    stream << sObj.address << "\t";
+    stream << sObj.phone_num << "\t";
+    stream << sObj.salary << "\t";
+    stream << sObj.subject << "\n";
+
+    return stream;
 }
 
     //read from the file
@@ -90,4 +93,8 @@ istream& operator >> (istream& stream, Staff &sObj){
     stream >> sObj.phone_num;
     stream >> sObj.salary;
     stream >> sObj.subject;
+
+    return stream;
 }
+
+#endif

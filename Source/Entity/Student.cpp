@@ -6,7 +6,8 @@ Also, create a parameterized constructor having all the data members. This class
 Person class.
 
 */
-
+#ifndef STUDENT_CPP
+#define STUDENT_CPP
 #include <string>
 #include "Person.cpp"
 
@@ -50,6 +51,13 @@ public:
 
     std::string getDate(); //Returns the date in string format
 
+    //read from the file and write to the obj
+    friend istream& operator >> (istream& stream, Student &sObj);
+
+    //write to the file by reading from the obj
+    friend ostream& operator << (ostream& stream, Student sObj);
+
+
 };
 
 void Student::setGrade(int grade){
@@ -68,3 +76,31 @@ string Student::getDate() {
     //This returns the date in string type in format MM-DD-YYYY
     return dob;
 }
+
+istream& operator >> (istream& stream, Student &sObj){
+    stream >> sObj.userId;
+    stream >> sObj.firstname;
+    stream >> sObj.lastname;
+    stream >> sObj.address;
+    stream >> sObj.email;
+    stream >> sObj.phone_num;
+    stream >> sObj.grade;
+    stream >> sObj.dob;
+
+    return stream;
+}
+
+ostream& operator << (ostream& stream, Student sObj){
+    stream << sObj.userId << "\t";
+    stream << sObj.firstname << "\t";
+    stream << sObj.lastname << "\t";
+    stream << sObj.address << "\t";
+    stream << sObj.email << "\t";
+    stream << sObj.phone_num << "\t";
+    stream << sObj.grade << "\t";
+    stream << sObj.dob << "\n";
+     
+    return stream;
+}
+
+#endif

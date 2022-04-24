@@ -35,14 +35,16 @@ public:
 
     //take credentials
     bool login(User *user) {
-        string loginPassword = "";
+        string temp_data = "";
         char temp;
 
         cout << "\tEnter your username: ";
-        user->set_username();
+		cin >> temp_data;
+        user->set_username(temp_data);
 
         cout << "\tEnter your password: ";
         /* Accepts Password and displays '*' instead of entered character. */
+		temp_data = "";
         while(true) {
             temp = getch();
             /*Checks if user hit 'Enter'. If yes, the password end is declared by breaking out of the loop. */
@@ -50,10 +52,10 @@ public:
                 break;
             }
             cout <<"*";
-            loginPassword = loginPassword + temp;
+            temp_data = temp_data + temp;
         }
 
-        user->set_password(&loginPassword);
+        user->set_password(temp_data);
 
         if(!LoginController().isValidUser(user)) {
             cout << "\n\tOopsies!! Login Failed.\n\n\t";
@@ -137,7 +139,6 @@ public:
 			// displayMarksheet();
 			break;
 		case 4:
-            cout << "add rec";
 			Registration reg;
 			reg.get_data(userType);
 			break;

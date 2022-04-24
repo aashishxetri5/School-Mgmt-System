@@ -1,6 +1,9 @@
 // This shall have the common properties/details of a person
 
+#ifndef PERSON_CPP
+#define PERSON_CPP
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 class Person {
@@ -24,25 +27,25 @@ public:
 
     int getUserId();
 
-    void setFirstname(string firstname);
+    void setFirstname(string);
 
     string getFirstname();
 
-    void setLastname(string lastname);
+    void setLastname(string);
 
     string getLastname();
 
     string getFullname();
 
-    void setEmail(string email);
+    void setEmail(string);
 
     string getEmail();
 
-    void setAddress(string address);
+    void setAddress(string);
 
     string getAddress();
 
-    void setPhonenum(string phone_num);
+    void setPhonenum(string);
 
     string getPhonenum();
 
@@ -103,3 +106,5 @@ void Person::setPhonenum(string phone_num) {
 string Person::getPhonenum() {
     return phone_num;
 }
+
+#endif

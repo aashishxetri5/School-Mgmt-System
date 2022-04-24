@@ -35,8 +35,10 @@ Also, create a parameterized constructor having all the data members.
         -New pass
 
 */ 
+#ifndef USER_CPP
+#define USER_CPP
 #include <iostream>
-
+#include <fstream>
 using namespace std;
 
 class User{
@@ -46,11 +48,6 @@ public:
     User(){
         userType = "";
     }
-
-    User(string uname, string pwd){
-        username = uname;
-        password = pwd;
-    }
     
     User(const User &userObj){
         username = userObj.username;
@@ -59,8 +56,8 @@ public:
     }
     
     //setter
-    void set_username();
-    void set_password(string*);
+    void set_username(string);
+    void set_password(string);
     void setUserType(string);
     
     //getter 
@@ -69,7 +66,7 @@ public:
     string getUserType();
 
     //write to the file
-    friend ostream& operator << (ostream &stream, User uObj);
+    friend ostream& operator << (ostream &stream, User &uObj);
 
     //read from the file
     friend istream& operator >> (istream &stream, User &uobj);
@@ -78,12 +75,12 @@ public:
 };
 
 
-void User::set_username() {
-    cin >> this->username;
+void User::set_username(string username) {
+    this->username = username;
 }
 
-void User::set_password(string *pwd) {
-    password = *pwd;
+void User::set_password(string password) {
+    this->password = password;
 }
 
 void User::setUserType(string usertype) {
@@ -104,20 +101,19 @@ string User::getUserType() {
 
 
 //writes the data members of the user object to the file 
-ostream& operator << (ostream& stream, User uObj){
+ostream& operator << (ostream& stream, User &uObj){
 
-    stream << uObj.userType << "\n";
     stream << uObj.username << "\t"; 
-	stream << uObj.password << "\t";
+	stream << uObj.password << "\n";
 	return stream;
 }
-
 
 //read from the file and sets the value of the Object
 istream& operator >> (istream& stream, User &uObj){
 
-    stream >> uObj.userType;
     stream >> uObj.username;
     stream >> uObj.password;
-
+    return stream;
 }
+
+#endif
