@@ -1,6 +1,3 @@
-#ifndef LOGINCONTROLLER_CPP
-#define LOGINCONTROLLER_CPP
-
 #include "../Entity/User.cpp"
 
 class LoginController {
@@ -17,6 +14,43 @@ public:
 
         if(user->getUserType().compare("Student") == 0) {
             //filename = student.dat; //(This will be done later.)
+            ifstream student_user("Student.dat", ios::in);
+
+            //check the username from the file 
+            User temp;
+            int flag = 0;
+
+            if(!student_user){
+                cout << "\nFile not found!";
+                cout << "In the login controller.";
+                exit(1);
+            }
+            while(!student_user.eof()){
+                student_user >> temp;
+                if(temp.get_username().compare(user->get_username()) == 0 && temp.get_password().compare(user -> get_password()) == 0){
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        if(user->getUserType().compare("Staff") == 0) {
+            //filename = student.dat; //(This will be done later.)
+            ifstream staff_user("Staff.dat", ios::in);
+
+            //check the username from the file 
+            User temp;
+            int flag = 0;
+
+            while(!staff_user.eof()){
+                staff_user >> temp;
+                if(temp.get_username().compare(user->get_username()) == 0 && temp.get_password().compare(user -> get_password()) == 0){
+                    return true;
+                }
+            }
+            return false;
+
         }
 
         /*
@@ -36,4 +70,3 @@ public:
 
 };
 
-#endif
