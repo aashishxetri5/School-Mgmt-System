@@ -135,6 +135,7 @@ public:
 
 		if (!student_file) {
 			cout << "File not found !!!";
+			exit(1);
 		} else {
 			student_file << *student;
 			student_loginfile << *user;
@@ -145,15 +146,15 @@ public:
 	}
 
 	void store_staff(Staff *staff, string whoseInfo) {
-		fstream rec_file;
-		fstream rec_loginfile;
+		 fstream rec_file;
+		 fstream rec_loginfile;
 
 		if(whoseInfo == "Staff"){
-			fstream rec_file("Staff.dat", ios::out|ios::app);
-			fstream rec_loginfile("Login_Staff.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
+			rec_file.open("Staff.dat", ios::out|ios::app);
+			rec_loginfile.open("Login_Staff.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 		} else {
-			fstream rec_file("Admin.dat", ios::out|ios::app);
-			fstream rec_loginfile("Login_Admin.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
+			rec_file.open("Admin.dat", ios::out|ios::app);
+			rec_loginfile.open("Login_Admin.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 		}
 
 		User *user;
@@ -162,6 +163,7 @@ public:
 
 		if (!rec_file) 		{
 			cout << "File not found !!!";
+			exit(1);
 		} else {
 			rec_file << *staff;
 			rec_loginfile << *user;
