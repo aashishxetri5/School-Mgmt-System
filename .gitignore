@@ -33,3 +33,6 @@
 
 # Vs-Code
 .vscode
+
+#.dat files
+*.dat

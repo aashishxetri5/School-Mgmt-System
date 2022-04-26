@@ -13,7 +13,7 @@ Person class.
 
 class Student : public Person {
     int grade; //Current Standard
-    string dob;
+    string dob = "";
 
 public:
 
@@ -40,6 +40,7 @@ public:
         phone_num = student.phone_num;
         grade = student.grade;
         dob = student.dob;
+
     }
 
     void setGrade(int); //Sets the the grade of student
@@ -49,13 +50,13 @@ public:
     //Accepts the date in partitioned form
     void setDate(string);
 
-    std::string getDate(); //Returns the date in string format
+    string getDate(); //Returns the date in string format
 
     //read from the file and write to the obj
     friend istream& operator >> (istream& stream, Student &sObj);
 
     //write to the file by reading from the obj
-    friend ostream& operator << (ostream& stream, Student sObj);
+    friend ostream& operator << (ostream& stream, Student &sObj);
 
 
 };
@@ -70,6 +71,7 @@ int Student::getGrade() {
 
 void Student::setDate(string dob) {
     this->dob = dob;
+    cout << "from setter: " << dob << endl;
 }
 
 string Student::getDate() {
@@ -77,6 +79,7 @@ string Student::getDate() {
     return dob;
 }
 
+//This overloaded operatior reads the content from the file and sets into the student object.
 istream& operator >> (istream& stream, Student &sObj){
     stream >> sObj.userId;
     stream >> sObj.firstname;
@@ -90,15 +93,16 @@ istream& operator >> (istream& stream, Student &sObj){
     return stream;
 }
 
-ostream& operator << (ostream& stream, Student sObj){
+//This overloaded operatior writes the content of student object received via parameter to the file.
+ostream& operator << (ostream& stream, Student &sObj){
     stream << sObj.userId << "\t";
-    stream << sObj.firstname << "\t";
+    stream << sObj.firstname<< "\t";
     stream << sObj.lastname << "\t";
     stream << sObj.address << "\t";
     stream << sObj.email << "\t";
     stream << sObj.phone_num << "\t";
     stream << sObj.grade << "\t";
-    stream << sObj.dob << "\n";
+    stream << sObj.dob;
      
     return stream;
 }
