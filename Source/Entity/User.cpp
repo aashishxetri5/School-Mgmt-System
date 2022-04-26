@@ -49,6 +49,11 @@ public:
         userType = "";
     }
     
+    User(string username, string password) {
+        this->username = username;
+        this->password = password;
+    }
+
     User(const User &userObj){
         username = userObj.username;
         password = userObj.password;
@@ -104,7 +109,7 @@ string User::getUserType() {
 ostream& operator << (ostream& stream, User &uObj){
 
     stream << uObj.username << "\t"; 
-	stream << uObj.password << "\n";
+	stream << uObj.password;
 	return stream;
 }
 

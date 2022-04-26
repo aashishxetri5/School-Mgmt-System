@@ -38,7 +38,7 @@ public:
         string temp_data = "";
         char temp;
 
-        cout << "\tEnter your username: ";
+        cout << "\n\tEnter your username: ";
 		cin >> temp_data;
         user->set_username(temp_data);
 
@@ -115,6 +115,7 @@ public:
 
 // This method will call the respective method from any other class which implements the functionality of the requested operation.
     bool performRequestionOperation(string userType) {
+		char resp;
         switch(menuChoice){
 		case 1:
 			if(!userType.compare("Admin") ) {
@@ -140,7 +141,11 @@ public:
 			break;
 		case 4:
 			Registration reg;
-			reg.get_data(userType);
+			resp = reg.get_data(userType);
+			system("cls");
+			if ( resp != 'N' && resp != 'n' ) {
+				return performRequestionOperation(userType);
+			}
 			break;
 		case 5:
             cout << "delete record";

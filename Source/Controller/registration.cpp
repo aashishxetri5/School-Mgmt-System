@@ -34,6 +34,7 @@ Things to be added:
 class Registration {
 public:
 
+	//Lets user choose whose data does the admin want to perform the requested operation on.
 	string chooseWhoseInfo() {
 		char choice;
 		cout << "\n\tChoose on whose info do you want to perform the requested action\n\tstudent(s)\tteacher(t)\tadministration(a)";
@@ -44,7 +45,7 @@ public:
   				return "Student";
   				break;
   			case 't':
-  				return "Teacher";
+  				return "Staff";
   				break;
   			case 'a':
   				return "Admin";
@@ -57,116 +58,121 @@ public:
   		}
 	}
 
+	//sets data into the object of respective Usertype.
+	char get_data(string type) {
 
-	void get_data(string type) {
-		Person person;
-
-		string temp_data, whoseInfo = chooseWhoseInfo();
-		int int_data;
+		string firstname, lastname, email, address, phone_num, dob; 
+		int grade, userId;
+		system("cls");
+		string whoseInfo = chooseWhoseInfo();
 
 		cout << "\n\tEnter your ID: ";
-		cin >> int_data;
-		person.setUserId(int_data);
+		cin >> userId;
 
 		cout << "\n\tEnter the First Name: ";
-		cin >> temp_data;
-		person.setFirstname(temp_data);
+		cin >> firstname;
 
 		cout << "\n\tEnter the Last Name: ";
-		cin >> temp_data;
-		person.setLastname(temp_data);
+		cin >> lastname;
 
 		cout << "\n\tEnter the Email: ";
-		cin >> temp_data;
-		person.setEmail(temp_data);
+		cin >> email;
 
 		cout << "\n\tEnter the Address: ";
-		cin >> temp_data;
-		person.setAddress(temp_data);
+		cin >> address;
 
 		cout << "\n\tEnter the contact number: ";
-		cin >> temp_data;
-		person.setPhonenum(temp_data);
-
-		// SInce the staff and the student is the child of the parent
-		// some of the data member of them overlap
-		// thus down casting of the parent is done inorder to avoid redundancy {writing seperate setter code for both child}.
+		cin >> phone_num;
+ 		
 		if(type == "Admin") {
 			if (whoseInfo == "Student") {
-				Student *student = (Student *)&person; // downCasting
 
 				cout << "\n\tEnter the Grade: ";
-				cin >> int_data;
-				student->setGrade(int_data);
+				cin >> grade;
 
 				cout << "\n\tEnter the Date [DD/MM/YY]: ";
-				cin >> temp_data;
-				student->setDate(temp_data);
+				cin >> dob;
 
+				Student *student = new Student(userId, firstname, lastname, email, address, phone_num, grade, dob);
+				
 				store_student(student);
+
+				delete student;
+				student = nullptr;
 			}
 
 			if (whoseInfo == "Staff" || whoseInfo == "Admin") {
-				Staff *staff = (Staff *)&person;
-				// string temp_data;
-				int temp;
+				string subject;
+				int salary;
 
 				cout << "\n\tEnter the Subject: ";
-				cin >> temp_data;
-				staff->setSubject(temp_data);
+				cin >> subject;
 
 				cout << "\n\tEnter the Salary: ";
-				cin >> temp;
-				staff->setSalary(temp);
+				cin >> salary;
+
+				Staff *staff = new Staff(userId, firstname, lastname, email, address, phone_num, subject, salary);
 
 				store_staff(staff, whoseInfo);
 			}
 		}
+
+		char userResponse;
+		cout << "\n\n\tDo you want to add more records? 'n' NO: ";
+		cin >> userResponse;
+
+		return userResponse;
 	}
 
+
+	//Creates/Opens the file to store the student's general data as well as the login data. 
 	void store_student(Student *student) {
 		fstream student_file("Student.dat", ios::out|ios::app);
 		
 		fstream student_loginfile("Login_Std.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 
-		User *user;
-		user->set_username( setLoginCredentials( student->getFirstname(), student->getUserId() ) );
-		user->set_password("qwerty");
+		User *user = new User(setLoginCredentials( student->getFirstname(), student->getUserId()), "qwerty");
 
 		if (!student_file) {
 			cout << "File not found !!!";
 		} else {
-			student_file << *student;
-			student_loginfile << *user;
+			student_file << *student << endl << flush;
+			student_loginfile << *user << endl << flush;
 		}
+		
+		delete user;
+		user = nullptr;
 
 		student_file.close();
 		student_loginfile.close();
 	}
 
+	//Creates/Opens the file to store the Staff's or Admin's general data as well as the login data. 
 	void store_staff(Staff *staff, string whoseInfo) {
 		fstream rec_file;
 		fstream rec_loginfile;
 
 		if(whoseInfo == "Staff"){
-			fstream rec_file("Staff.dat", ios::out|ios::app);
-			fstream rec_loginfile("Login_Staff.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
+			rec_file.open("Staff.dat", ios::out|ios::app);
+			rec_loginfile.open("Login_Staff.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 		} else {
-			fstream rec_file("Admin.dat", ios::out|ios::app);
-			fstream rec_loginfile("Login_Admin.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
+			rec_file.open("Admin.dat", ios::out|ios::app);
+			rec_loginfile.open("Login_Admin.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 		}
 
-		User *user;
-		user->set_username( setLoginCredentials( staff->getFirstname(), staff->getUserId() ) );
-		user->set_password("qwerty");
+		User *user = new User(setLoginCredentials( staff->getFirstname(), staff->getUserId()), "qwerty");
+		
 
-		if (!rec_file) 		{
+		if (!rec_file) {
 			cout << "File not found !!!";
 		} else {
-			rec_file << *staff;
-			rec_loginfile << *user;
+			rec_file << *staff << endl << flush;
+			rec_loginfile << *user << endl << flush;
 		}
 		
+		delete user;
+		user = nullptr;
+
 		rec_file.close();
 		rec_loginfile.close();
 	}

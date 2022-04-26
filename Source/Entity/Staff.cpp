@@ -69,7 +69,7 @@ int Staff::getSalary(){
 }
 
 
-//write to the file
+//This overloaded operator reads the content from the file and sets into the staff object.
 ostream& operator << (ostream& stream, Staff sObj){
     stream << sObj.userId << "\t";
     stream << sObj.firstname << "\t";
@@ -78,12 +78,12 @@ ostream& operator << (ostream& stream, Staff sObj){
     stream << sObj.address << "\t";
     stream << sObj.phone_num << "\t";
     stream << sObj.salary << "\t";
-    stream << sObj.subject << "\n";
+    stream << sObj.subject;
 
     return stream;
 }
 
-    //read from the file
+//This overloaded operator writes the content of staff object received via parameter to the file.
 istream& operator >> (istream& stream, Staff &sObj){
     stream >> sObj.userId;
     stream >> sObj.firstname;
