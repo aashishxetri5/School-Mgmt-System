@@ -4,6 +4,10 @@
 #include "..\Controller\LoginController.cpp"
 #include "..\Controller\registration.cpp"
 
+void change_password(User*);
+void password_hide(string &);
+void viewGeneralRecord();
+
 class Menu {
     int menuChoice;
 public:
@@ -96,38 +100,47 @@ public:
     
 	    /* Prevents Staff members from accessing Administrative Controls. */
 	    if( user->getUserType().compare("Staff") == 0 && menuChoice == 3){
+
 	    	cout <<"\n\tInvalid input...\n\t";
 	    	system("pause");
 	    	system("cls");
             return false;
             
-	    }else if( (!user->getUserType().compare("Student") || !user->getUserType().compare("Staff")) && (menuChoice >= 3 && menuChoice < 10)){
+	    }else if( (!user->getUserType().compare("Student") || !user->getUserType().compare("Staff")) && (menuChoice >= 4 && menuChoice <= 8)){
+			cout << "inside the prevention.";
             /* Preventing Students and Staffs from accessing Administrative Controls. */
 	    	cout <<"\n\tInvalid input...\n\t";
 	    	system("pause");
-	    	system("cls");
+	    	//system("cls");
             return false;
 	    }
 
-        return performRequestionOperation(user->getUserType());
+        return performRequestionOperation(user);
 
     }
 
 // This method will call the respective method from any other class which implements the functionality of the requested operation.
-    bool performRequestionOperation(string userType) {
+    bool performRequestionOperation(User *user) {
 		char resp;
         switch(menuChoice){
 		case 1:
-			if(!userType.compare("Admin") ) {
+			if(!user->getUserType().compare("Admin") ) {
                 cout << "view admin record";
-				// viewGeneralRecord();
-			} else {
-                cout << "view student/staff record";
-				// getLoggedUserInfo();
+				viewGeneralRecord();
+				system("pause");
+				system("cls");
+				mainOptions(user);
+			
+			} 
+			if(!user->getUserType().compare("Student") || !user->getUserType().compare("Staff")){
+                cout << "\nview student/staff record";
+				//getLoggedUserInfo(user);
+				user->display_user_data();
+				system("pause");
 			}
 			break;
 		case 2:
-			if(!userType.compare("Admin") ){
+			if(!user->getUserType().compare("Admin") ){
                 cout << "udpate admin record";
 				// updateRecord();
 			} else {
@@ -141,10 +154,10 @@ public:
 			break;
 		case 4:
 			Registration reg;
-			resp = reg.get_data(userType);
+			resp = reg.get_data(user->getUserType());
 			system("cls");
 			if ( resp != 'N' && resp != 'n' ) {
-				return performRequestionOperation(userType);
+				return performRequestionOperation(user);
 			}
 			break;
 		case 5:
@@ -165,13 +178,16 @@ public:
 			break;
 		case 9:
             cout << "change password";
-			// changePassword();
+			change_password(user);				//partially done.
 			break;
 		case 10:
 			cout << "\n\tLogging out...\n\t";
-            //reset the user object through address.
-			system("pause");
-			break;
+			delete user;
+			user = nullptr;
+			user = new User();
+			return false;
+		//	break;
+
 		case 0:
 			cout << "\tExiting...";
 			exit(0);
@@ -185,3 +201,116 @@ public:
     } 
 
 };
+
+void viewGeneralRecord(){
+
+	system("cls");
+	
+	ifstream student_file("student.dat", ios::in|ios::app);
+	Student temp_student;
+
+	cout << "Student data: \n\n";
+	if(!student_file){
+		cout << "file not found";
+		exit(1);
+	}
+
+	while(!student_file.eof()){
+		student_file >> temp_student;
+		temp_student.display_data();
+	}
+	student_file.close();
+
+	ifstream staff_file("Staff.dat", ios::in|ios::app);
+
+	Staff temp_staff;
+
+	if(!staff_file){
+		cout << "File not found";
+		exit(1);
+	}
+
+	cout << "\n\nStaff Data: \n\n";
+	while(!staff_file.eof()){
+		staff_file >> temp_staff;
+		temp_staff.display_data();
+	}
+	staff_file.close();
+	
+
+
+	
+}
+
+
+void change_password(User *user){
+	/*
+		To do :
+			write the updated password to the file.
+			read the exact position of the user data in the file
+			write to that position
+	
+	*/
+
+	string current_pass, new_password, confirm_password;
+	ofstream student_login_file("Login_Std.dat", ios::out);
+
+	User user_data;
+
+	do{
+		cout << "Current Password: ";
+		password_hide(current_pass);
+
+		if(current_pass.compare(user->get_password())){
+			continue;
+		}
+
+		cout << "New Password: ";
+		password_hide(new_password);
+		cout << "Confirm Password: ";
+		password_hide(confirm_password);
+
+		if(new_password.compare(confirm_password)){
+			cout << "Password doesnot match.";
+			continue;
+		}
+
+	}while(current_pass.compare(user->get_password()) || new_password.compare(confirm_password));
+
+	user->set_password(new_password);
+
+	if(!student_login_file){
+		cout << "File not found";
+		exit(1);
+
+	}
+
+//=-------could be possible solution
+	student_login_file << *user;
+	student_login_file.close();
+	// while(!student_login_file.eof()){
+	// 	// staff_login_file >> staff_data;
+	// 	student_login_file >> user_data;
+	// 	if(user_data.get_username().compare(user->get_username()) == 0 && user_data.get_password().compare(user ->get_password()) == 0){
+			
+	// 		student_login_file.seekg(0, ios::beg);
+	// 		cout << "sucessfully written to file";
+	// 		system("pause");
+	// 	}
+    // }
+}
+
+
+void password_hide(string &password){
+
+	while(true){
+		char temp = getch();
+		
+		if(temp == 13){ //\r carriage return ascii value
+			break;
+		}
+		cout << "*";
+		password = password + temp;
+	}
+	
+}
