@@ -1,4 +1,6 @@
 #include "../Entity/User.cpp"
+#include "../Entity/Staff.cpp"
+#include "../Entity/Student.cpp"
 
 class LoginController {
 
@@ -12,44 +14,55 @@ public:
     */
     bool isValidUser(User *user) {
 
-        if(user->getUserType().compare("Student") == 0) {
+         if(user->getUserType().compare("Student") == 0) {
             //filename = student.dat; //(This will be done later.)
-            ifstream student_user("Student.dat", ios::in);
+            ifstream student_login_file("Login_Std.dat", ios::in|ios::app);
 
-            //check the username from the file 
-            User temp;
+        //     //check the username from the file 
+            User user_data;
+         //   Student student_data;
             int flag = 0;
 
-            if(!student_user){
+            if(!student_login_file){
                 cout << "\nFile not found!";
-                cout << "In the login controller.";
                 exit(1);
             }
-            while(!student_user.eof()){
-                student_user >> temp;
-                if(temp.get_username().compare(user->get_username()) == 0 && temp.get_password().compare(user -> get_password()) == 0){
+
+            while(!student_login_file.eof()){
+                student_login_file >> user_data;
+                if(!user_data.get_username().compare(user->get_username()) && !user_data.get_password().compare(user -> get_password()) ){
+                    student_login_file.close();
                     return true;
                 }
             }
+            student_login_file.close();
             return false;
+            
+
 
         }
 
         if(user->getUserType().compare("Staff") == 0) {
-            //filename = student.dat; //(This will be done later.)
-            ifstream staff_user("Staff.dat", ios::in);
 
-            //check the username from the file 
-            User temp;
-            int flag = 0;
+            ifstream staff_login_file("login_Staff.dat", ios::in);
 
-            while(!staff_user.eof()){
-                staff_user >> temp;
-                if(temp.get_username().compare(user->get_username()) == 0 && temp.get_password().compare(user -> get_password()) == 0){
+            User user_data;
+
+            if(!staff_login_file){
+                cout << "\nFile not found!";
+                exit(1);
+            }
+            while(!staff_login_file.eof()){
+                staff_login_file >> user_data;
+                if(!user_data.get_username().compare(user->get_username()) && !user_data.get_password().compare(user ->get_password()) ){
+                    staff_login_file.close();
                     return true;
                 }
             }
+            staff_login_file.close();
             return false;
+
+            
 
         }
 
