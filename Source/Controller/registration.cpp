@@ -135,6 +135,7 @@ public:
 
 		if (!student_file) {
 			cout << "File not found !!!";
+			exit(1);
 		} else {
 			student_file << *student << endl << flush;
 			student_loginfile << *user << endl << flush;
@@ -149,8 +150,8 @@ public:
 
 	//Creates/Opens the file to store the Staff's or Admin's general data as well as the login data. 
 	void store_staff(Staff *staff, string whoseInfo) {
-		fstream rec_file;
-		fstream rec_loginfile;
+		 fstream rec_file;
+		 fstream rec_loginfile;
 
 		if(whoseInfo == "Staff"){
 			rec_file.open("Staff.dat", ios::out|ios::app);
@@ -165,6 +166,7 @@ public:
 
 		if (!rec_file) {
 			cout << "File not found !!!";
+			exit(1);
 		} else {
 			rec_file << *staff << endl << flush;
 			rec_loginfile << *user << endl << flush;
