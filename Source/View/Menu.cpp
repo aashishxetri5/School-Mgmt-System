@@ -283,9 +283,10 @@ void change_password(User *user){
 
 	}
 
-//=-------could be possible solution
+
 	student_login_file << *user;
 	student_login_file.close();
+	//=-------could be possible solution
 	// while(!student_login_file.eof()){
 	// 	// staff_login_file >> staff_data;
 	// 	student_login_file >> user_data;
