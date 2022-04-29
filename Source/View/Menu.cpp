@@ -125,15 +125,15 @@ public:
         switch(menuChoice){
 		case 1:
 			if(!user->getUserType().compare("Admin") ) {
-                cout << "view admin record";
-				viewGeneralRecord();
-				system("pause");
-				system("cls");
-				mainOptions(user);
+               		 cout << "view admin record";
+			viewGeneralRecord();
+			system("pause");
+			system("cls");
+			mainOptions(user);
 			
 			} 
 			if(!user->getUserType().compare("Student") || !user->getUserType().compare("Staff")){
-                cout << "\nview student/staff record";
+                	cout << "\nview student/staff record";
 				//getLoggedUserInfo(user);
 				user->display_user_data();
 				system("pause");
@@ -141,15 +141,16 @@ public:
 			break;
 		case 2:
 			if(!user->getUserType().compare("Admin") ){
-                cout << "udpate admin record";
+                	cout << "udpate admin record";
 				// updateRecord();
-			} else {
-                cout << "udpate std/student record";
+			}
+			else {
+                		cout << "udpate std/student record";
 				// updateSelfRecord();
 			}
 			break;
 		case 3:
-            cout << "marksheet";
+            		cout << "marksheet";
 			// displayMarksheet();
 			break;
 		case 4:
@@ -161,23 +162,23 @@ public:
 			}
 			break;
 		case 5:
-            cout << "delete record";
+            		cout << "delete record";
 			// deleteRecord();
 			break;
 		case 6:
-            cout << "search record";
+            		cout << "search record";
 			// search();
 			break;
 		case 7:
-            cout << "login info";
+            		cout << "login info";
 			// viewLoginInfo();
 			break;
 		case 8:
-            cout << "save marks";
+            		cout << "save marks";
 			// saveMarks();
 			break;
 		case 9:
-            cout << "change password";
+            		cout << "change password";
 			change_password(user);				//partially done.
 			break;
 		case 10:
