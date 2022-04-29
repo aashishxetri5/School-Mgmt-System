@@ -75,6 +75,14 @@ public:
 
     //read from the file
     friend istream& operator >> (istream &stream, User &uobj);
+
+    //display the user data
+
+    void display_user_data(){
+        cout << "\nUsername: "<< this->username <<"\n";
+        cout << "Password: "<< this->password << "\n";
+        cout << "UserType: "<< this-> userType << "\n";
+    }
    
     
 };

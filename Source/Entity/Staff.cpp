@@ -50,6 +50,10 @@ public:
     //read from the file
     friend istream& operator >> (istream& stream, Staff &sObj);
 
+    //display the data 
+
+    void display_data();
+
 };
 
 void Staff::setSubject(string subject){
@@ -97,4 +101,15 @@ istream& operator >> (istream& stream, Staff &sObj){
     return stream;
 }
 
+void Staff::display_data(){
+    cout << "\n\tID: "<< userId;
+    cout << "\n\tFirst Name: "<< firstname;
+    cout << "\n\tLast Name: "<< lastname;
+    cout << "\n\tEmail: "<< email;
+    cout << "\n\tAddress: "<< address;
+    cout << "\n\tcontact number: "<< phone_num;
+    cout << "\n\tSubject: "<< subject;
+    cout << "\n\tSalary: "<<salary;
+    cout << "\n\n";
+}
 #endif
