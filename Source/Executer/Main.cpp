@@ -4,12 +4,10 @@
 
 //Global variable declaration
 
-//Function Decalrations
-void welcome();
-
 // Variable and object Declaration
 
 User *user = new User();
+int Menu::isLoggedOut = 0; //Used to check whether the current user is logged out.
 
 int main() {
     /*
@@ -44,7 +42,9 @@ int main() {
 	if(!menu.login(user)) {
 		user = nullptr;
 		user = new User(); //Assigning new user. This resets the user object.
+		Menu::isLoggedOut = 0;
 		main();
+
 	} else {
 		system("pause");
 		
@@ -54,6 +54,13 @@ int main() {
 				main();
 				break;
 			}
+		}
+
+		//If logged out, re-login process starts.
+		if(Menu::isLoggedOut == 1) {
+			user = new User();
+			cout << user->getUserType();
+			main();
 		}
 	}
 
