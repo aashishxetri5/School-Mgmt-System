@@ -51,6 +51,7 @@ int main() {
 		//Keeps calling the mainOptions (the main menu) until a valid menu option is selected.
 		while( true ) {
 			if(!menu.mainOptions(user)){
+				main();
 				break;
 			}
 		}
