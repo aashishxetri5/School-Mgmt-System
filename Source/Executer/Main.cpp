@@ -40,6 +40,7 @@ int main() {
 	}
 
 	if(!menu.login(user)) {
+		delete user;
 		user = nullptr;
 		user = new User(); //Assigning new user. This resets the user object.
 		Menu::isLoggedOut = 0;
@@ -51,15 +52,14 @@ int main() {
 		//Keeps calling the mainOptions (the main menu) until a valid menu option is selected.
 		while( true ) {
 			if(!menu.mainOptions(user)){
-				main();
 				break;
 			}
 		}
 
 		//If logged out, re-login process starts.
 		if(Menu::isLoggedOut == 1) {
-			user = new User();
-			cout << user->getUserType();
+		//	user = new User();
+		//	cout << user->getUserType();
 			main();
 		}
 	}
