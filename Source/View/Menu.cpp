@@ -237,9 +237,6 @@ void viewGeneralRecord(){
 	}
 	staff_file.close();
 	
-
-
-	
 }
 
 
