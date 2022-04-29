@@ -202,6 +202,7 @@ public:
 
 };
 
+
 void viewGeneralRecord(){
 
 	system("cls");
