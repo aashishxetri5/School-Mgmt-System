@@ -28,6 +28,8 @@ public:
                 exit(1);
             }
 
+            student_login_file.seekg(0, ios::beg);
+            
             while(!student_login_file.eof()){
                 student_login_file >> user_data;
                 if(!user_data.get_username().compare(user->get_username()) && !user_data.get_password().compare(user -> get_password()) ){
