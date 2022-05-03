@@ -13,6 +13,7 @@ class Menu {
 public:
 
     /* Displays the welcome message on top of the screen */
+	static int isLoggedOut ;
     void welcome(string loggedInUserType) {
 	    system("cls");
         cout << "\t School Management System\n";
@@ -185,7 +186,7 @@ public:
 			cout << "\n\tLogging out...\n\t";
 			delete user;
 			user = nullptr;
-			isLoggedIn = 1;
+			isLoggedOut = 1;
 			return false;
 		//	break;
 

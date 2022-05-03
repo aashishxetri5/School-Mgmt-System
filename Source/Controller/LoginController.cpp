@@ -19,22 +19,7 @@ public:
 };
 
 
-<<<<<<< HEAD
-            student_login_file.seekg(0, ios::beg);
-            
-            while(!student_login_file.eof()){
-                student_login_file >> user_data;
-                if(!user_data.get_username().compare(user->get_username()) && !user_data.get_password().compare(user -> get_password()) ){
-                    student_login_file.close();
-                    return true;
-                }
-            }
-            student_login_file.close();
-            return false;
-            
-=======
 bool LoginController::isValidUser(User *user) {
->>>>>>> 56585e8e7cb0ef6ab8c722c46ec0c1c4a3eb0253
 
     /*
     Compares the username and the password with that of the data in file.
