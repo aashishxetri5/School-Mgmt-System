@@ -18,7 +18,6 @@ public:
 
 };
 
-
 bool LoginController::isValidUser(User *user) {
 
     /*

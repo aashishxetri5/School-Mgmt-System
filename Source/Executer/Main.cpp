@@ -6,7 +6,7 @@
 
 // Variable and object Declaration
 
-User *user = new User();
+User *user = new User(); //Current user sesion's object.
 int Menu::isLoggedOut = 0; //Used to check whether the current user is logged out.
 
 int main() {
@@ -58,7 +58,7 @@ int main() {
 		//If logged out, re-login process starts.
 		if(Menu::isLoggedOut == 1) {
 			user = new User();
-			cout << user->getUserType();
+			Menu::isLoggedOut == 0;
 			main();
 		}
 	}
