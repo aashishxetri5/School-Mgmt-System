@@ -59,9 +59,19 @@ public:
     friend ostream& operator << (ostream& stream, Student &sObj);
 
     void display_data();
-
-
 };
+
+void Student::display_data(){
+    cout << "\n\tID: "<< userId;
+    cout << "\n\tFirst Name: "<< firstname;
+    cout << "\n\tLast Name: "<< lastname;
+    cout << "\n\tEmail: "<< email;
+    cout << "\n\tAddress: "<< address;
+    cout << "\n\tcontact number: "<< phone_num;
+    cout << "\n\tEnter the Grade: "<< grade;
+    cout << "\n\tEnter the Date [DD/MM/YY]: "<< dob;
+    cout << "\n\n";
+}
 
 void Student::setGrade(int grade){
     this->grade = grade;
@@ -97,7 +107,7 @@ istream& operator >> (istream& stream, Student &sObj){
 
 //This overloaded operatior writes the content of student object received via parameter to the file.
 ostream& operator << (ostream& stream, Student &sObj){
-    stream << sObj.userId << "\t";
+    stream << sObj.userId << "\t"; //unique
     stream << sObj.firstname<< "\t";
     stream << sObj.lastname << "\t";
     stream << sObj.address << "\t";
@@ -109,15 +119,4 @@ ostream& operator << (ostream& stream, Student &sObj){
     return stream;
 }
 
-void Student::display_data(){
-    cout << "\n\tID: "<< userId;
-    cout << "\n\tFirst Name: "<< firstname;
-    cout << "\n\tLast Name: "<< lastname;
-    cout << "\n\tEmail: "<< email;
-    cout << "\n\tAddress: "<< address;
-    cout << "\n\tcontact number: "<< phone_num;
-    cout << "\n\tEnter the Grade: "<< grade;
-    cout << "\n\tEnter the Date [DD/MM/YY]: "<< dob;
-    cout << "\n\n";
-}
 #endif
