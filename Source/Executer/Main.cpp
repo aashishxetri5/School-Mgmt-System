@@ -46,7 +46,8 @@ int main() {
 		Menu::isLoggedOut = 0;
 		main();
 
-	} else {
+	} 
+	else {
 		system("pause");
 		
 		//Keeps calling the mainOptions (the main menu) until a valid menu option is selected.
@@ -58,7 +59,7 @@ int main() {
 
 		//If logged out, re-login process starts.
 		if(Menu::isLoggedOut == 1) {
-		//	user = new User();
+			user = new User();
 		//	cout << user->getUserType();
 			main();
 		}

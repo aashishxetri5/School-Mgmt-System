@@ -7,6 +7,7 @@
 void change_password(User*);
 void password_hide(string &);
 void viewGeneralRecord();
+void viewLoginInfo(User *user);
 
 class Menu {
     int menuChoice;
@@ -50,15 +51,7 @@ public:
         cout << "\tEnter your password: ";
         /* Accepts Password and displays '*' instead of entered character. */
 		temp_data = "";
-        while(true) {
-            temp = getch();
-            /*Checks if user hit 'Enter'. If yes, the password end is declared by breaking out of the loop. */
-            if(temp == 13) {
-                break;
-            }
-            cout <<"*";
-            temp_data = temp_data + temp;
-        }
+        password_hide(temp_data);
 
         user->set_password(temp_data);
 
@@ -126,34 +119,37 @@ public:
         switch(menuChoice){
 		case 1:
 			if(!user->getUserType().compare("Admin") ) {
-               		 cout << "view admin record";
-			viewGeneralRecord();
-			system("pause");
-			system("cls");
-			mainOptions(user);
+               	cout << "view admin record";
+				viewGeneralRecord();
+				system("pause");
+				system("cls");
+				mainOptions(user);
 			
 			} 
 			if(!user->getUserType().compare("Student") || !user->getUserType().compare("Staff")){
-                	cout << "\nview student/staff record";
+                cout << "\nview student/staff record";
 				//getLoggedUserInfo(user);
 				user->display_user_data();
 				system("pause");
 			}
 			break;
+
 		case 2:
 			if(!user->getUserType().compare("Admin") ){
-                	cout << "udpate admin record";
+                cout << "udpate admin record";
 				// updateRecord();
 			}
 			else {
-                		cout << "udpate std/student record";
+                cout << "udpate std/student record";
 				// updateSelfRecord();
 			}
 			break;
+
 		case 3:
-            		cout << "marksheet";
+            cout << "marksheet";
 			// displayMarksheet();
 			break;
+
 		case 4:
 			Registration reg;
 			resp = reg.get_data(user->getUserType());
@@ -162,26 +158,32 @@ public:
 				return performRequestionOperation(user);
 			}
 			break;
+
 		case 5:
-            		cout << "delete record";
+            cout << "delete record";
 			// deleteRecord();
 			break;
+
 		case 6:
-            		cout << "search record";
+			cout << "search record";
 			// search();
 			break;
+
 		case 7:
-            		cout << "login info";
-			// viewLoginInfo();
+            cout << "login info";
+			viewLoginInfo(user);
 			break;
+
 		case 8:
-            		cout << "save marks";
+            cout << "save marks";
 			// saveMarks();
 			break;
+
 		case 9:
-            		cout << "change password";
+            cout << "change password";
 			change_password(user);				//partially done.
 			break;
+
 		case 10:
 			cout << "\n\tLogging out...\n\t";
 			delete user;
@@ -193,6 +195,7 @@ public:
 		case 0:
 			cout << "\tExiting...";
 			exit(0);
+
 		default:
 			cout << "\tInvalid choice!!!\n\t";
 			system("pause");
@@ -209,6 +212,10 @@ void viewGeneralRecord(){
 
 	system("cls");
 	
+	Registration temp;
+	string whoseInfo = temp.chooseWhoseInfo();
+
+	if(!whoseInfo.compare("Student")){
 	ifstream student_file("student.dat", ios::in|ios::app);
 	Student temp_student;
 
@@ -219,11 +226,17 @@ void viewGeneralRecord(){
 	}
 
 	while(!student_file.eof()){
+
 		student_file >> temp_student;
 		temp_student.display_data();
+		// if(student_file.eof()){
+		// 	break;
+		// }
 	}
 	student_file.close();
+	}
 
+	else if(!whoseInfo.compare("Staff")){
 	ifstream staff_file("Staff.dat", ios::in|ios::app);
 
 	Staff temp_staff;
@@ -239,7 +252,7 @@ void viewGeneralRecord(){
 		temp_staff.display_data();
 	}
 	staff_file.close();
-	
+	}
 }
 
 
@@ -253,7 +266,7 @@ void change_password(User *user){
 	*/
 
 	string current_pass, new_password, confirm_password;
-	ofstream student_login_file("Login_Std.dat", ios::out);
+	ofstream student_login_file("Login_Std.dat", ios::out|ios::app);
 
 	User user_data;
 
@@ -267,6 +280,7 @@ void change_password(User *user){
 
 		cout << "New Password: ";
 		password_hide(new_password);
+
 		cout << "Confirm Password: ";
 		password_hide(confirm_password);
 
@@ -277,7 +291,7 @@ void change_password(User *user){
 
 	}while(current_pass.compare(user->get_password()) || new_password.compare(confirm_password));
 
-	user->set_password(new_password);
+	user->set_password(new_password);   //should only set the user's new password after being sucessfully written to the file
 
 	if(!student_login_file){
 		cout << "File not found";
@@ -288,6 +302,7 @@ void change_password(User *user){
 
 	student_login_file << *user;
 	student_login_file.close();
+
 	//=-------could be possible solution
 	// while(!student_login_file.eof()){
 	// 	// staff_login_file >> staff_data;
@@ -299,6 +314,7 @@ void change_password(User *user){
 	// 		system("pause");
 	// 	}
     // }
+
 }
 
 
@@ -314,4 +330,8 @@ void password_hide(string &password){
 		password = password + temp;
 	}
 	
+}
+
+void viewLoginInfo(User *user){
+	user->display_user_data();
 }
