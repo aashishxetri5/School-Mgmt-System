@@ -60,7 +60,7 @@ int main() {
 		//If logged out, re-login process starts.
 		if(Menu::isLoggedOut == 1) {
 			user = new User();
-		//	cout << user->getUserType();
+			Menu::isLoggedOut = 0;
 			main();
 		}
 	}
