@@ -5,8 +5,8 @@
 #include "..\Controller\registration.cpp"
 
 void getLoggedUserInfo(User *);
-void viewGeneralRecord();
-void password_hide();
+void viewGeneralRecord(string);
+void password_hide(string &);
 
 class Menu {
     int menuChoice;
@@ -62,15 +62,7 @@ bool Menu::login(User *user) {
     cout << "\tEnter your password: ";
     /* Accepts Password and displays '*' instead of entered character. */
 	temp_data = "";
-    while(true) {
-        temp = getch();
-        /*Checks if user hit 'Enter'. If yes, the password end is declared by breaking out of the loop. */
-        if(temp == 13) {
-            break;
-        }
-        cout <<"*";
-        temp_data = temp_data + temp;
-    }
+    password_hide(temp_data);
 
     user->set_password(temp_data);
 
@@ -87,7 +79,9 @@ bool Menu::login(User *user) {
 bool Menu::mainOptions(User *user) {
 	system("cls");
 	welcome(user->getUserType());
-    
+    //-----
+	cout << isLoggedOut<<"\n";
+
 	/* Displays main menu of the program */
 	cout <<"\t1. View Record(s)\n";
 	cout <<"\t2. Update Record\n";
@@ -137,7 +131,7 @@ bool Menu::performRequestionOperation(User *user) {
 	case 1:
 		if(!user->getUserType().compare("Admin") ) {
             cout << "view admin record";
-			viewGeneralRecord();
+			viewGeneralRecord(user->getUserType());
 			system("pause");
 			system("cls");
 			mainOptions(user);
@@ -190,10 +184,12 @@ bool Menu::performRequestionOperation(User *user) {
 		break;
 	case 10:
 		cout << "\n\tLogged out successfully...\n\t";
-        user = nullptr;
+		//delete user;
+        //user = nullptr;
 		system("pause");
 		isLoggedOut = 1;
 		return false;
+
 	case 0:
 		cout << "\tExiting...";
 		exit(0);
@@ -202,20 +198,23 @@ bool Menu::performRequestionOperation(User *user) {
 		system("pause");
 		return false;
 	}
-    return true;
+   // return true;
 }
 
-void viewGeneralRecord(){
+void viewGeneralRecord(string whoseInfo){
 
 	system("cls");
 	
 	Registration temp;
-	string whoseInfo = temp.chooseWhoseInfo();
+
+	if(!whoseInfo.compare("Admin")) //If the logged in user is admin privilege to choose otherwise default.
+		whoseInfo = temp.chooseWhoseInfo();
 
 	if(!whoseInfo.compare("Student")){
+		
 		ifstream student_file("student.dat", ios::in|ios::app);
 		Student temp_student;
-
+		
 		cout << "Student data: \n\n";
 		if(!student_file){
 			cout << "file not found";
