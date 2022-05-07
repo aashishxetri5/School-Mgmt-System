@@ -1,5 +1,6 @@
 //This shall contain functions for the menu.
 #include <conio.h>
+#include <cstdio>
 
 #include "..\Controller\LoginController.cpp"
 #include "..\Controller\registration.cpp"
@@ -7,6 +8,10 @@
 void getLoggedUserInfo(User *);
 void viewGeneralRecord(string);
 void password_hide(string &);
+void deleteRecord();
+template <typename T>
+void delete_file(int key, T &temp_user, string file_name, ifstream &record);
+void viewLoginInfo(); 
 
 class Menu {
     int menuChoice;
@@ -79,8 +84,6 @@ bool Menu::login(User *user) {
 bool Menu::mainOptions(User *user) {
 	system("cls");
 	welcome(user->getUserType());
-    //-----
-	cout << isLoggedOut<<"\n";
 
 	/* Displays main menu of the program */
 	cout <<"\t1. View Record(s)\n";
@@ -164,7 +167,7 @@ bool Menu::performRequestionOperation(User *user) {
 		break;
 	case 5:
         cout << "delete record";
-		// deleteRecord();
+		deleteRecord();
 		break;
 	case 6:
         cout << "search record";
@@ -172,7 +175,7 @@ bool Menu::performRequestionOperation(User *user) {
 		break;
 	case 7:
         cout << "login info";
-		// viewLoginInfo();
+		viewLoginInfo(); 		///--> will open the login file
 		break;
 	case 8:
         cout << "save marks";
@@ -198,7 +201,63 @@ bool Menu::performRequestionOperation(User *user) {
 		system("pause");
 		return false;
 	}
-   // return true;
+    return true;
+}
+
+
+void deleteRecord(){
+	int key;
+	Registration temp_registration;
+	string whoseInfo = temp_registration.chooseWhoseInfo();   //admin chooses the type of user to delete
+	string file_name;
+
+	ifstream record;
+
+	if(!whoseInfo.compare("Student")){
+		record.open("Student.dat", ios::in);
+		file_name = "Student.dat";
+		cout << "Enter a User Id: ";
+		cin >> key;
+		Student temp_user;
+		delete_file <Student> (key,temp_user, file_name, record);
+
+
+	}
+	else if(!whoseInfo.compare("Staff")){
+		record.open("Staff.dat", ios::in);
+		file_name = "Staff.dat";
+		cout << "Enter a User Id: ";
+		cin >> key;
+		Staff temp_user;
+		delete_file <Staff> (key,temp_user, file_name, record);
+	}
+
+	//;;;Could add admin file in the future.
+	
+}
+
+template <typename T>
+void delete_file(int key, T &temp_user, string file_name, ifstream &record){
+
+	ofstream temp_file("newFile.dat", ios::out);
+
+	record >> temp_user;
+
+	while(!record.eof()){
+
+		if(key != temp_user.getUserId()){
+			temp_file << temp_user << "\n";
+		}
+
+		record >> temp_user;
+	}
+
+	temp_file.close();
+	record.close();
+	
+	remove(file_name.c_str());  //c_str converts the string to char*
+	rename("newFile.dat", file_name.c_str());
+
 }
 
 void viewGeneralRecord(string whoseInfo){
@@ -250,6 +309,69 @@ void viewGeneralRecord(string whoseInfo){
 		staff_file.close();
 	}
 }
+
+
+void viewLoginInfo(){
+
+/*
+	Shows the login Information of the requested user;
+
+	Basis:
+		On username
+	
+	Function:
+		- Displays username and the password.
+	
+	Things could be added:
+		-View the users personal information.
+		-of the file "Student.dat" , ... file by getting the userId from the username
+	
+*/
+
+	Registration temp_registration;
+	string whoseInfo = temp_registration.chooseWhoseInfo();
+
+	User temp_user;
+	//int userId;
+	string username;
+
+	ifstream record;
+
+	if(!whoseInfo.compare("Student")){
+		record.open("Login_Std.dat");
+		temp_user.setUserType("Student");
+	}
+	else if(!whoseInfo.compare("Staff")){
+		record.open("Login_Staff.dat");
+		temp_user.setUserType("Staff");
+	}
+	else{
+		record.open("Login_Admin.dat");
+		temp_user.setUserType("Admin");
+	}
+
+	cout << "Enter the user name: ";
+	cin >> username;
+
+	record >> temp_user;
+
+	while(!record.eof()){
+	
+		if(!username.compare(temp_user.get_username())){
+			temp_user.display_user_data();
+			break;
+		}
+	
+		record >> temp_user;
+	}
+
+	record.close();
+	system("pause");
+	
+
+} 
+
+
 
 void password_hide(string &password){
 
