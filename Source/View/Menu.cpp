@@ -11,6 +11,7 @@ void password_hide(string &);
 void deleteRecord();
 template <typename T>
 void delete_file(int key, T &temp_user, string file_name, ifstream &record);
+void viewLoginInfo(); 
 
 class Menu {
     int menuChoice;
@@ -174,7 +175,7 @@ bool Menu::performRequestionOperation(User *user) {
 		break;
 	case 7:
         cout << "login info";
-		//viewLoginInfo(); --> will open the login file
+		viewLoginInfo(); 		///--> will open the login file
 		break;
 	case 8:
         cout << "save marks";
@@ -308,6 +309,69 @@ void viewGeneralRecord(string whoseInfo){
 		staff_file.close();
 	}
 }
+
+
+void viewLoginInfo(){
+
+/*
+	Shows the login Information of the requested user;
+
+	Basis:
+		On username
+	
+	Function:
+		- Displays username and the password.
+	
+	Things could be added:
+		-View the users personal information.
+		-of the file "Student.dat" , ... file by getting the userId from the username
+	
+*/
+
+	Registration temp_registration;
+	string whoseInfo = temp_registration.chooseWhoseInfo();
+
+	User temp_user;
+	//int userId;
+	string username;
+
+	ifstream record;
+
+	if(!whoseInfo.compare("Student")){
+		record.open("Login_Std.dat");
+		temp_user.setUserType("Student");
+	}
+	else if(!whoseInfo.compare("Staff")){
+		record.open("Login_Staff.dat");
+		temp_user.setUserType("Staff");
+	}
+	else{
+		record.open("Login_Admin.dat");
+		temp_user.setUserType("Admin");
+	}
+
+	cout << "Enter the user name: ";
+	cin >> username;
+
+	record >> temp_user;
+
+	while(!record.eof()){
+	
+		if(!username.compare(temp_user.get_username())){
+			temp_user.display_user_data();
+			break;
+		}
+	
+		record >> temp_user;
+	}
+
+	record.close();
+	system("pause");
+	
+
+} 
+
+
 
 void password_hide(string &password){
 
