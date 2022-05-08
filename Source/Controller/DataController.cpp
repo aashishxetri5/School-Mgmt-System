@@ -25,7 +25,62 @@ public:
 	
 	void viewGeneralRecord(string);
 
+	void viewLoginInfo();
+
+	void saveMarks();
+
+	void changePassword();
+
+
 };
+
+void DataController::viewLoginInfo(){
+	Registration temp_registration ;
+	string whoseInfo = temp_registration.chooseWhoseInfo();
+
+	User user;
+
+	string username;
+	ifstream userInfo;
+
+
+	cout << "Enter username: ";
+	cin >> username;
+
+	if(!whoseInfo.compare("Student")){	
+		userInfo.open("Login_std.dat", ios::in);
+		user.set_username("Student");
+
+	}
+	else if(!whoseInfo.compare("Staff")){
+		userInfo.open("Login_Staff.dat", ios::in);
+		user.setUserType("Staff");
+	}
+	else{
+		userInfo.open("Login_Admin.dat", ios::in);
+		user.setUserType("Admin");
+	}
+
+	if(!userInfo){
+		cout << "File open Error";
+		exit(0);
+	}
+
+	userInfo >> user;
+	while(!userInfo.eof()){
+		if(!user.get_username().compare(username)){
+			user.display_user_data();
+			break;
+		}
+		userInfo >> user;
+	}
+
+
+	userInfo.close();
+	system("pause");
+
+}
+
 
 void DataController::getLoggedUserInfo(User *user) {
 	user->display_user_data();
@@ -79,20 +134,25 @@ void DataController::viewGeneralRecord(string whoseInfo){
 
 	if(!whoseInfo.compare("Student")){
 		
-		ifstream student_file("student.dat", ios::in|ios::app);
+		ifstream student_file("Student.dat", ios::in);
 		Student temp_student;
 		
 		cout << "Student data: \n\n";
 		if(!student_file){
 			cout << "file not found";
 		}
+		else{
+			cout << "File opened sucessfully";
+		}
 
 		student_file >> temp_student;
 
-		while(!student_file.eof()){
+		do{
 			temp_student.display_data();
 			student_file >> temp_student;
-		}
+		}while(!student_file.eof());
+	
+		//temp_student.display_data();
 
 		student_file.close();
 	}
@@ -109,12 +169,16 @@ void DataController::viewGeneralRecord(string whoseInfo){
 
 		cout << "\n\nStaff Data: \n\n";
 		staff_file >> temp_staff;
-		while(!staff_file.eof()){
+
+		do{
 			temp_staff.display_data();
 			staff_file >> temp_staff;
-		}
+		}while(!staff_file.eof());
+
+	
 		staff_file.close();
 	}
+
 }
 
 void DataController::deleteRecord() {
