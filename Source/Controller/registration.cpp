@@ -131,14 +131,14 @@ public:
 		
 		fstream student_loginfile("Login_Std.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 
-		User *user = new User(setLoginCredentials( student->getFirstname(), student->getUserId()), "qwerty");
+		User *user = new User(student->getUserId(), setLoginCredentials( student->getFirstname(), student->getUserId()), "qwerty");
 
 		if (!student_file) {
 			cout << "File not found !!!";
 			exit(1);
 		} else {
-			student_file << *student << endl << flush;
-			student_loginfile << *user << endl << flush;
+			student_file << *student << flush;
+			student_loginfile << *user << flush;
 		}
 		
 		delete user;
@@ -161,15 +161,15 @@ public:
 			rec_loginfile.open("Login_Admin.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 		}
 
-		User *user = new User(setLoginCredentials( staff->getFirstname(), staff->getUserId()), "qwerty");
+		User *user = new User(staff->getUserId(), setLoginCredentials( staff->getFirstname(), staff->getUserId()), "qwerty");
 		
 
 		if (!rec_file) {
 			cout << "File not found !!!";
 			exit(1);
 		} else {
-			rec_file << *staff << endl << flush;
-			rec_loginfile << *user << endl << flush;
+			rec_file << *staff << flush;
+			rec_loginfile << *user << flush;
 		}
 		
 		delete user;

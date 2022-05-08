@@ -25,7 +25,7 @@ bool LoginController::isValidUser(User *user) {
     Compares the username and the password with that of the data in file.
     If matched, the compare() returns 0 else it returns -1. On this basis the login is validated.
     */
-    if(!user->get_username().compare("User") && !user->get_password().compare("123")) {
+    if(!user->get_username().compare("User") && !user->get_password().compare("123") && !user->getUserType().compare("Admin")) {
         cout << "\n\tHurray!! Login Successful.\n\n\t";
         return true;
 
@@ -51,6 +51,7 @@ bool LoginController::isValidUser(User *user) {
             //Checks the validity of login credentails with that in the file.
             while(!login_file.eof()){
                 login_file >> user_data;
+
                 if(!user_data.get_username().compare(user->get_username()) && !user_data.get_password().compare(user -> get_password()) ){
                     login_file.close();
                     cout << "\n\tHurray!! Login Successful.\n\n\t";

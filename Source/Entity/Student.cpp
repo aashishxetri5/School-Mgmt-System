@@ -63,14 +63,14 @@ public:
 
 void Student::display_data(){
     cout << "\n\tID: "<< userId;
-    cout << "\n\tFirst Name: "<< firstname;
-    cout << "\n\tLast Name: "<< lastname;
-    cout << "\n\tEmail: "<< email;
-    cout << "\n\tAddress: "<< address;
-    cout << "\n\tcontact number: "<< phone_num;
-    cout << "\n\tEnter the Grade: "<< grade;
-    cout << "\n\tEnter the Date [DD/MM/YY]: "<< dob;
-    cout << "\n\n";
+    cout << "\tFirst Name: "<< firstname;
+    cout << "\tLast Name: "<< lastname;
+    cout << "\tEmail: "<< email;
+    cout << "\tAddress: "<< address;
+    cout << "\tcontact number: "<< phone_num;
+    cout << "\tEnter the Grade: "<< grade;
+    cout << "\tEnter the Date [DD/MM/YY]: "<< dob;
+    cout << "\n";
 }
 
 void Student::setGrade(int grade){

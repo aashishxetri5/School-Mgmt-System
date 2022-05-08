@@ -4,29 +4,22 @@
 
 #include "..\Controller\LoginController.cpp"
 #include "..\Controller\registration.cpp"
-
-void getLoggedUserInfo(User *);
-void viewGeneralRecord(string);
-void password_hide(string &);
-void deleteRecord();
-template <typename T>
-void delete_file(int key, T &temp_user, string file_name, ifstream &record);
-void viewLoginInfo(); 
+#include "..\Controller\DataController.cpp"
 
 class Menu {
     int menuChoice;
 public:
-static int isLoggedOut;
+	static int isLoggedOut;
 
-void welcome(string);
+	void welcome(string);
 
-int loginMenu();
+	int loginMenu();
 
-bool login(User*);
+	bool login(User*);
 
-bool mainOptions(User*);
+	bool mainOptions(User*);
 
-bool performRequestionOperation(User*);
+	bool performRequestionOperation(User*);
 
 };
 
@@ -66,8 +59,16 @@ bool Menu::login(User *user) {
 
     cout << "\tEnter your password: ";
     /* Accepts Password and displays '*' instead of entered character. */
-	temp_data = "";
-    password_hide(temp_data);
+	temp_data="";
+	while(true) {
+        temp = getch();
+        /*Checks if user hit 'Enter'. If yes, the password end is declared by breaking out of the loop. */
+        if(temp == 13) {
+            break;
+        }
+        cout <<"*";
+        temp_data = temp_data + temp;
+    }
 
     user->set_password(temp_data);
 
@@ -130,19 +131,19 @@ bool Menu::mainOptions(User *user) {
 // This method will call the respective method from any other class which implements the functionality of the requested operation.
 bool Menu::performRequestionOperation(User *user) {
 	char resp;
+	DataController dc;
     switch(menuChoice){
 	case 1:
 		if(!user->getUserType().compare("Admin") ) {
-            cout << "view admin record";
-			viewGeneralRecord(user->getUserType());
-			system("pause");
-			system("cls");
-			mainOptions(user);
+			dc.viewGeneralRecord(user->getUserType());
 		} 
 		else {
-            cout << "view student/staff record";
-			getLoggedUserInfo(user);
+			dc.getLoggedUserInfo(user);
 		}
+		dc.~DataController();
+		system("pause");
+		system("cls");
+		mainOptions(user);
 		break;
 	case 2:
 		if(!user->getUserType().compare("Admin") ){
@@ -166,16 +167,16 @@ bool Menu::performRequestionOperation(User *user) {
 		}
 		break;
 	case 5:
-        cout << "delete record";
-		deleteRecord();
+		dc.deleteRecord();
+		dc.~DataController();
 		break;
 	case 6:
         cout << "search record";
 		// search();
 		break;
 	case 7:
-        cout << "login info";
-		viewLoginInfo(); 		///--> will open the login file
+		// DataController dc;
+		// dc.viewLoginInfo(); 		///--> will open the login file
 		break;
 	case 8:
         cout << "save marks";
@@ -202,192 +203,5 @@ bool Menu::performRequestionOperation(User *user) {
 		return false;
 	}
     return true;
-}
-
-
-void deleteRecord(){
-	int key;
-	Registration temp_registration;
-	string whoseInfo = temp_registration.chooseWhoseInfo();   //admin chooses the type of user to delete
-	string file_name;
-
-	ifstream record;
-
-	if(!whoseInfo.compare("Student")){
-		record.open("Student.dat", ios::in);
-		file_name = "Student.dat";
-		cout << "Enter a User Id: ";
-		cin >> key;
-		Student temp_user;
-		delete_file <Student> (key,temp_user, file_name, record);
-
-
-	}
-	else if(!whoseInfo.compare("Staff")){
-		record.open("Staff.dat", ios::in);
-		file_name = "Staff.dat";
-		cout << "Enter a User Id: ";
-		cin >> key;
-		Staff temp_user;
-		delete_file <Staff> (key,temp_user, file_name, record);
-	}
-
-	//;;;Could add admin file in the future.
-	
-}
-
-template <typename T>
-void delete_file(int key, T &temp_user, string file_name, ifstream &record){
-
-	ofstream temp_file("newFile.dat", ios::out);
-
-	record >> temp_user;
-
-	while(!record.eof()){
-
-		if(key != temp_user.getUserId()){
-			temp_file << temp_user << "\n";
-		}
-
-		record >> temp_user;
-	}
-
-	temp_file.close();
-	record.close();
-	
-	remove(file_name.c_str());  //c_str converts the string to char*
-	rename("newFile.dat", file_name.c_str());
-
-}
-
-void viewGeneralRecord(string whoseInfo){
-
-	system("cls");
-	
-	Registration temp;
-
-	if(!whoseInfo.compare("Admin")) //If the logged in user is admin privilege to choose otherwise default.
-		whoseInfo = temp.chooseWhoseInfo();
-
-	if(!whoseInfo.compare("Student")){
-		
-		ifstream student_file("student.dat", ios::in|ios::app);
-		Student temp_student;
-		
-		cout << "Student data: \n\n";
-		if(!student_file){
-			cout << "file not found";
-			//exit(1);
-		}
-
-		student_file >> temp_student;
-
-		while(!student_file.eof()){
-			temp_student.display_data();
-			student_file >> temp_student;
-		}
-
-		student_file.close();
-	}
-
-	else if(!whoseInfo.compare("Staff")){
-		ifstream staff_file("Staff.dat", ios::in|ios::app);
-
-		Staff temp_staff;
-
-		if(!staff_file){
-			cout << "File not found";
-			exit(1);
-		}
-
-		cout << "\n\nStaff Data: \n\n";
-		staff_file >> temp_staff;
-		while(!staff_file.eof()){
-			temp_staff.display_data();
-			staff_file >> temp_staff;
-		}
-		staff_file.close();
-	}
-}
-
-
-void viewLoginInfo(){
-
-/*
-	Shows the login Information of the requested user;
-
-	Basis:
-		On username
-	
-	Function:
-		- Displays username and the password.
-	
-	Things could be added:
-		-View the users personal information.
-		-of the file "Student.dat" , ... file by getting the userId from the username
-	
-*/
-
-	Registration temp_registration;
-	string whoseInfo = temp_registration.chooseWhoseInfo();
-
-	User temp_user;
-	//int userId;
-	string username;
-
-	ifstream record;
-
-	if(!whoseInfo.compare("Student")){
-		record.open("Login_Std.dat");
-		temp_user.setUserType("Student");
-	}
-	else if(!whoseInfo.compare("Staff")){
-		record.open("Login_Staff.dat");
-		temp_user.setUserType("Staff");
-	}
-	else{
-		record.open("Login_Admin.dat");
-		temp_user.setUserType("Admin");
-	}
-
-	cout << "Enter the user name: ";
-	cin >> username;
-
-	record >> temp_user;
-
-	while(!record.eof()){
-	
-		if(!username.compare(temp_user.get_username())){
-			temp_user.display_user_data();
-			break;
-		}
-	
-		record >> temp_user;
-	}
-
-	record.close();
-	system("pause");
-	
-
-} 
-
-
-
-void password_hide(string &password){
-
-	while(true){
-		char temp = getch();
-		
-		if(temp == 13){ //\r carriage return ascii value
-			break;
-		}
-		cout << "*";
-		password = password + temp;
-	}
-	
-}
-
-void getLoggedUserInfo(User *user){
-	user->display_user_data();
 }
 

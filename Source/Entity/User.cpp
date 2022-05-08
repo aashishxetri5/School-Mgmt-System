@@ -43,29 +43,34 @@ using namespace std;
 
 class User{
     string username, password, userType;
+    int userId;
 
 public:
     User(){
         userType = "";
     }
     
-    User(string username, string password) {
+    User(int userId, string username, string password) {
+        this->userId = userId;
         this->username = username;
         this->password = password;
     }
 
     User(const User &userObj){
+        userId = userObj.userId;
         username = userObj.username;
         password = userObj.password;
         userType = userObj.userType;
     }
     
     //setter
+    void setUserId(int);
     void set_username(string);
     void set_password(string);
     void setUserType(string);
     
-    //getter 
+    //getter
+    int getUserId();
     string get_username();
     string get_password();
     string getUserType();
@@ -87,6 +92,9 @@ public:
     
 };
 
+void User::setUserId(int userId) {
+    this->userId = userId;
+}
 
 void User::set_username(string username) {
     this->username = username;
@@ -98,6 +106,10 @@ void User::set_password(string password) {
 
 void User::setUserType(string usertype) {
     userType = usertype;
+}
+
+int User::getUserId() {
+    return userId;
 }
 
 string User::get_username() {
@@ -116,6 +128,7 @@ string User::getUserType() {
 //writes the data members of the user object to the file 
 ostream& operator << (ostream& stream, User &uObj){
 
+    stream << uObj.userId << "\t"; 
     stream << uObj.username << "\t"; 
 	stream << uObj.password;
 	return stream;
@@ -124,6 +137,7 @@ ostream& operator << (ostream& stream, User &uObj){
 //read from the file and sets the value of the Object
 istream& operator >> (istream& stream, User &uObj){
 
+    stream >> uObj.userId;
     stream >> uObj.username;
     stream >> uObj.password;
     return stream;
