@@ -138,7 +138,7 @@ bool Menu::performRequestionOperation(User *user) {
 			dc.viewGeneralRecord(user->getUserType());
 		} 
 		else {
-			dc.getLoggedUserInfo(user);
+			//dc.getLoggedUserInfo(user);
 		}
 		dc.~DataController();
 		system("pause");
@@ -175,8 +175,8 @@ bool Menu::performRequestionOperation(User *user) {
 		// search();
 		break;
 	case 7:
-		// DataController dc;
-		// dc.viewLoginInfo(); 		///--> will open the login file
+		DataController dc;
+		dc.viewLoginInfo(); 		///--> will open the login file
 		break;
 	case 8:
         cout << "save marks";
@@ -184,7 +184,7 @@ bool Menu::performRequestionOperation(User *user) {
 		break;
 	case 9:
         cout << "change password";
-		// changePassword();
+		dc.changePassword(user);
 		break;
 	case 10:
 		cout << "\n\tLogged out successfully...\n\t";

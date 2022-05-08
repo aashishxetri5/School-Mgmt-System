@@ -68,8 +68,8 @@ void Student::display_data(){
     cout << "\tEmail: "<< email;
     cout << "\tAddress: "<< address;
     cout << "\tcontact number: "<< phone_num;
-    cout << "\tEnter the Grade: "<< grade;
-    cout << "\tEnter the Date [DD/MM/YY]: "<< dob;
+    cout << "\tGrade: "<< grade;
+    cout << "\tDate [DD/MM/YY]: "<< dob;
     cout << "\n";
 }
 
@@ -114,7 +114,7 @@ ostream& operator << (ostream& stream, Student &sObj){
     stream << sObj.email << "\t";
     stream << sObj.phone_num << "\t";
     stream << sObj.grade << "\t";
-    stream << sObj.dob;
+    stream << sObj.dob<<"\n";
      
     return stream;
 }
