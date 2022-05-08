@@ -16,7 +16,7 @@ class DataController {
 
 public:
 
-    void getLoggedUserInfo(User *);
+    void getLoggedoldFile(User *);
     
 	template <typename T>
     void delete_file(int, T &, string [], ifstream &, ifstream &);
@@ -29,10 +29,87 @@ public:
 
 	void saveMarks();
 
-	void changePassword();
+	void changePassword(User *user);
+
+	void getLoggedUserInfo(User *user);
 
 
 };
+
+void DataController::changePassword(User *user){
+
+	Registration temp_registration;
+	string new_pass, confirm_pass, username;
+	User temp_user;
+
+	ifstream oldFile;
+	ofstream newFile("newfile.dat", ios::out|ios::app);
+	string oldname, newname = "newfile.dat";
+
+	string whoseInfo = user ->getUserType();
+
+	if(!whoseInfo.compare("Admin")){
+		whoseInfo = temp_registration.chooseWhoseInfo();
+	}
+
+	cout << "UserName: ";
+	cin >>  username;
+
+	if(!whoseInfo.compare("Student")){	
+		oldFile.open("Login_std.dat", ios::in);
+		oldname = "Login_std.dat";
+
+	}
+	else if(!whoseInfo.compare("Staff")){
+		oldFile.open("Login_Staff.dat", ios::in);
+		oldname = "Login_Staff.dat";
+	
+	}
+	else{
+		oldFile.open("Login_Admin.dat", ios::in);
+		oldname = "Login_Admin.dat";
+	}
+
+	while(1){
+	
+		cout << "New password: ";
+		cin >> new_pass;
+
+		cout << "Confirm Password: ";
+		cin >> confirm_pass;
+
+		if(!new_pass.compare(confirm_pass)){
+			break;
+		}
+		system("cls");
+	}
+
+	if(!oldFile){
+		cout << "file open error";
+		exit(0);
+	}
+
+	oldFile >> temp_user;
+	while(!oldFile.eof()){
+		
+		if(!username.compare(temp_user.get_username())){
+			temp_user.set_password(new_pass);
+		}
+		newFile << temp_user;
+		oldFile >> temp_user;
+
+	}
+
+	oldFile.close();
+	newFile.close();
+
+	remove(oldname.c_str());
+	rename(newname.c_str(), oldname.c_str());
+
+	cout << "Password sucessfully changed!";
+	system("pause");
+
+}
 
 void DataController::viewLoginInfo(){
 	Registration temp_registration ;
@@ -41,48 +118,49 @@ void DataController::viewLoginInfo(){
 	User user;
 
 	string username;
-	ifstream userInfo;
+	ifstream userFile;
 
 
 	cout << "Enter username: ";
 	cin >> username;
 
 	if(!whoseInfo.compare("Student")){	
-		userInfo.open("Login_std.dat", ios::in);
-		user.set_username("Student");
+		userFile.open("Login_std.dat", ios::in);
+		user.setUserType("Student");
 
 	}
 	else if(!whoseInfo.compare("Staff")){
-		userInfo.open("Login_Staff.dat", ios::in);
+		userFile.open("Login_Staff.dat", ios::in);
 		user.setUserType("Staff");
 	}
 	else{
-		userInfo.open("Login_Admin.dat", ios::in);
+		userFile.open("Login_Admin.dat", ios::in);
 		user.setUserType("Admin");
 	}
 
-	if(!userInfo){
+	if(!userFile){
 		cout << "File open Error";
 		exit(0);
 	}
 
-	userInfo >> user;
-	while(!userInfo.eof()){
+	
+	while(!userFile.eof()){
+		userFile >> user;
 		if(!user.get_username().compare(username)){
 			user.display_user_data();
 			break;
 		}
-		userInfo >> user;
+		//userFile >> user;
 	}
 
 
-	userInfo.close();
+	userFile.close();
 	system("pause");
 
 }
 
 
-void DataController::getLoggedUserInfo(User *user) {
+void DataController::getLoggedoldFile(User *user) {
 	user->display_user_data();
 }
 
