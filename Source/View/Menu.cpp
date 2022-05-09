@@ -138,7 +138,7 @@ bool Menu::performRequestionOperation(User *user) {
 			dc.viewGeneralRecord(user->getUserType());
 		} 
 		else {
-			//dc.getLoggedUserInfo(user);
+		//	dc.getLoggedUserInfo(user);
 		}
 		dc.~DataController();
 		system("pause");
@@ -146,13 +146,15 @@ bool Menu::performRequestionOperation(User *user) {
 		mainOptions(user);
 		break;
 	case 2:
-		if(!user->getUserType().compare("Admin") ){
-            cout << "udpate admin record";
-			// updateRecord();
-		} else {
-            cout << "udpate std/student record";
-			// updateSelfRecord();
-		}
+		// if(!user->getUserType().compare("Admin") ){
+        //     cout << "udpate admin record";
+		// 	dc.updateRecord();
+		// } else {
+        //     cout << "udpate std/student record";
+		// 	dc.up;
+		// }
+		dc.updateRecord(user->getUserType());
+		system("pause");
 		break;
 	case 3:
         cout << "marksheet";
