@@ -10,6 +10,12 @@
 #include "..\Entity\Staff.cpp"
 #include "registration.cpp"
 
+
+template <typename T>
+bool update(T &obj, ifstream &record, int userId, string oldname);
+int chooseUpdate(string whoseInfo);
+
+
 using namespace std;
 
 class DataController {
@@ -33,8 +39,234 @@ public:
 
 	void getLoggedUserInfo(User *user);
 
+	void updateRecord(string whoseInfo);
+
+
+
 
 };
+
+void DataController::updateRecord(string whoseInfo){
+
+/* 
+	for now:
+		1.update the basic features of the user
+		2. UserId is restricted to update.
+		
+	To do :
+		- update the Login Crediantials if firstname is changed.
+*/
+ 	enum Options{firstName = 1, lastName, email, address, contact, grade, dob, subject, salary};
+	int newdata;
+	string newString, oldname;
+	int userId;
+	bool isuser;
+	
+	Student temp_student;
+	Staff temp_staff;
+
+	ifstream record;
+
+	if(!whoseInfo.compare("Admin")){
+		Registration temp_registration;
+		whoseInfo= temp_registration.chooseWhoseInfo();
+	}
+
+	
+	int updateChoice = chooseUpdate(whoseInfo);
+
+	cout << "User ID: ";
+	cin >> userId;
+	
+	if(!whoseInfo.compare("Student")){
+		oldname = "Student.dat";
+		record.open(oldname, ios::in);
+		isuser  = update <Student> (temp_student, record, userId, oldname);
+
+	}
+
+	if(!whoseInfo.compare("Staff")){
+		oldname = "Staff.dat";
+		record.open(oldname, ios::in);
+		isuser = update <Staff> (temp_staff, record, userId, oldname);
+	}
+
+	ofstream update_record(oldname.c_str(), ios::out|ios :: app);
+	switch(updateChoice){
+	
+		case firstName:
+			cout << "New First Name: ";
+			cin >> newString;
+			if(!whoseInfo.compare("Student")){
+				temp_student.setFirstname(newString);
+			}
+			if(!whoseInfo.compare("Staff")){
+				temp_staff.setFirstname(newString);
+			}
+			break;
+
+		case lastName:
+			cout << "New Last Name: ";
+			cin >> newString;
+			if(!whoseInfo.compare("Student")){
+				temp_student.setLastname(newString);
+			}
+			if(!whoseInfo.compare("Staff")){
+				temp_staff.setLastname(newString);
+			}
+			break;
+
+		case email:
+		 	cout << "New Email: ";
+			cin >> newString;
+			if(!whoseInfo.compare("Student")){
+				temp_student.setEmail(newString);
+			}
+			if(!whoseInfo.compare("Staff")){
+				temp_staff.setEmail(newString);
+			}
+			
+			break;
+
+		case address:
+			cout << "New Address: ";
+			cin >> newString;
+			if(!whoseInfo.compare("Student")){
+				temp_student.setAddress(newString);
+			}
+			if(!whoseInfo.compare("Staff")){
+				temp_staff.setAddress(newString);
+			}
+			break;
+
+		case contact:
+			cout << "New Contact: ";
+			cin >> newString;
+			if(!whoseInfo.compare("Student")){
+				temp_student.setPhonenum(newString);
+			}
+			if(!whoseInfo.compare("Staff")){
+				temp_staff.setPhonenum(newString);
+			}
+			break;
+
+		case grade:
+			cout << "New Grade: ";
+			cin >> newdata;
+			temp_student.setGrade(newdata);
+			break;
+
+		case dob:
+			cout << "New Date of birth[mm/dd/yyyy]: ";
+			cin >> newString;
+			temp_student.setDate(newString);
+			break;
+
+		case subject:
+			cout << "New Subject: ";
+			cin >> newString;
+			temp_staff.setSubject(newString);
+			break;
+
+		case salary: 
+			cout << "New Salary: ";
+			cin >> newdata;
+			temp_staff.setSalary(newdata);
+			break;
+
+		default:
+			cout << "Invalid choice";
+			system("pause");
+			system("cls");
+			return updateRecord(whoseInfo);
+	}
+	
+	if(isuser){
+		if(!whoseInfo.compare("Student")){
+			update_record << temp_student;
+		}
+		if(!whoseInfo.compare("Staff")){
+			update_record << temp_staff;
+		}
+	}
+	
+	update_record.close();
+	
+}
+
+int chooseUpdate(string whoseInfo){
+
+	int choice;
+
+	cout << "Update options\n";
+	cout << "1. First Name\n";
+	cout << "2. last Name\n";
+	cout << "3. Email\n";
+	cout << "4. Address\n";
+	cout << "5. Phone Numeber\n";
+
+	if(!whoseInfo.compare("Student")){
+		cout << "6. Grade\n";
+		cout << "7. Date Of Birth\n";
+
+	}
+
+	if(!whoseInfo.compare("Staff")){
+		cout << "6. Subject\n";  //8
+		cout << "7. Salary\n";  //9
+	}
+
+	cout << "Enter your choice: ";
+	cin >> choice;
+
+	if(choice >= 1 && choice <= 7){
+		return choice;
+	}
+	if(!whoseInfo.compare("Staff") && (choice == 6 || choice == 7)){
+		return (choice + 2);
+	}
+	
+	return chooseUpdate(whoseInfo);
+}
+
+template <typename T>
+bool update(T &obj, ifstream &record, int userId, string oldname){
+
+	bool isuser;
+
+	if(!record){
+		cout << "File not open error.";
+		exit(0);
+	}
+
+	T temp_obj;
+	ofstream newFile("newfile.txt", ios::out | ios:: app);
+
+	record >> temp_obj;
+
+	while(!record.eof()){
+
+		if(temp_obj.getUserId() == userId ){
+			obj = temp_obj;		//stores the updated object	
+			isuser = 1;
+			
+		}
+		else{
+			newFile << temp_obj; //copies the file
+		}   
+		record >> temp_obj;
+
+	}
+
+	newFile.close();
+	record. close();
+
+	remove(oldname.c_str());
+	rename("newfile.txt", oldname.c_str());
+
+	return isuser;
+
+}
 
 void DataController::changePassword(User *user){
 
@@ -177,11 +409,11 @@ void DataController::delete_file(int userId, T &temp_user, string file_name[], i
 	while(!record.eof()){
 
 		if(userId != temp_user.getUserId()){
-			temp_file << temp_user << "\n";
+			temp_file << temp_user;
 		}
 
 		if(userId != t_user.getUserId()){
-			temp_loginFile << t_user << "\n";
+			temp_loginFile << t_user;
 		}
 
 		record >> temp_user;
