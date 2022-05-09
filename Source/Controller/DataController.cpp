@@ -14,6 +14,8 @@
 template <typename T>
 bool update(T &obj, ifstream &record, int userId, string oldname);
 int chooseUpdate(string whoseInfo);
+void staff_header();
+void student_header();
 
 
 using namespace std;
@@ -437,6 +439,7 @@ void DataController::viewGeneralRecord(string whoseInfo){
 
 	system("cls");
 	
+	int y_cord = 15;
 	Registration temp;
 
 	if(!whoseInfo.compare("Admin")) //If the logged in user is admin privilege to choose otherwise default.
@@ -449,13 +452,13 @@ void DataController::viewGeneralRecord(string whoseInfo){
 		
 		cout << "Student data: \n\n";
 		if(!student_file){
+		//	gotoxy(50, y_cord);
 			cout << "file not found";
-		}
-		else{
-			cout << "File opened sucessfully";
 		}
 
 		student_file >> temp_student;
+
+		student_header();
 
 		do{
 			temp_student.display_data();
@@ -480,6 +483,7 @@ void DataController::viewGeneralRecord(string whoseInfo){
 		cout << "\n\nStaff Data: \n\n";
 		staff_file >> temp_staff;
 
+		staff_header();
 		do{
 			temp_staff.display_data();
 			staff_file >> temp_staff;
@@ -534,4 +538,48 @@ void DataController::deleteRecord() {
 	
 }
 
+void student_header(){
+	
+	for(int i = 0; i < 128; i++){
+			cout << "-";
+	}
+
+	cout << "\n";
+	cout << "|";
+	cout <<  setw(10) << "USER ID" <<"|";
+	cout <<  setw(14) << "FIRST NAME" <<"|";
+	cout <<  setw(14) << "LAST NAME" <<"|";
+	cout <<  setw(30)<< "EMAIL"<<"|";
+	cout <<  setw(20) << "ADDRESS" <<"|";
+	cout <<  setw(13) << "PHONE NUM" <<"|";
+	cout <<  setw(5) << "GRADE" <<"|";
+	cout <<  setw(13) << "D.O.B" <<"|\n" ;
+
+	for(int i = 0; i < 128; i++){
+		cout << "-";
+	}
+	cout << "\n";
+}
+
+void staff_header(){
+	for(int i = 0; i < 128; i++){
+		cout << "-";
+	}
+	cout << "\n";
+	cout << "|";
+	cout <<  setw(10) << "USER ID" <<"|";
+	cout <<  setw(14) << "FIRST NAME" <<"|";
+	cout <<  setw(14) << "LAST NAME" <<"|";
+	cout <<  setw(30)<< "EMAIL"<<"|";
+	cout <<  setw(20) << "ADDRESS" <<"|";
+	cout <<  setw(13) << "PHONE NUM" <<"|";
+	cout <<  setw(13) << "SUBJECT" <<"|";
+	cout <<  setw(5) << "SALARY" <<"|\n" ;
+
+	for(int i = 0; i < 128; i++){
+		cout << "-";
+	}
+	cout << "\n";
+
+}
 #endif
