@@ -10,6 +10,7 @@ Person class.
 #define STUDENT_CPP
 #include <string>
 #include "Person.cpp"
+#include <iomanip>
 
 class Student : public Person {
     int grade; //Current Standard
@@ -62,16 +63,31 @@ public:
 };
 
 void Student::display_data(){
-    cout << "\n\tID: "<< userId;
-    cout << "\tFirst Name: "<< firstname;
-    cout << "\tLast Name: "<< lastname;
-    cout << "\tEmail: "<< email;
-    cout << "\tAddress: "<< address;
-    cout << "\tcontact number: "<< phone_num;
-    cout << "\tGrade: "<< grade;
-    cout << "\tDate [DD/MM/YY]: "<< dob;
+    // cout << "\tID: "<< userId;
+    // cout << "\tFirst Name: "<< firstname;
+    // cout << "\ttLast Name: "<< lastname;
+    // cout << "\ttEmail: "<< email;
+    // cout << "\ttAddress: "<< address;
+    // cout << "\ttcontact number: "<< phone_num;
+    // cout << "\ttGrade: "<< grade;
+    // cout << "\n\ttDate [DD/MM/YY]: "<< dob;
+    // cout << "\n";
+    cout << "|";
+    cout <<  setw(10) << userId <<"|";
+    cout <<  setw(14) << firstname <<"|";
+    cout <<  setw(14) << lastname <<"|";
+    cout <<  setw(30)<< email<<"|";
+    cout <<  setw(20) << address <<"|";
+    cout <<  setw(13) << phone_num <<"|";
+    cout <<  setw(5) << grade <<"|";
+    cout <<  setw(13) << dob <<"|\n" ;
+
+    for(int i = 0; i < 128; i++){
+        cout << "-";
+    }
     cout << "\n";
 }
+
 
 void Student::setGrade(int grade){
     this->grade = grade;
