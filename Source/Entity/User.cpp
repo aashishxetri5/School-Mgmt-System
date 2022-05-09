@@ -130,7 +130,7 @@ ostream& operator << (ostream& stream, User &uObj){
 
     stream << uObj.userId << "\t"; 
     stream << uObj.username << "\t"; 
-	stream << uObj.password;
+	stream << uObj.password << "\n";
 	return stream;
 }
 

@@ -9,6 +9,7 @@ Person class.
 #ifndef STAFF_CPP
 #define STAFF_CPP
 #include"Person.cpp"
+#include <iomanip>
 
 using namespace std;
 
@@ -102,14 +103,30 @@ istream& operator >> (istream& stream, Staff &sObj){
 }
 
 void Staff::display_data(){
-    cout << "\n\tID: "<< userId;
-    cout << "\n\tFirst Name: "<< firstname;
-    cout << "\n\tLast Name: "<< lastname;
-    cout << "\n\tEmail: "<< email;
-    cout << "\n\tAddress: "<< address;
-    cout << "\n\tcontact number: "<< phone_num;
-    cout << "\n\tSubject: "<< subject;
-    cout << "\n\tSalary: "<<salary;
-    cout << "\n\n";
+    // cout << "\n\tID: "<< userId;
+    // cout << "\n\tFirst Name: "<< firstname;
+    // cout << "\n\tLast Name: "<< lastname;
+    // cout << "\n\tEmail: "<< email;
+    // cout << "\n\tAddress: "<< address;
+    // cout << "\n\tcontact number: "<< phone_num;
+    // cout << "\n\tSubject: "<< subject;
+    // cout << "\n\tSalary: "<<salary;
+    // cout << "\n\n";
+
+    cout << "|";
+    cout <<  setw(10) << userId <<"|";
+    cout <<  setw(14) << firstname <<"|";
+    cout <<  setw(14) << lastname <<"|";
+    cout <<  setw(30)<< email<<"|";
+    cout <<  setw(20) << address <<"|";
+    cout <<  setw(13) << phone_num <<"|";
+    cout <<  setw(13) << subject <<"|";
+    cout <<  setw(5) << salary <<"|\n" ;
+
+    for(int i = 0; i < 128; i++){
+        cout << "-";
+    }
+    cout << "\n";
+
 }
 #endif
