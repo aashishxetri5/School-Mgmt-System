@@ -10,6 +10,7 @@ Person class.
 #define STUDENT_CPP
 #include <string>
 #include "Person.cpp"
+#include <iomanip>
 
 class Student : public Person {
     int grade; //Current Standard
@@ -58,8 +59,25 @@ public:
     //write to the file by reading from the obj
     friend ostream& operator << (ostream& stream, Student &sObj);
 
-
+    void display_data();
 };
+
+void Student::display_data(){
+    
+    cout << setw(7) << to_string(userId);
+    cout << setw(20) << getFullname();
+    cout << setw(7) << to_string(grade);
+    cout << setw(30) << email;
+    cout << setw(16) << address;
+    cout << setw(19) << phone_num;
+    cout << setw(18) << dob <<"\n" ;
+
+    for(int i = 0; i < 120; i++){
+        cout << "-";
+    }
+    cout << "\n";
+}
+
 
 void Student::setGrade(int grade){
     this->grade = grade;
@@ -95,14 +113,14 @@ istream& operator >> (istream& stream, Student &sObj){
 
 //This overloaded operatior writes the content of student object received via parameter to the file.
 ostream& operator << (ostream& stream, Student &sObj){
-    stream << sObj.userId << "\t";
+    stream << sObj.userId << "\t"; //unique
     stream << sObj.firstname<< "\t";
     stream << sObj.lastname << "\t";
     stream << sObj.address << "\t";
     stream << sObj.email << "\t";
     stream << sObj.phone_num << "\t";
     stream << sObj.grade << "\t";
-    stream << sObj.dob;
+    stream << sObj.dob<<"\n";
      
     return stream;
 }

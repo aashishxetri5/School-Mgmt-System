@@ -9,6 +9,7 @@ Person class.
 #ifndef STAFF_CPP
 #define STAFF_CPP
 #include"Person.cpp"
+#include <iomanip>
 
 using namespace std;
 
@@ -50,6 +51,10 @@ public:
     //read from the file
     friend istream& operator >> (istream& stream, Staff &sObj);
 
+    //display the data 
+
+    void display_data();
+
 };
 
 void Staff::setSubject(string subject){
@@ -78,7 +83,7 @@ ostream& operator << (ostream& stream, Staff sObj){
     stream << sObj.address << "\t";
     stream << sObj.phone_num << "\t";
     stream << sObj.salary << "\t";
-    stream << sObj.subject;
+    stream << sObj.subject << "\n";
 
     return stream;
 }
@@ -97,4 +102,20 @@ istream& operator >> (istream& stream, Staff &sObj){
     return stream;
 }
 
+void Staff::display_data(){
+    
+    cout << setw(7) << to_string(userId);
+    cout << setw(24) << getFullname();
+    cout << setw(20) << email;
+    cout << setw(21) << address;
+    cout << setw(17) << phone_num;
+    cout << setw(8) << subject;
+    cout << setw(12) << "Rs. " << to_string(salary) << "\n" ;
+
+    for(int i = 0; i < 120; i++){
+        cout << "-";
+    }
+    cout << "\n";
+
+}
 #endif

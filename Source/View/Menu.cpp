@@ -3,19 +3,20 @@
 
 #include "..\Controller\LoginController.cpp"
 #include "..\Controller\registration.cpp"
+#include "..\Controller\DataController.cpp"
 
 class Menu {
     int menuChoice;
 public:
-static int isLoggedOut;
+	static int isLoggedOut;
 
-void welcome(string);
+	void welcome(string);
 
-int loginMenu();
+	int loginMenu();
 
-bool login(User*);
+	bool login(User*);
 
-bool mainOptions(User*);
+	bool mainOptions(User*);
 
 bool performRequestedOperation(User*);
 
@@ -49,16 +50,23 @@ int Menu::loginMenu() {
 //take credentials
 bool Menu::login(User *user) {
     string temp_data = "";
+	int userId;
     char temp;
 
-    cout << "\n\tEnter your username: ";
+    cout << "\n\tEnter your userId: ";
+	cin >> userId;
+    user->setUserId( userId );
+	
+	cin.ignore();
+
+    cout << "\tEnter your username: ";
 	cin >> temp_data;
     user->set_username(temp_data);
 
     cout << "\tEnter your password: ";
     /* Accepts Password and displays '*' instead of entered character. */
-	temp_data = "";
-    while(true) {
+	temp_data="";
+	while(true) {
         temp = getch();
         /*Checks if user hit 'Enter'. If yes, the password end is declared by breaking out of the loop. */
         if(temp == 13) {
@@ -83,7 +91,7 @@ bool Menu::login(User *user) {
 bool Menu::mainOptions(User *user) {
 	system("cls");
 	welcome(user->getUserType());
-    
+
 	/* Displays main menu of the program */
 	cout <<"\t1. View Record(s)\n";
 	cout <<"\t2. Update Record\n";
@@ -129,24 +137,30 @@ bool Menu::mainOptions(User *user) {
 // This method will call the respective method from any other class which implements the functionality of the requested operation.
 bool Menu::performRequestedOperation(User *user) {
 	char resp;
+	DataController dc;
     switch(menuChoice){
 	case 1:
 		if(!user->getUserType().compare("Admin") ) {
-            cout << "view admin record";
-			// viewGeneralRecord();
-		} else {
-            cout << "view student/staff record";
-			// getLoggedUserInfo();
+			dc.viewGeneralRecord(user->getUserType());
+		} 
+		else {
+		//	dc.getLoggedUserInfo(user);
 		}
+		dc.~DataController();
+		system("pause");
+		system("cls");
+		mainOptions(user);
 		break;
 	case 2:
-		if(!user->getUserType().compare("Admin") ){
-            cout << "udpate admin record";
-			// updateRecord();
-		} else {
-            cout << "udpate std/student record";
-			// updateSelfRecord();
-		}
+		// if(!user->getUserType().compare("Admin") ){
+        //     cout << "udpate admin record";
+		// 	dc.updateRecord();
+		// } else {
+        //     cout << "udpate std/student record";
+		// 	dc.up;
+		// }
+		dc.updateRecord(user->getUserType());
+		system("pause");
 		break;
 	case 3:
         cout << "marksheet";
@@ -161,16 +175,16 @@ bool Menu::performRequestedOperation(User *user) {
 		}
 		break;
 	case 5:
-        cout << "delete record";
-		// deleteRecord();
+		dc.deleteRecord();
+		dc.~DataController();
 		break;
 	case 6:
         cout << "search record";
 		// search();
 		break;
 	case 7:
-        cout << "login info";
-		// viewLoginInfo();
+		DataController dc;
+		dc.viewLoginInfo(); 		///--> will open the login file
 		break;
 	case 8:
         cout << "save marks";
@@ -178,14 +192,16 @@ bool Menu::performRequestedOperation(User *user) {
 		break;
 	case 9:
         cout << "change password";
-		// changePassword();
+		dc.changePassword(user);
 		break;
 	case 10:
 		cout << "\n\tLogged out successfully...\n\t";
-        user = nullptr;
+		//delete user;
+        //user = nullptr;
 		system("pause");
 		isLoggedOut = 1;
 		return false;
+
 	case 0:
 		cout << "\tExiting...";
 		exit(0);
@@ -196,3 +212,4 @@ bool Menu::performRequestedOperation(User *user) {
 	}
     return true;
 }
+

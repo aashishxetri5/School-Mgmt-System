@@ -40,12 +40,14 @@ int main() {
 	}
 
 	if(!menu.login(user)) {
+		delete user;
 		user = nullptr;
 		user = new User(); //Assigning new user. This resets the user object.
 		Menu::isLoggedOut = 0;
 		main();
 
-	} else {
+	} 
+	else {
 		system("pause");
 		
 		//Keeps calling the mainOptions (the main menu) until a valid menu option is selected.
