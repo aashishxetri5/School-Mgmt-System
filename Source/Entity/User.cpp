@@ -39,6 +39,7 @@ Also, create a parameterized constructor having all the data members.
 #define USER_CPP
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 using namespace std;
 
 class User{
@@ -84,9 +85,16 @@ public:
     //display the user data
 
     void display_user_data(){
-        cout << "\nUsername: "<< this->username <<"\n";
-        cout << "Password: "<< this->password << "\n";
-        cout << "UserType: "<< this-> userType << "\n";
+
+        cout << "|";
+        cout << setw(20) << this->username <<"|";
+        cout << setw(20)<< this->password << "|";
+        cout << setw(15)<< this-> userType << "|\n";
+
+        for(int i = 0; i < 59; i++){
+            cout << "-";
+        }
+        cout << "\n";
     }
    
     
