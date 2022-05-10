@@ -13,10 +13,12 @@
 
 template <typename T>
 bool update(T &obj, ifstream &record, int userId, string oldname);
-int chooseUpdate(string whoseInfo);
-void staff_header();
-void student_header();
 
+int chooseUpdate(string whoseInfo);
+
+void staff_header();
+
+void student_header();
 
 using namespace std;
 
@@ -539,44 +541,32 @@ void DataController::deleteRecord() {
 }
 
 void student_header(){
-	
-	for(int i = 0; i < 128; i++){
-			cout << "-";
-	}
 
-	cout << "\n";
-	cout << "|";
-	cout <<  setw(10) << "USER ID" <<"|";
-	cout <<  setw(14) << "FIRST NAME" <<"|";
-	cout <<  setw(14) << "LAST NAME" <<"|";
-	cout <<  setw(30)<< "EMAIL"<<"|";
-	cout <<  setw(20) << "ADDRESS" <<"|";
-	cout <<  setw(13) << "PHONE NUM" <<"|";
-	cout <<  setw(5) << "GRADE" <<"|";
-	cout <<  setw(13) << "D.O.B" <<"|\n" ;
+	cout << setw(7) << "User Id";
+	cout << setw(14) << "Fullname";
+	cout << setw(16) << "Grade";
+	cout << setw(10) << "Email";
+	cout << setw(29) << "Address";
+	cout << setw(16) << "Contact";
+	cout << setw(13) << "Dob" << "\n";
 
-	for(int i = 0; i < 128; i++){
+	for(int i = 0; i < 120; i++){
 		cout << "-";
 	}
 	cout << "\n";
 }
 
 void staff_header(){
-	for(int i = 0; i < 128; i++){
-		cout << "-";
-	}
-	cout << "\n";
-	cout << "|";
-	cout <<  setw(10) << "USER ID" <<"|";
-	cout <<  setw(14) << "FIRST NAME" <<"|";
-	cout <<  setw(14) << "LAST NAME" <<"|";
-	cout <<  setw(30)<< "EMAIL"<<"|";
-	cout <<  setw(20) << "ADDRESS" <<"|";
-	cout <<  setw(13) << "PHONE NUM" <<"|";
-	cout <<  setw(13) << "SUBJECT" <<"|";
-	cout <<  setw(5) << "SALARY" <<"|\n" ;
 
-	for(int i = 0; i < 128; i++){
+	cout << setw(7) << "User Id";
+	cout << setw(14) << "Fullname";
+	cout << setw(22) << "Email";
+	cout << setw(27) << "Address";
+	cout << setw(16) << "Contact";
+	cout << setw(15) << "Subject";
+	cout << setw(10) << "Salary" << "\n";
+
+	for(int i = 0; i < 120; i++){
 		cout << "-";
 	}
 	cout << "\n";
