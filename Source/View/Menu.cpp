@@ -1,10 +1,35 @@
 //This shall contain functions for the menu.
 #include <conio.h>
 #include <cstdio>
+#include <windows.h>
 
 #include "..\Controller\LoginController.cpp"
 #include "..\Controller\registration.cpp"
 #include "..\Controller\DataController.cpp"
+
+HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);  
+HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+//void fontsize(int a, int b){
+//	static CONSOLE_FONT_INFOEX  fontex;
+//     GetCurrentConsoleFontEx(hOut, 0, &fontex);
+//    // fontex.FontWeight = 700;
+//     fontex.dwFontSize.X = a;
+//     fontex.dwFontSize.Y = b;
+//     SetCurrentConsoleFontEx(hOut, NULL, &fontex);
+//}
+
+void gotoxy(int x, int y){
+
+	COORD CRD;
+	CRD.X = x;
+	CRD.Y = y;
+
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), CRD);	
+
+}
+
+
 
 class Menu {
     int menuChoice;
@@ -27,8 +52,14 @@ public:
 /* Displays the welcome message on top of the screen */
 void Menu::welcome(string loggedInUserType) {
 	system("cls");
+	int y_cord = 10;
+
+	gotoxy(50, ++y_cord );
+//	fontsize(40, 40);
     cout << "\t School Management System\n";
-    cout << "\t**************************\n\n";
+    gotoxy(50, ++y_cord );
+	cout << "\t**************************\n\n";
+	gotoxy(54, ++y_cord );
     if(loggedInUserType.length() == 0){
 	    cout << "\t<== Login ==>\n";
 	}else{
@@ -38,11 +69,18 @@ void Menu::welcome(string loggedInUserType) {
 
 /* lets user select which  */
 int Menu::loginMenu() {
-    cout << "\n\t1. Student Login";
-    cout << "\n\t2. Staff Login";
-    cout << "\n\t3. Accounts Login";
-    cout << "\n\t0. Exit\n";
-    cout << "\n\tEnter your choice: ";
+	
+	int y_cord = 15;
+	gotoxy(50, y_cord);
+    cout << "\t1. Student Login";
+	gotoxy(50, ++y_cord );
+    cout << "\t2. Staff Login";
+	gotoxy(50, ++y_cord );
+    cout << "\t3. Accounts Login";
+	gotoxy(50, ++y_cord );
+    cout << "\t0. Exit\n";
+	gotoxy(50, y_cord += 2);
+    cout << "\tEnter your choice: ";
     cin >> menuChoice;
         
     return menuChoice;
@@ -50,13 +88,16 @@ int Menu::loginMenu() {
 
 //take credentials
 bool Menu::login(User *user) {
+	int y_cord = 21;
     string temp_data = "";
     char temp;
 
-    cout << "\n\tEnter your username: ";
+	gotoxy(50, y_cord);
+    cout << "\tEnter your username: ";
 	cin >> temp_data;
     user->set_username(temp_data);
 
+	gotoxy(50, y_cord += 2);
     cout << "\tEnter your password: ";
     /* Accepts Password and displays '*' instead of entered character. */
 	temp_data="";
@@ -73,7 +114,9 @@ bool Menu::login(User *user) {
     user->set_password(temp_data);
 
     if(!LoginController().isValidUser(user)) {
-        cout << "\n\tOopsies!! Login Failed.\n\n\t";
+		gotoxy(50, y_cord += 2);
+        cout << "\tOopsies!! Login Failed.\n\n\t";
+		gotoxy(50, y_cord + 2);
         system("pause");
         return false;
     }
@@ -85,41 +128,60 @@ bool Menu::login(User *user) {
 bool Menu::mainOptions(User *user) {
 	system("cls");
 	welcome(user->getUserType());
-
+	
 	/* Displays main menu of the program */
-	cout <<"\t1. View Record(s)\n";
+	int y_cord = 15;
+
+	gotoxy(50, ++y_cord );
+	cout <<"\t1. View Record(s)";
+	gotoxy(50, ++y_cord );
 	cout <<"\t2. Update Record\n";
         
     /* Restricting Staffs from viewing marksheet*/
 	if( user->getUserType().compare("Staff") != 0){
+		gotoxy(50, y_cord + 1);
 	    cout <<"\t3. Show Marksheet\n";
 	}
-    
+
+	gotoxy(50, ++y_cord );
 	/* Only administrative users will be able to access these options. */
 	if( !user->getUserType().compare("Admin")){
-	    cout << "\t4. Add Record(s)\n";
-	    cout << "\t5. Delete Record\n";
-	    cout << "\t6. Search Record\n";
-	    cout << "\t7. View Login Information\n";
-	    cout << "\t8. Save Marks\n";
+	    cout << "\t4. Add Record(s)";
+		gotoxy(50, ++y_cord );
+	    cout << "\t5. Delete Record";
+		gotoxy(50, ++y_cord );
+	    cout << "\t6. Search Record";
+		gotoxy(50, ++y_cord );
+	    cout << "\t7. View Login Information";
+		gotoxy(50, ++y_cord );
+	    cout << "\t8. Save Marks";
+		gotoxy(50, ++y_cord );
+		
 	}
 
 	cout << "\t9. Change Password\n";
+	gotoxy(50, ++y_cord );
 	cout << "\t10.Logout\n";
+	gotoxy(50, ++y_cord );
 	cout << "\t0. Exit\n";
-	cout << "\n\tEnter your choice: ";
+	gotoxy(50, ++y_cord );
+	cout << "\tEnter your choice: ";
 	cin >> menuChoice;
     
 	/* Prevents Staff members from accessing Administrative Controls. */
 	if( user->getUserType().compare("Staff") == 0 && menuChoice == 3){
+		gotoxy(50, y_cord + 2);
 	    cout <<"\n\tInvalid input...\n\t";
+		gotoxy(50, ++y_cord);
 	    system("pause");
 	    system("cls");
         return false;
             
 	}else if( (!user->getUserType().compare("Student") || !user->getUserType().compare("Staff")) && (menuChoice > 3 && menuChoice < 10)){
         /* Preventing Students and Staffs from accessing Administrative Controls. */
-	    cout <<"\n\tInvalid input...\n\t";
+		gotoxy(50, y_cord += 2);
+	    cout <<"\tInvalid input...\n\t";
+		gotoxy(50, y_cord + 2);
 	    system("pause");
 	    system("cls");
         return false;
@@ -138,7 +200,8 @@ bool Menu::performRequestionOperation(User *user) {
 			dc.viewGeneralRecord(user->getUserType());
 		} 
 		else {
-		//	dc.getLoggedUserInfo(user);
+			dc.getLoggedUserInfo(user);
+			
 		}
 		dc.~DataController();
 		system("pause");
@@ -174,7 +237,7 @@ bool Menu::performRequestionOperation(User *user) {
 		break;
 	case 6:
         cout << "search record";
-		// search();
+		dc.search();
 		break;
 	case 7:
 		DataController dc;
