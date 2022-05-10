@@ -18,7 +18,7 @@ public:
 
 	bool mainOptions(User*);
 
-	bool performRequestionOperation(User*);
+bool performRequestedOperation(User*);
 
 };
 
@@ -39,7 +39,7 @@ void Menu::welcome(string loggedInUserType) {
 int Menu::loginMenu() {
     cout << "\n\t1. Student Login";
     cout << "\n\t2. Staff Login";
-    cout << "\n\t3. Accounts Login";
+    cout << "\n\t3. Admin Login";
     cout << "\n\t0. Exit\n";
     cout << "\n\tEnter your choice: ";
     cin >> menuChoice;
@@ -131,11 +131,11 @@ bool Menu::mainOptions(User *user) {
         return false;
 	}
 
-    return performRequestionOperation(user);
+    return performRequestedOperation(user);
 }
 
 // This method will call the respective method from any other class which implements the functionality of the requested operation.
-bool Menu::performRequestionOperation(User *user) {
+bool Menu::performRequestedOperation(User *user) {
 	char resp;
 	DataController dc;
     switch(menuChoice){
@@ -171,7 +171,7 @@ bool Menu::performRequestionOperation(User *user) {
 		resp = reg.get_data(user->getUserType());
 		system("cls");
 		if ( resp != 'N' && resp != 'n' ) {
-			return performRequestionOperation(user);
+			return performRequestedOperation(user);
 		}
 		break;
 	case 5:
