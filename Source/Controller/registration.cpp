@@ -105,8 +105,12 @@ public:
 				string subject;
 				int salary;
 
-				cout << "\n\tEnter the Subject: ";
-				cin >> subject;
+				if(whoseInfo == "Admin") {
+					subject = "Admin"; //Admin doesn't have a subject.
+				} else {
+					cout << "\n\tEnter the Subject: ";
+					cin >> subject;
+				}
 
 				cout << "\n\tEnter the Salary: ";
 				cin >> salary;

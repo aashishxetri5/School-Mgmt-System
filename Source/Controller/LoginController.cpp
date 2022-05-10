@@ -52,7 +52,9 @@ bool LoginController::isValidUser(User *user) {
             while(!login_file.eof()){
                 login_file >> user_data;
 
-                if(!user_data.get_username().compare(user->get_username()) && !user_data.get_password().compare(user -> get_password()) ){
+                if(!user_data.get_username().compare(user->get_username()) && 
+                    !user_data.get_password().compare(user -> get_password()) && 
+                    user_data.getUserId() == user->getUserId()){
                     login_file.close();
                     cout << "\n\tHurray!! Login Successful.\n\n\t";
                     return true;

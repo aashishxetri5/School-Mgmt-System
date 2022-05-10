@@ -1,6 +1,5 @@
 //This shall contain functions for the menu.
 #include <conio.h>
-#include <cstdio>
 
 #include "..\Controller\LoginController.cpp"
 #include "..\Controller\registration.cpp"
@@ -51,9 +50,16 @@ int Menu::loginMenu() {
 //take credentials
 bool Menu::login(User *user) {
     string temp_data = "";
+	int userId;
     char temp;
 
-    cout << "\n\tEnter your username: ";
+    cout << "\n\tEnter your userId: ";
+	cin >> userId;
+    user->setUserId( userId );
+	
+	cin.ignore();
+
+    cout << "\tEnter your username: ";
 	cin >> temp_data;
     user->set_username(temp_data);
 
