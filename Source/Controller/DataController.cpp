@@ -16,6 +16,10 @@ bool update(T &obj, ifstream &record, int userId, string oldname);
 int chooseUpdate(string whoseInfo);
 void staff_header();
 void student_header();
+void user_header();
+template <typename className> 
+void searchRecord(User &user, int userId, ifstream &record, ifstream &login_record);
+
 
 
 using namespace std;
@@ -43,10 +47,95 @@ public:
 
 	void updateRecord(string whoseInfo);
 
-
+	void search();
 
 
 };
+
+
+void DataController::search(){
+
+	Registration temp;
+	string whoseInfo = temp.chooseWhoseInfo();
+	int userId;
+	User user;
+	user.setUserType("null");
+
+	ifstream record, login_record;
+
+	cout << "Enter the user Id: ";
+	cin >> userId;
+
+	if(!whoseInfo.compare("Student")){
+		record.open("Student.dat");
+		login_record.open("Login_std.dat");
+		user.setUserType("Student");
+		searchRecord<Student>(user, userId, record, login_record);
+	}
+
+	if(!whoseInfo.compare("Staff")){
+		record.open("Staff.dat");
+		login_record.open("Login_Staff.dat");
+		user.setUserType("Staff");
+		searchRecord<Staff>(user, userId, record, login_record);
+
+	}
+
+}
+
+
+template <typename className> 
+void searchRecord(User &user, int userId, ifstream &record, ifstream &login_record){
+
+	className temp_obj;
+	string whoseInfo = user.getUserType();
+	User temp_user;
+
+//login Information
+	login_record >> temp_user;
+	while(!login_record.eof()){
+	
+		if(temp_user.getUserId() == userId ){
+			user = temp_user;
+			break;
+		} 
+		login_record >> temp_user;
+	}
+	login_record.close();
+	user.setUserType(whoseInfo);
+
+//Presonal Information
+	record >> temp_obj;
+	while(!record.eof()){
+	
+		if(temp_obj.getUserId() == userId ){
+			break;
+		} 
+		record >> temp_obj;
+	}
+	record.close();
+
+	if(user.getUserType().compare("null")){//checks if the data is stored in user or not
+		if(!whoseInfo.compare("Student")){
+			student_header();
+			temp_obj.display_data();
+		}
+
+		if(!whoseInfo.compare("Staff")){
+			staff_header();
+			temp_obj.display_data();
+		}
+
+		cout << "LOGIN INFORMATION:\n";
+		user_header();
+		user.display_user_data();
+	}
+	else{
+		cout << "Data not available\n";
+	}
+	system("pause");
+
+}
 
 void DataController::updateRecord(string whoseInfo){
 
@@ -394,7 +483,7 @@ void DataController::viewLoginInfo(){
 }
 
 
-void DataController::getLoggedoldFile(User *user) {
+void DataController::getLoggedUserInfo(User *user) {
 	user->display_user_data();
 }
 
@@ -582,4 +671,21 @@ void staff_header(){
 	cout << "\n";
 
 }
+
+void user_header(){
+
+	for(int i = 0; i < 59; i++){
+		cout << "-";
+	}
+	 cout << "\n|";
+	cout << setw(20) <<"USERNAME" <<"|";
+	cout << setw(20) << "PASSWORD" << "|";
+	cout << setw(15)<<  "USERTYPE" << "|\n";
+
+	for(int i = 0; i < 59; i++){
+		cout << "-";
+	}
+	cout << "\n";
+}
+
 #endif
