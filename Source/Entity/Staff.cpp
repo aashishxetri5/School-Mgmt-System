@@ -83,7 +83,7 @@ ostream& operator << (ostream& stream, Staff sObj){
     stream << sObj.address << "\t";
     stream << sObj.phone_num << "\t";
     stream << sObj.salary << "\t";
-    stream << sObj.subject;
+    stream << sObj.subject << "\n";
 
     return stream;
 }
@@ -110,7 +110,7 @@ void Staff::display_data(){
     cout << setw(21) << address;
     cout << setw(17) << phone_num;
     cout << setw(8) << subject;
-    cout << setw(12) << "Rs. " << to_string(salary) <<"\n" ;
+    cout << setw(12) << "Rs. " << to_string(salary) << "\n" ;
 
     for(int i = 0; i < 120; i++){
         cout << "-";
