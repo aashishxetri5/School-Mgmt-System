@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <conio.h>
 
 #include "..\Entity\User.cpp"
@@ -14,11 +15,8 @@ template <typename T>
 bool update(T &obj, ifstream &record, int userId, string oldname);
 
 int chooseUpdate(string whoseInfo);
-
 void staff_header();
-
 void student_header();
-
 void user_header();
 
 bool valid_userId(int &userId);
@@ -56,11 +54,10 @@ public:
 
 bool DataController::search(){
 
-	Registration temp;
-	string whoseInfo = temp.chooseWhoseInfo();
+	string whoseInfo = Registration().chooseWhoseInfo();
 	int userId;
 	User user;
-	user.setUserType("null");
+	user.setUserType("NULL");
 
 	ifstream record, login_record;
 
@@ -81,6 +78,13 @@ bool DataController::search(){
 		user.setUserType("Staff");
 		searchRecord<Staff>(user, userId, record, login_record);
 
+	}
+	
+	if(!whoseInfo.compare("Admin")){
+		record.open("../Files/personal_Infos/Admin.dat");
+		login_record.open("../Files/Logins/Login_Admin.dat");
+		user.setUserType("Admin");
+		searchRecord<Staff>(user, userId, record, login_record);
 	}
 
 	return true;
@@ -129,7 +133,7 @@ void DataController::searchRecord(User &user, int userId, ifstream &record, ifst
 			temp_obj.display_data();
 		}
 
-		cout << "LOGIN INFORMATION:\n";
+		cout << "\n\tLogin Information:\n";
 		user_header();
 		user.display_user_data();
 	}
@@ -150,7 +154,7 @@ bool DataController::updateRecord(string whoseInfo){
 	To do :
 		- update the Login Crediantials if firstname is changed.
 */
- 	enum Options{firstName = 1, lastName, email, address, contact, grade, dob, subject, salary};
+ 	enum Options{firstName = 1, lastName = 2, email = 3, address = 4, contact = 5, grade = 6, dob = 7, subject = 8, salary = 9};
 	int newdata;
 	string newString, oldname;
 	string string_userId;
@@ -163,8 +167,7 @@ bool DataController::updateRecord(string whoseInfo){
 	ifstream record;
 
 	if(!whoseInfo.compare("Admin")){
-		Registration temp_registration;
-		whoseInfo= temp_registration.chooseWhoseInfo();
+		whoseInfo= Registration().chooseWhoseInfo();
 	}
 	
 	int updateChoice = chooseUpdate(whoseInfo);
@@ -185,7 +188,7 @@ bool DataController::updateRecord(string whoseInfo){
 	if(!whoseInfo.compare("Student")){
 		oldname = "Student.dat";
 		record.open("../Files/personal_Infos/"+oldname, ios::in);
-		isuser  = update <Student> (temp_student, record, userId, oldname);
+		isuser = update<Student> (temp_student, record, userId, oldname);
 
 	}
 
@@ -206,7 +209,7 @@ bool DataController::updateRecord(string whoseInfo){
 			}
 			if(!whoseInfo.compare("Staff")){
 				temp_staff.setFirstname(newString);
-			}
+			}	
 			break;
 
 		case lastName:
@@ -229,7 +232,6 @@ bool DataController::updateRecord(string whoseInfo){
 			if(!whoseInfo.compare("Staff")){
 				temp_staff.setEmail(newString);
 			}
-			
 			break;
 
 		case address:
@@ -287,6 +289,7 @@ bool DataController::updateRecord(string whoseInfo){
 			return updateRecord(whoseInfo);
 	}
 	
+	
 	if(isuser){
 		if(!whoseInfo.compare("Student")){
 			update_record << temp_student;
@@ -306,22 +309,25 @@ int chooseUpdate(string whoseInfo){
 	string s_choice;
 
 
-	cout << "\n\tUpdate options";
+	system("cls");
+	cout << "\n\tUpdate options:";
+
 	cout << "\n\t1. First Name";
 	cout << "\n\t2. last Name";
 	cout << "\n\t3. Email";
 	cout << "\n\t4. Address";
-	cout << "\n\t5. Phone Number";
+	cout << "\n\t5. Phone Numeber";
 
 	if(!whoseInfo.compare("Student")){
 		cout << "\n\t6. Grade";
 		cout << "\n\t7. Date Of Birth";
-
 	}
 
-	if(!whoseInfo.compare("Staff")){
-		cout << "\n\t6. Subject";  //8
-		cout << "\n\t7. Salary";  //9
+	if(!whoseInfo.compare("Staff") || !whoseInfo.compare("Admin")){
+		cout << "\n\t6. Subject\n";
+		if(!whoseInfo.compare("Admin")){
+			cout << "\n\t7. Salary\n";
+		}
 	}
 
 	try{
@@ -329,18 +335,19 @@ int chooseUpdate(string whoseInfo){
 		cin >> s_choice;
 		choice = stoi(s_choice);
 	}
-	catch(std::invalid_argument const &ex){
+	catch(std::invalid_argument){
 		choice = 11;
 	}
 
-	if(choice >= 1 && choice <= 7){
-		return choice;
-	}
-	if(!whoseInfo.compare("Staff") && (choice == 6 || choice == 7)){
+
+	if( (!whoseInfo.compare("Staff") || !whoseInfo.compare("Admin") ) && (choice == 6 || choice == 7)){
 		return (choice + 2);
 	}
 	
-	system("cls");
+	if(choice >= 1 && choice <= 9){
+		return choice;
+	}
+	
 	return chooseUpdate(whoseInfo);
 }
 
@@ -385,119 +392,98 @@ bool update(T &obj, ifstream &record, int userId, string oldname){
 
 void DataController::changePassword(User *user){
 
-	Registration temp_registration;
-	string new_pass, confirm_pass, username;
+	string new_pass, confirm_pass;
 	User temp_user;
 
 	ifstream oldFile;
-	ofstream newFile("../Files/personal_Infos/newfile.dat", ios::out|ios::app);
+	ofstream newFile("../Files/logins/newfile.dat", ios::out|ios::app);
 	string oldname, newname = "newfile.dat";
 
-	string whoseInfo = user ->getUserType();
-
-	if(!whoseInfo.compare("Admin")){
-		whoseInfo = temp_registration.chooseWhoseInfo();
-	}
-
-	cout << "UserName: ";
-	cin >>  username;
+	string whoseInfo = user->getUserType();
 
 	if(!whoseInfo.compare("Student")){	
-		oldFile.open("../Files/Logins/Login_std.dat", ios::in);
-		oldname = "Login_std.dat";
+		oldFile.open("../Files/Logins/Login_Std.dat", ios::in);
+		oldname = "Login_Std.dat";
 
-	}
-	else if(!whoseInfo.compare("Staff")){
+	} else if(!whoseInfo.compare("Staff")){
 		oldFile.open("../Files/Logins/Login_Staff.dat", ios::in);
 		oldname = "Login_Staff.dat";
 	
-	}
-	else{
+	} else{
 		oldFile.open("../Files/Logins/Login_Admin.dat", ios::in);
 		oldname = "Login_Admin.dat";
 	}
-
-	while(1){
 	
-		cout << "New password: ";
-		cin >> new_pass;
+	cout << "\n\tNew password: ";
+	cin >> new_pass;
 
-		cout << "Confirm Password: ";
-		cin >> confirm_pass;
+	cout << "\n\tConfirm Password: ";
+	cin >> confirm_pass;
 
-		if(!new_pass.compare(confirm_pass)){
-			break;
-		}
-		system("cls");
-	}
-
-	if(!oldFile){
-		cout << "file open error";
-		exit(0);
-	}
-
-	oldFile >> temp_user;
-	while(!oldFile.eof()){
+	if(!new_pass.compare(confirm_pass)) {
 		
-		if(!username.compare(temp_user.get_username())){
-			temp_user.set_password(new_pass);
+		if(!oldFile){
+			cout << "\n\tFile open error";
+		} else {
+
+			oldFile >> temp_user;
+			while(!oldFile.eof()){
+		
+				if(temp_user.getUserId() == user->getUserId()){
+					temp_user.set_password(new_pass);
+				}
+				newFile << temp_user;
+				oldFile >> temp_user;
+
+			}
+
+			oldFile.close();
+			newFile.close();
+			
+			remove(("../Files/Logins/" + oldname).c_str());
+			rename(("../Files/Logins/" + newname).c_str(), ("../Files/Logins/" + oldname).c_str());
+
+			cout << "\n\tPassword sucessfully changed!\n\t";
 		}
-		newFile << temp_user;
-		oldFile >> temp_user;
-
+	} else {
+		cout << "\n\n\tPasswords do not match\n\t";
 	}
-
-	oldFile.close();
-	newFile.close();
-
-	remove(("../Files/Logins/" + oldname).c_str());
-	rename(("../Files/Logins/" + newname).c_str(), ("../Files/Logins/" + oldname).c_str());
-
-	cout << "Password sucessfully changed!";
 	system("pause");
-
 }
 
-void DataController::viewLoginInfo(){
-	Registration temp_registration ;
-	string whoseInfo = temp_registration.chooseWhoseInfo();
+void DataController::viewLoginInfo() {
+	
+	string whoseInfo = Registration().chooseWhoseInfo();
 
 	User user;
 
-	string username;
+	int userId;
 	ifstream userFile;
 
-	cout << "\n\tEnter username: ";
-	cin >> username;
+	cout << "\n\tEnter the userId: ";
+	cin >> userId;
 
-	if(!whoseInfo.compare("Student")){	
+	if(!whoseInfo.compare("Student")) {	
 		userFile.open("../Files/Logins/Login_std.dat", ios::in);
-		user.setUserType("Student");
-
-	}
-	else if(!whoseInfo.compare("Staff")){
+	} else if(!whoseInfo.compare("Staff")) {
 		userFile.open("../Files/Logins/Login_Staff.dat", ios::in);
-		user.setUserType("Staff");
-	}
-	else{
+	} else {
 		userFile.open("../Files/Logins/Login_Admin.dat", ios::in);
-		user.setUserType("Admin");
 	}
 
-	if(!userFile){
-		cout << "File open Error";
-		exit(0);
-	}
-	
-	while(!userFile.eof()){
-		userFile >> user;
-		if(!user.get_username().compare(username)){
-			user.display_user_data();
-			break;
+	if(!userFile) {
+		cout << "\n\tFile open Error";
+	} else {
+		while(!userFile.eof()) {
+			userFile >> user;
+			if(user.getUserId() == userId) {
+				user_header();
+				user.display_user_data();
+				break;
+			}
 		}
-		//userFile >> user;
-	}
 
+	}
 	userFile.close();
 	cout << "\n\t";
 	system("pause");
@@ -505,8 +491,50 @@ void DataController::viewLoginInfo(){
 }
 
 void DataController::getLoggedUserInfo(User *user) {
+	ifstream currentUserfile;
 
-	user->display_user_data();
+	if(!user->getUserType().compare("Student")) {
+		currentUserfile.open("../Files/personal_Infos/Student.dat", ios::in);
+		Student std;
+		if(!currentUserfile){
+			cout << "\n\tFile not found";
+		} else {
+			currentUserfile >> std;
+			student_header();
+
+			while(!currentUserfile.eof()) {
+				if(std.getUserId() == user->getUserId()){
+					cout << "\n\n";
+					std.display_data();
+					break;
+				}
+				currentUserfile >> std;
+			}
+	
+		}
+	} else if(!user->getUserType().compare("Staff")) {
+		currentUserfile.open("../Files/personal_Infos/Staff.dat", ios::in);
+		Staff staff;
+		if(!currentUserfile){
+			cout << "\n\tFile not found";
+		} else {
+			currentUserfile >> staff;
+			staff_header();
+
+			while(!currentUserfile.eof()) {
+				if(staff.getUserId() == user->getUserId()){
+					cout << "\n\n";
+					staff.display_data();
+					break;
+				}
+				currentUserfile >> staff;
+			}
+	
+		}
+	}
+
+	currentUserfile.close();
+
 }
 
 template <typename T>
@@ -549,21 +577,18 @@ void DataController::delete_file(int userId, T &temp_user, string file_name[], i
 void DataController::viewGeneralRecord(string whoseInfo){
 
 	system("cls");
-	
-	int y_cord = 15;
-	Registration temp;
 
 	if(!whoseInfo.compare("Admin")) //If the logged in user is admin privilege to choose otherwise default.
-		whoseInfo = temp.chooseWhoseInfo();
+		whoseInfo = Registration().chooseWhoseInfo();
 
 	if(!whoseInfo.compare("Student")){
 		
 		ifstream student_file("../Files/personal_Infos/Student.dat", ios::in);
 		Student temp_student;
 		
-		cout << "Student data: \n\n";
+		cout << "\n\n\tStudent data: \n\n";
 		if(!student_file){
-			cout << "file not found";
+			cout << "\n\tFile not found";
 		} else {
 			student_file >> temp_student;
 			student_header();
@@ -574,20 +599,18 @@ void DataController::viewGeneralRecord(string whoseInfo){
 			} while(!student_file.eof());
 	
 		}
-
 		student_file.close();
-	}
 
-	else if(!whoseInfo.compare("Staff")){
+	} else if(!whoseInfo.compare("Staff")){
 		ifstream staff_file("../Files/personal_Infos/Staff.dat", ios::in|ios::app);
 
 		Staff temp_staff;
 
 		if(!staff_file){
-			cout << "File not found";
+			cout << "\n\tFile not found";
 		} else {
 
-			cout << "\n\nStaff Data: \n\n";
+			cout << "\n\n\tStaff Data: \n\n";
 			staff_file >> temp_staff;
 
 			staff_header();
@@ -599,15 +622,15 @@ void DataController::viewGeneralRecord(string whoseInfo){
 		staff_file.close();
 
 	} else if(!whoseInfo.compare("Admin")){
-		ifstream admin_file("Admin.dat", ios::in|ios::app);
+		ifstream admin_file("../Files/personal_Infos/Admin.dat", ios::in|ios::app);
 
 		Staff temp_admin;
 
 		if(!admin_file){
-			cout << "File not found";
+			cout << "\n\tFile not found";
 		} else {
 
-			cout << "\n\nStaff Data: \n\n";
+			cout << "\n\n\tAdmin Data: \n\n";
 			admin_file >> temp_admin;
 			staff_header();
 
@@ -624,24 +647,26 @@ void DataController::viewGeneralRecord(string whoseInfo){
 
 bool DataController::deleteRecord() {
 	int userId;
-	Registration temp_registration;
-	string whoseInfo = temp_registration.chooseWhoseInfo();   //admin chooses the type of user to delete
+	
+	string whoseInfo = Registration().chooseWhoseInfo();   //admin chooses the type of user to delete
 	string file_name[2];
 
 	ifstream record, login_rec;
 
 	if(!whoseInfo.compare("Student")){
 		record.open("../Files/personal_Infos/Student.dat", ios::in);
-		login_rec.open("../Files/personal_Infos/Login_Std.dat", ios::in);
+		login_rec.open("../Files/Logins/Login_Std.dat", ios::in);
     
 		file_name[0] = "Student.dat";
 		file_name[1] = "Login_std.dat";
 		if(!valid_userId(userId)){return false;}
 		Student temp_user;
-		delete_file <Student> (userId, temp_user, file_name, record, login_rec);
+		delete_file<Student> (userId, temp_user, file_name, record, login_rec);
 	}
 	else if(!whoseInfo.compare("Staff")){
 		record.open("../Files/personal_Infos/Staff.dat", ios::in);
+		login_rec.open("../Files/Logins/Login_Staff.dat", ios::in);
+
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
 		if(!valid_userId(userId)){return false;}
@@ -650,6 +675,8 @@ bool DataController::deleteRecord() {
 	}
 	else if(!whoseInfo.compare("Admin")){
 		record.open("../Files/personal_Infos/Admin.dat", ios::in);
+		login_rec.open("../Files/Logins/Login_Admin.dat", ios::in);
+		
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
 		if(!valid_userId(userId)){return false;}
@@ -663,13 +690,13 @@ bool DataController::deleteRecord() {
 //To display the table headings for students
 void student_header(){
 
-	cout << setw(7) << "User Id";
-	cout << setw(14) << "Fullname";
-	cout << setw(16) << "Grade";
-	cout << setw(10) << "Email";
-	cout << setw(29) << "Address";
-	cout << setw(16) << "Contact";
-	cout << setw(13) << "Dob" << "\n";
+	cout << setw(10) << left << "User Id";
+	cout << setw(22) << left << "Fullname";
+	cout << setw(9) << left << "Grade";
+	cout << setw(33) << left << "Email";
+	cout << setw(18) << left << "Address";
+	cout << setw(16) << left << "Contact";
+	cout << setw(13) << left << "Dob" << "\n";
 
 	for(int i = 0; i < 120; i++){
 		cout << "-";
@@ -680,15 +707,15 @@ void student_header(){
 //To display the table headings for staff and admin
 void staff_header(){
 
-	cout << setw(7) << "User Id";
-	cout << setw(14) << "Fullname";
-	cout << setw(22) << "Email";
-	cout << setw(27) << "Address";
-	cout << setw(16) << "Contact";
-	cout << setw(15) << "Subject";
-	cout << setw(10) << "Salary" << "\n";
+	cout << setw(10) << left<< "User Id";
+	cout << setw(22) << left << "Fullname";
+	cout << setw(33) << left  << "Email";
+	cout << setw(18) << left << "Address";
+	cout << setw(16) << left << "Contact";
+	cout << setw(16) << left << "Subject";
+	cout << setw(10) << left << "Salary" << "\n";
 
-	for(int i = 0; i < 120; i++){
+	for(int i = 0; i < 127; i++){
 		cout << "-";
 	}
 	cout << "\n";
@@ -697,12 +724,11 @@ void staff_header(){
 
 void user_header(){
 
-	cout << setw(20) << "User Id";
-	cout << setw(20) << "Username";
-	cout << setw(20) << "Password" ;
-	cout << setw(15) << "UserType" << "\n";
+	cout << "\n\t" << setw(10) << left << "User Id";
+	cout << setw(20) << left << "Username";
+	cout << setw(20) << left << "Password" << "\n\t";
 
-	for(int i = 0; i < 59; i++){
+	for(int i = 0; i < 41; i++){
 		cout << "-";
 	}
 	cout << "\n";
