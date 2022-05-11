@@ -89,7 +89,6 @@ int Student::getGrade() {
 
 void Student::setDate(string dob) {
     this->dob = dob;
-    cout << "from setter: " << dob << endl;
 }
 
 string Student::getDate() {

@@ -15,11 +15,8 @@ template <typename T>
 bool update(T &obj, ifstream &record, int userId, string oldname);
 
 int chooseUpdate(string whoseInfo);
-
 void staff_header();
-
 void student_header();
-
 void user_header();
 
 using namespace std;
@@ -152,7 +149,7 @@ void DataController::updateRecord(string whoseInfo){
 	To do :
 		- update the Login Crediantials if firstname is changed.
 */
- 	enum Options{firstName = 1, lastName, email, address, contact, grade, dob, subject, salary};
+ 	enum Options{firstName = 1, lastName = 2, email = 3, address = 4, contact = 5, grade = 6, dob = 7, subject = 8, salary = 9};
 	int newdata;
 	string newString, oldname;
 	int userId;
@@ -164,20 +161,18 @@ void DataController::updateRecord(string whoseInfo){
 	ifstream record;
 
 	if(!whoseInfo.compare("Admin")){
-		Registration temp_registration;
-		whoseInfo= temp_registration.chooseWhoseInfo();
+		whoseInfo= Registration().chooseWhoseInfo();
 	}
 
-	
 	int updateChoice = chooseUpdate(whoseInfo);
 
-	cout << "User ID: ";
+	cout << "\n\tUser ID: ";
 	cin >> userId;
 	
 	if(!whoseInfo.compare("Student")){
 		oldname = "Student.dat";
 		record.open("../Files/personal_Infos/"+oldname, ios::in);
-		isuser  = update <Student> (temp_student, record, userId, oldname);
+		isuser = update<Student> (temp_student, record, userId, oldname);
 
 	}
 
@@ -191,18 +186,18 @@ void DataController::updateRecord(string whoseInfo){
 	switch(updateChoice){
 	
 		case firstName:
-			cout << "New First Name: ";
+			cout << "\tNew First Name: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setFirstname(newString);
 			}
 			if(!whoseInfo.compare("Staff")){
 				temp_staff.setFirstname(newString);
-			}
+			}	
 			break;
 
 		case lastName:
-			cout << "New Last Name: ";
+			cout << "\tNew Last Name: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setLastname(newString);
@@ -213,7 +208,7 @@ void DataController::updateRecord(string whoseInfo){
 			break;
 
 		case email:
-		 	cout << "New Email: ";
+		 	cout << "\tNew Email: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setEmail(newString);
@@ -221,11 +216,10 @@ void DataController::updateRecord(string whoseInfo){
 			if(!whoseInfo.compare("Staff")){
 				temp_staff.setEmail(newString);
 			}
-			
 			break;
 
 		case address:
-			cout << "New Address: ";
+			cout << "\tNew Address: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setAddress(newString);
@@ -236,7 +230,7 @@ void DataController::updateRecord(string whoseInfo){
 			break;
 
 		case contact:
-			cout << "New Contact: ";
+			cout << "\tNew Contact: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setPhonenum(newString);
@@ -247,35 +241,36 @@ void DataController::updateRecord(string whoseInfo){
 			break;
 
 		case grade:
-			cout << "New Grade: ";
+			cout << "\tNew Grade: ";
 			cin >> newdata;
 			temp_student.setGrade(newdata);
 			break;
 
 		case dob:
-			cout << "New Date of birth[mm/dd/yyyy]: ";
+			cout << "\tNew Date of birth[mm/dd/yyyy]: ";
 			cin >> newString;
 			temp_student.setDate(newString);
 			break;
 
 		case subject:
-			cout << "New Subject: ";
+			cout << "\tNew Subject: ";
 			cin >> newString;
 			temp_staff.setSubject(newString);
 			break;
 
 		case salary: 
-			cout << "New Salary: ";
+			cout << "\tNew Salary: ";
 			cin >> newdata;
 			temp_staff.setSalary(newdata);
 			break;
 
 		default:
-			cout << "Invalid choice";
+			cout << "\n\tInvalid choice";
 			system("pause");
 			system("cls");
 			return updateRecord(whoseInfo);
 	}
+	
 	
 	if(isuser){
 		if(!whoseInfo.compare("Student")){
@@ -294,32 +289,37 @@ int chooseUpdate(string whoseInfo){
 
 	int choice;
 
-	cout << "Update options\n";
-	cout << "1. First Name\n";
-	cout << "2. last Name\n";
-	cout << "3. Email\n";
-	cout << "4. Address\n";
-	cout << "5. Phone Numeber\n";
+	system("cls");
+	cout << "\n\tUpdate options:";
+
+	cout << "\n\t1. First Name";
+	cout << "\n\t2. last Name";
+	cout << "\n\t3. Email";
+	cout << "\n\t4. Address";
+	cout << "\n\t5. Phone Numeber";
 
 	if(!whoseInfo.compare("Student")){
-		cout << "6. Grade\n";
-		cout << "7. Date Of Birth\n";
-
+		cout << "\n\t6. Grade";
+		cout << "\n\t7. Date Of Birth";
 	}
 
-	if(!whoseInfo.compare("Staff")){
-		cout << "6. Subject\n";  //8
-		cout << "7. Salary\n";  //9
+	if(!whoseInfo.compare("Staff") || !whoseInfo.compare("Admin")){
+		cout << "\n\t6. Subject\n";
+		if(!whoseInfo.compare("Admin")){
+			cout << "\n\t7. Salary\n";
+		}
 	}
 
-	cout << "Enter your choice: ";
+	cout << "\n\n\tEnter your choice: ";
 	cin >> choice;
 
-	if(choice >= 1 && choice <= 7){
-		return choice;
-	}
-	if(!whoseInfo.compare("Staff") && (choice == 6 || choice == 7)){
+
+	if( (!whoseInfo.compare("Staff") || !whoseInfo.compare("Admin") ) && (choice == 6 || choice == 7)){
 		return (choice + 2);
+	}
+	
+	if(choice >= 1 && choice <= 9){
+		return choice;
 	}
 	
 	return chooseUpdate(whoseInfo);
@@ -425,7 +425,7 @@ void DataController::changePassword(User *user){
 	system("pause");
 }
 
-void DataController::viewLoginInfo(){
+void DataController::viewLoginInfo() {
 	
 	string whoseInfo = Registration().chooseWhoseInfo();
 
@@ -464,8 +464,50 @@ void DataController::viewLoginInfo(){
 }
 
 void DataController::getLoggedUserInfo(User *user) {
+	ifstream currentUserfile;
 
-	user->display_user_data();
+	if(!user->getUserType().compare("Student")) {
+		currentUserfile.open("../Files/personal_Infos/Student.dat", ios::in);
+		Student std;
+		if(!currentUserfile){
+			cout << "\n\tFile not found";
+		} else {
+			currentUserfile >> std;
+			student_header();
+
+			while(!currentUserfile.eof()) {
+				if(std.getUserId() == user->getUserId()){
+					cout << "\n\n";
+					std.display_data();
+					break;
+				}
+				currentUserfile >> std;
+			}
+	
+		}
+	} else if(!user->getUserType().compare("Staff")) {
+		currentUserfile.open("../Files/personal_Infos/Staff.dat", ios::in);
+		Staff staff;
+		if(!currentUserfile){
+			cout << "\n\tFile not found";
+		} else {
+			currentUserfile >> staff;
+			staff_header();
+
+			while(!currentUserfile.eof()) {
+				if(staff.getUserId() == user->getUserId()){
+					cout << "\n\n";
+					staff.display_data();
+					break;
+				}
+				currentUserfile >> staff;
+			}
+	
+		}
+	}
+
+	currentUserfile.close();
+
 }
 
 template <typename T>
@@ -578,38 +620,48 @@ void DataController::viewGeneralRecord(string whoseInfo){
 
 void DataController::deleteRecord() {
 	int userId;
-	Registration temp_registration;
-	string whoseInfo = temp_registration.chooseWhoseInfo();   //admin chooses the type of user to delete
+	
+	string whoseInfo = Registration().chooseWhoseInfo();   //admin chooses the type of user to delete
 	string file_name[2];
 
 	ifstream record, login_rec;
 
 	if(!whoseInfo.compare("Student")){
 		record.open("../Files/personal_Infos/Student.dat", ios::in);
-		login_rec.open("../Files/personal_Infos/Login_Std.dat", ios::in);
+		login_rec.open("../Files/Logins/Login_Std.dat", ios::in);
     
 		file_name[0] = "Student.dat";
 		file_name[1] = "Login_std.dat";
+
 		cout << "\n\tEnter a User Id: ";
 		cin >> userId;
+		
 		Student temp_user;
-		delete_file <Student> (userId, temp_user, file_name, record, login_rec);
+		delete_file<Student> (userId, temp_user, file_name, record, login_rec);
 	}
 	else if(!whoseInfo.compare("Staff")){
 		record.open("../Files/personal_Infos/Staff.dat", ios::in);
+		login_rec.open("../Files/Logins/Login_Staff.dat", ios::in);
+
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
+		
 		cout << "\n\tEnter a User Id: ";
 		cin >> userId;
+		
 		Staff temp_user;
 		delete_file<Staff> (userId, temp_user, file_name, record, login_rec);
 	}
 	else if(!whoseInfo.compare("Admin")){
 		record.open("../Files/personal_Infos/Admin.dat", ios::in);
+		login_rec.open("../Files/Logins/Login_Admin.dat", ios::in);
+		
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
+		
 		cout << "Enter a User Id: ";
 		cin >> userId;
+		
 		Staff temp_user;
 		delete_file<Staff> (userId, temp_user, file_name, record, login_rec);
 	}

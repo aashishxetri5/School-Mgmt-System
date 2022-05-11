@@ -148,9 +148,10 @@ bool Menu::performRequestedOperation(User *user) {
 			dc.getLoggedUserInfo(user);
 		}
 		dc.~DataController();
+		
 		system("pause");
 		system("cls");
-		mainOptions(user);
+
 		break;
 	case 2:
 		// if(!user->getUserType().compare("Admin") ){
@@ -161,6 +162,7 @@ bool Menu::performRequestedOperation(User *user) {
 		// 	dc.up;
 		// }
 		dc.updateRecord(user->getUserType());
+		cout << "\n\t";
 		system("pause");
 		break;
 	case 3:
@@ -184,6 +186,8 @@ bool Menu::performRequestedOperation(User *user) {
 	case 5:
 		dc.deleteRecord();
 		dc.~DataController();
+		cout << "\n\tRecord Deleted Successfully!!\n\n\t";
+		system("pause");
 		break;
 	case 6:
 		dc.search();
