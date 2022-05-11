@@ -34,11 +34,11 @@ bool LoginController::isValidUser(User *user) {
         ifstream login_file;
 
         if(user->getUserType().compare("Student") == 0) {
-            login_file.open("Login_Std.dat", ios::in);
+            login_file.open("../Files/Logins/Login_Std.dat", ios::in);
         } else if(user->getUserType().compare("Staff") == 0) {
-            login_file.open("Login_Staff.dat", ios::in);
+            login_file.open("../Files/Logins/Login_Staff.dat", ios::in);
         } else {
-            login_file.open("Login_Admin.dat", ios::in);
+            login_file.open("../Files/Logins/Login_Admin.dat", ios::in);
         }
         
         //check the username from the file 

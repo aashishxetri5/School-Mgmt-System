@@ -67,15 +67,15 @@ void DataController::search(){
 	cin >> userId;
 
 	if(!whoseInfo.compare("Student")){
-		record.open("Student.dat");
-		login_record.open("Login_std.dat");
+		record.open("../Files/personal_Infos/Student.dat");
+		login_record.open("../Files/Logins/Login_std.dat");
 		user.setUserType("Student");
 		searchRecord<Student>(user, userId, record, login_record);
 	}
 
 	if(!whoseInfo.compare("Staff")){
-		record.open("Staff.dat");
-		login_record.open("Login_Staff.dat");
+		record.open("../Files/personal_Infos/Staff.dat");
+		login_record.open("../Files/Logins/Login_Staff.dat");
 		user.setUserType("Staff");
 		searchRecord<Staff>(user, userId, record, login_record);
 
@@ -171,18 +171,18 @@ void DataController::updateRecord(string whoseInfo){
 	
 	if(!whoseInfo.compare("Student")){
 		oldname = "Student.dat";
-		record.open(oldname, ios::in);
+		record.open("../Files/personal_Infos/"+oldname, ios::in);
 		isuser  = update <Student> (temp_student, record, userId, oldname);
 
 	}
 
 	if(!whoseInfo.compare("Staff")){
 		oldname = "Staff.dat";
-		record.open(oldname, ios::in);
+		record.open("../Files/personal_Infos/"+oldname, ios::in);
 		isuser = update <Staff> (temp_staff, record, userId, oldname);
 	}
 
-	ofstream update_record(oldname.c_str(), ios::out|ios :: app);
+	ofstream update_record(("../Files/personal_Infos/" + oldname).c_str(), ios::out|ios :: app);
 	switch(updateChoice){
 	
 		case firstName:
@@ -331,7 +331,7 @@ bool update(T &obj, ifstream &record, int userId, string oldname){
 	}
 
 	T temp_obj;
-	ofstream newFile("newfile.txt", ios::out | ios:: app);
+	ofstream newFile("../Files/personal_Infos/newfile.txt", ios::out | ios:: app);
 
 	record >> temp_obj;
 
@@ -352,8 +352,8 @@ bool update(T &obj, ifstream &record, int userId, string oldname){
 	newFile.close();
 	record. close();
 
-	remove(oldname.c_str());
-	rename("newfile.txt", oldname.c_str());
+	remove(("../Files/personal_Infos/" + oldname).c_str());
+	rename("../Files/personal_Infos/newfile.txt", ("../Files/personal_Infos/" + oldname).c_str());
 
 	return isuser;
 
@@ -366,7 +366,7 @@ void DataController::changePassword(User *user){
 	User temp_user;
 
 	ifstream oldFile;
-	ofstream newFile("newfile.dat", ios::out|ios::app);
+	ofstream newFile("../Files/personal_Infos/newfile.dat", ios::out|ios::app);
 	string oldname, newname = "newfile.dat";
 
 	string whoseInfo = user ->getUserType();
@@ -379,17 +379,17 @@ void DataController::changePassword(User *user){
 	cin >>  username;
 
 	if(!whoseInfo.compare("Student")){	
-		oldFile.open("Login_std.dat", ios::in);
+		oldFile.open("../Files/Logins/Login_std.dat", ios::in);
 		oldname = "Login_std.dat";
 
 	}
 	else if(!whoseInfo.compare("Staff")){
-		oldFile.open("Login_Staff.dat", ios::in);
+		oldFile.open("../Files/Logins/Login_Staff.dat", ios::in);
 		oldname = "Login_Staff.dat";
 	
 	}
 	else{
-		oldFile.open("Login_Admin.dat", ios::in);
+		oldFile.open("../Files/Logins/Login_Admin.dat", ios::in);
 		oldname = "Login_Admin.dat";
 	}
 
@@ -426,8 +426,8 @@ void DataController::changePassword(User *user){
 	oldFile.close();
 	newFile.close();
 
-	remove(oldname.c_str());
-	rename(newname.c_str(), oldname.c_str());
+	remove(("../Files/Logins/" + oldname).c_str());
+	rename(("../Files/Logins/" + newname).c_str(), ("../Files/Logins/" + oldname).c_str());
 
 	cout << "Password sucessfully changed!";
 	system("pause");
@@ -448,16 +448,16 @@ void DataController::viewLoginInfo(){
 	cin >> username;
 
 	if(!whoseInfo.compare("Student")){	
-		userFile.open("Login_std.dat", ios::in);
+		userFile.open("../Files/Logins/Login_std.dat", ios::in);
 		user.setUserType("Student");
 
 	}
 	else if(!whoseInfo.compare("Staff")){
-		userFile.open("Login_Staff.dat", ios::in);
+		userFile.open("../Files/Logins/Login_Staff.dat", ios::in);
 		user.setUserType("Staff");
 	}
 	else{
-		userFile.open("Login_Admin.dat", ios::in);
+		userFile.open("../Files/Logins/Login_Admin.dat", ios::in);
 		user.setUserType("Admin");
 	}
 
@@ -490,8 +490,8 @@ void DataController::getLoggedUserInfo(User *user) {
 template <typename T>
 void DataController::delete_file(int userId, T &temp_user, string file_name[], ifstream &record, ifstream &lrec) {
 
-	ofstream temp_file("newFile.dat", ios::out);
-	ofstream temp_loginFile("newLoginFile.dat", ios::out);
+	ofstream temp_file("../Files/personal_Infos/newFile.dat", ios::out);
+	ofstream temp_loginFile("../Files/Logins/newLoginFile.dat", ios::out);
 
 	record >> temp_user;
 	User t_user;
@@ -516,10 +516,10 @@ void DataController::delete_file(int userId, T &temp_user, string file_name[], i
 	record.close();
 	lrec.close();
 	
-	remove(file_name[0].c_str());  //c_str converts the string to char*
-	remove(file_name[1].c_str());  //c_str converts the string to char*
-	rename("newFile.dat", file_name[0].c_str());
-	rename("newLoginFile.dat", file_name[1].c_str());
+	remove(("../Files/personal_Infos/"+file_name[0]).c_str());  //c_str converts the string to char*
+	remove(("../Files/Logins/"+ file_name[1]).c_str());  //c_str converts the string to char*
+	rename("../Files/personal_Infos/newFile.dat", ("../Files/personal_Infos/"+file_name[0]).c_str());
+	rename("../Files/Logins/newLoginFile.dat", ("../Files/Logins/" + file_name[1]).c_str());
 
 }
 
@@ -536,7 +536,7 @@ void DataController::viewGeneralRecord(string whoseInfo){
 
 	if(!whoseInfo.compare("Student")){
 		
-		ifstream student_file("Student.dat", ios::in);
+		ifstream student_file("../Files/personal_Infos/Student.dat", ios::in);
 		Student temp_student;
 		
 		cout << "Student data: \n\n";
@@ -560,7 +560,7 @@ void DataController::viewGeneralRecord(string whoseInfo){
 	}
 
 	else if(!whoseInfo.compare("Staff")){
-		ifstream staff_file("Staff.dat", ios::in|ios::app);
+		ifstream staff_file("../Files/personal_Infos/Staff.dat", ios::in|ios::app);
 
 		Staff temp_staff;
 
@@ -593,8 +593,8 @@ void DataController::deleteRecord() {
 	ifstream record, lrec;
 
 	if(!whoseInfo.compare("Student")){
-		record.open("Student.dat", ios::in);
-		lrec.open("Login_Std.dat", ios::in);
+		record.open("../Files/personal_Infos/Student.dat", ios::in);
+		lrec.open("../Files/personal_Infos/Login_Std.dat", ios::in);
 		file_name[0] = "Student.dat";
 		file_name[1] = "Login_std.dat";
 		cout << "Enter a User Id: ";
@@ -605,7 +605,7 @@ void DataController::deleteRecord() {
 
 	}
 	else if(!whoseInfo.compare("Staff")){
-		record.open("Staff.dat", ios::in);
+		record.open("../Files/personal_Infos/Staff.dat", ios::in);
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
 		cout << "Enter a User Id: ";
@@ -614,7 +614,7 @@ void DataController::deleteRecord() {
 		delete_file<Staff> (userId, temp_user, file_name, record, lrec);
 	}
 	else if(!whoseInfo.compare("Admin")){
-		record.open("Admin.dat", ios::in);
+		record.open("../Files/personal_Infos/Admin.dat", ios::in);
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
 		cout << "Enter a User Id: ";
