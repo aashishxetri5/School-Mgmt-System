@@ -21,14 +21,14 @@ void student_header();
 
 void user_header();
 
-template <typename className> 
-void searchRecord(User &user, int userId, ifstream &record, ifstream &login_record);
-
 using namespace std;
 
 class DataController {
 
 public:
+
+	template <typename className> 
+	void searchRecord(User &user, int userId, ifstream &record, ifstream &login_record);
 
     void getLoggedoldFile(User *);
     
@@ -50,7 +50,6 @@ public:
 	void updateRecord(string whoseInfo);
 
 	void search();
-
 
 };
 
@@ -85,9 +84,8 @@ void DataController::search(){
 
 }
 
-
 template <typename className> 
-void searchRecord(User &user, int userId, ifstream &record, ifstream &login_record){
+void DataController::searchRecord(User &user, int userId, ifstream &record, ifstream &login_record){
 
 	className temp_obj;
 	string whoseInfo = user.getUserType();
@@ -609,7 +607,7 @@ void DataController::deleteRecord() {
 
 	if(!whoseInfo.compare("Student")){
 		record.open("../Files/personal_Infos/Student.dat", ios::in);
-		lrec.open("../Files/personal_Infos/Login_Std.dat", ios::in);
+		login_rec.open("../Files/personal_Infos/Login_Std.dat", ios::in);
     
 		file_name[0] = "Student.dat";
 		file_name[1] = "Login_std.dat";
@@ -676,13 +674,10 @@ void staff_header(){
 
 void user_header(){
 
-	for(int i = 0; i < 59; i++){
-		cout << "-";
-	}
-	 cout << "\n|";
-	cout << setw(20) <<"USERNAME" <<"|";
-	cout << setw(20) << "PASSWORD" << "|";
-	cout << setw(15)<<  "USERTYPE" << "|\n";
+	cout << setw(20) << "User Id";
+	cout << setw(20) << "Username";
+	cout << setw(20) << "Password" ;
+	cout << setw(15) << "UserType" << "\n";
 
 	for(int i = 0; i < 59; i++){
 		cout << "-";

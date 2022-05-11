@@ -138,8 +138,7 @@ public:
 		User *user = new User(student->getUserId(), setLoginCredentials( student->getFirstname(), student->getUserId()), "qwerty");
 
 		if (!student_file) {
-			cout << "File not found !!!";
-			exit(1);
+			cout << "\n\tFile not found !!!";
 		} else {
 			student_file << *student << flush;
 			student_loginfile << *user << flush;
@@ -169,8 +168,7 @@ public:
 		
 
 		if (!rec_file) {
-			cout << "File not found !!!";
-			exit(1);
+			cout << "\n\tFile not found !!!";
 		} else {
 			rec_file << *staff << flush;
 			rec_loginfile << *user << flush;

@@ -4,6 +4,7 @@
 #include "..\Controller\LoginController.cpp"
 #include "..\Controller\registration.cpp"
 #include "..\Controller\DataController.cpp"
+#include "..\Controller\MarksController.cpp"
 
 class Menu {
     int menuChoice;
@@ -163,8 +164,14 @@ bool Menu::performRequestedOperation(User *user) {
 		system("pause");
 		break;
 	case 3:
-        cout << "marksheet";
-		// displayMarksheet();
+        MarksController mc;
+		if(!user->getUserType().compare("Student")) {
+			mc.displayMarksheet(user->getUserId());
+		} else if(!user->getUserType().compare("Admin")) {
+			mc.getAllMarksheet();
+		}
+		system("pause");
+		mc.~MarksController();
 		break;
 	case 4:
 		Registration reg;
@@ -179,7 +186,6 @@ bool Menu::performRequestedOperation(User *user) {
 		dc.~DataController();
 		break;
 	case 6:
-        cout << "search record";
 		dc.search();
 		break;
 	case 7:
@@ -187,8 +193,16 @@ bool Menu::performRequestedOperation(User *user) {
 		dc.viewLoginInfo(); 		///--> will open the login file
 		break;
 	case 8:
-        cout << "save marks";
-		// saveMarks();
+		while(1) {
+			mc.saveMarks();
+			cout << "\n\n\tDo you want to enter more data? 'n' NO: ";
+			cin >> resp;
+		
+			if(resp == 'n' || resp == 'N'){
+				break;
+			}
+		}
+		mc.~MarksController();
 		break;
 	case 9:
         cout << "change password";
