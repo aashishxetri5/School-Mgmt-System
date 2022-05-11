@@ -104,15 +104,15 @@ istream& operator >> (istream& stream, Staff &sObj){
 
 void Staff::display_data(){
     
-    cout << setw(7) << to_string(userId);
-    cout << setw(24) << getFullname();
-    cout << setw(20) << email;
-    cout << setw(21) << address;
-    cout << setw(17) << phone_num;
-    cout << setw(8) << subject;
-    cout << setw(12) << "Rs. " << to_string(salary) << "\n" ;
+    cout << setw(10) << left << to_string(userId);
+    cout << setw(22) << left << getFullname();
+    cout << setw(33) << left << email;
+    cout << setw(18) << left << address;
+    cout << setw(16) << left << phone_num;
+    cout << setw(16) << left << subject;
+    cout << setw(10) << left << "Rs. " + to_string(salary) << "\n" ;
 
-    for(int i = 0; i < 120; i++){
+    for(int i = 0; i < 127; i++){
         cout << "-";
     }
     cout << "\n";

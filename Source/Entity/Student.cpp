@@ -64,13 +64,13 @@ public:
 
 void Student::display_data(){
     
-    cout << setw(7) << to_string(userId);
-    cout << setw(20) << getFullname();
-    cout << setw(7) << to_string(grade);
-    cout << setw(30) << email;
-    cout << setw(16) << address;
-    cout << setw(19) << phone_num;
-    cout << setw(18) << dob <<"\n" ;
+    cout << setw(10) << left << to_string(userId);
+    cout << setw(22) << left << getFullname();
+    cout << setw(9) << left << to_string(grade);
+    cout << setw(33) << left << email;
+    cout << setw(18) << left << address;
+    cout << setw(16) << left << phone_num;
+    cout << setw(13) << left << dob <<"\n" ;
 
     for(int i = 0; i < 120; i++){
         cout << "-";
