@@ -10,17 +10,19 @@
 #include "..\Entity\Staff.cpp"
 #include "registration.cpp"
 
-
 template <typename T>
 bool update(T &obj, ifstream &record, int userId, string oldname);
+
 int chooseUpdate(string whoseInfo);
+
 void staff_header();
+
 void student_header();
+
 void user_header();
+
 template <typename className> 
 void searchRecord(User &user, int userId, ifstream &record, ifstream &login_record);
-
-
 
 using namespace std;
 
@@ -443,7 +445,6 @@ void DataController::viewLoginInfo(){
 	string username;
 	ifstream userFile;
 
-
 	cout << "Enter username: ";
 	cin >> username;
 
@@ -465,7 +466,6 @@ void DataController::viewLoginInfo(){
 		cout << "File open Error";
 		exit(0);
 	}
-
 	
 	while(!userFile.eof()){
 		userFile >> user;
@@ -476,14 +476,13 @@ void DataController::viewLoginInfo(){
 		//userFile >> user;
 	}
 
-
 	userFile.close();
 	system("pause");
 
 }
 
-
 void DataController::getLoggedUserInfo(User *user) {
+
 	user->display_user_data();
 }
 
@@ -523,7 +522,7 @@ void DataController::delete_file(int userId, T &temp_user, string file_name[], i
 
 }
 
-
+//Displays General records of student, admin and staff
 void DataController::viewGeneralRecord(string whoseInfo){
 
 	system("cls");
@@ -541,20 +540,17 @@ void DataController::viewGeneralRecord(string whoseInfo){
 		
 		cout << "Student data: \n\n";
 		if(!student_file){
-		//	gotoxy(50, y_cord);
 			cout << "file not found";
-		}
-
-		student_file >> temp_student;
-
-		student_header();
-
-		do{
-			temp_student.display_data();
+		} else {
 			student_file >> temp_student;
-		}while(!student_file.eof());
+			student_header();
+
+			do{
+				temp_student.display_data();
+				student_file >> temp_student;
+			} while(!student_file.eof());
 	
-		//temp_student.display_data();
+		}
 
 		student_file.close();
 	}
@@ -566,20 +562,39 @@ void DataController::viewGeneralRecord(string whoseInfo){
 
 		if(!staff_file){
 			cout << "File not found";
-			exit(1);
-		}
+		} else {
 
-		cout << "\n\nStaff Data: \n\n";
-		staff_file >> temp_staff;
-
-		staff_header();
-		do{
-			temp_staff.display_data();
+			cout << "\n\nStaff Data: \n\n";
 			staff_file >> temp_staff;
-		}while(!staff_file.eof());
 
-	
+			staff_header();
+			do {
+				temp_staff.display_data();
+				staff_file >> temp_staff;
+			} while(!staff_file.eof());
+		}
 		staff_file.close();
+
+	} else if(!whoseInfo.compare("Admin")){
+		ifstream admin_file("Admin.dat", ios::in|ios::app);
+
+		Staff temp_admin;
+
+		if(!admin_file){
+			cout << "File not found";
+		} else {
+
+			cout << "\n\nStaff Data: \n\n";
+			admin_file >> temp_admin;
+			staff_header();
+
+			do {
+				temp_admin.display_data();
+				admin_file >> temp_admin;
+			} while(!admin_file.eof());
+
+		}
+		admin_file.close();
 	}
 
 }
@@ -590,28 +605,27 @@ void DataController::deleteRecord() {
 	string whoseInfo = temp_registration.chooseWhoseInfo();   //admin chooses the type of user to delete
 	string file_name[2];
 
-	ifstream record, lrec;
+	ifstream record, login_rec;
 
 	if(!whoseInfo.compare("Student")){
 		record.open("../Files/personal_Infos/Student.dat", ios::in);
 		lrec.open("../Files/personal_Infos/Login_Std.dat", ios::in);
+    
 		file_name[0] = "Student.dat";
 		file_name[1] = "Login_std.dat";
-		cout << "Enter a User Id: ";
+		cout << "\n\tEnter a User Id: ";
 		cin >> userId;
 		Student temp_user;
-		delete_file <Student> (userId, temp_user, file_name, record, lrec);
-
-
+		delete_file <Student> (userId, temp_user, file_name, record, login_rec);
 	}
 	else if(!whoseInfo.compare("Staff")){
 		record.open("../Files/personal_Infos/Staff.dat", ios::in);
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
-		cout << "Enter a User Id: ";
+		cout << "\n\tEnter a User Id: ";
 		cin >> userId;
 		Staff temp_user;
-		delete_file<Staff> (userId, temp_user, file_name, record, lrec);
+		delete_file<Staff> (userId, temp_user, file_name, record, login_rec);
 	}
 	else if(!whoseInfo.compare("Admin")){
 		record.open("../Files/personal_Infos/Admin.dat", ios::in);
@@ -620,52 +634,40 @@ void DataController::deleteRecord() {
 		cout << "Enter a User Id: ";
 		cin >> userId;
 		Staff temp_user;
-		delete_file<Staff> (userId,temp_user, file_name, record, lrec);
+		delete_file<Staff> (userId, temp_user, file_name, record, login_rec);
 	}
-
-	//;;;Could add admin file in the future.
 	
 }
 
+//To display the table headings for students
 void student_header(){
-	
-	for(int i = 0; i < 128; i++){
-			cout << "-";
-	}
 
-	cout << "\n";
-	cout << "|";
-	cout <<  setw(10) << "USER ID" <<"|";
-	cout <<  setw(14) << "FIRST NAME" <<"|";
-	cout <<  setw(14) << "LAST NAME" <<"|";
-	cout <<  setw(30)<< "EMAIL"<<"|";
-	cout <<  setw(20) << "ADDRESS" <<"|";
-	cout <<  setw(13) << "PHONE NUM" <<"|";
-	cout <<  setw(5) << "GRADE" <<"|";
-	cout <<  setw(13) << "D.O.B" <<"|\n" ;
+	cout << setw(7) << "User Id";
+	cout << setw(14) << "Fullname";
+	cout << setw(16) << "Grade";
+	cout << setw(10) << "Email";
+	cout << setw(29) << "Address";
+	cout << setw(16) << "Contact";
+	cout << setw(13) << "Dob" << "\n";
 
-	for(int i = 0; i < 128; i++){
+	for(int i = 0; i < 120; i++){
 		cout << "-";
 	}
 	cout << "\n";
 }
 
+//To display the table headings for staff and admin
 void staff_header(){
-	for(int i = 0; i < 128; i++){
-		cout << "-";
-	}
-	cout << "\n";
-	cout << "|";
-	cout <<  setw(10) << "USER ID" <<"|";
-	cout <<  setw(14) << "FIRST NAME" <<"|";
-	cout <<  setw(14) << "LAST NAME" <<"|";
-	cout <<  setw(30)<< "EMAIL"<<"|";
-	cout <<  setw(20) << "ADDRESS" <<"|";
-	cout <<  setw(13) << "PHONE NUM" <<"|";
-	cout <<  setw(13) << "SUBJECT" <<"|";
-	cout <<  setw(5) << "SALARY" <<"|\n" ;
 
-	for(int i = 0; i < 128; i++){
+	cout << setw(7) << "User Id";
+	cout << setw(14) << "Fullname";
+	cout << setw(22) << "Email";
+	cout << setw(27) << "Address";
+	cout << setw(16) << "Contact";
+	cout << setw(15) << "Subject";
+	cout << setw(10) << "Salary" << "\n";
+
+	for(int i = 0; i < 120; i++){
 		cout << "-";
 	}
 	cout << "\n";

@@ -63,26 +63,16 @@ public:
 };
 
 void Student::display_data(){
-    // cout << "\tID: "<< userId;
-    // cout << "\tFirst Name: "<< firstname;
-    // cout << "\ttLast Name: "<< lastname;
-    // cout << "\ttEmail: "<< email;
-    // cout << "\ttAddress: "<< address;
-    // cout << "\ttcontact number: "<< phone_num;
-    // cout << "\ttGrade: "<< grade;
-    // cout << "\n\ttDate [DD/MM/YY]: "<< dob;
-    // cout << "\n";
-    cout << "|";
-    cout <<  setw(10) << userId <<"|";
-    cout <<  setw(14) << firstname <<"|";
-    cout <<  setw(14) << lastname <<"|";
-    cout <<  setw(30)<< email<<"|";
-    cout <<  setw(20) << address <<"|";
-    cout <<  setw(13) << phone_num <<"|";
-    cout <<  setw(5) << grade <<"|";
-    cout <<  setw(13) << dob <<"|\n" ;
+    
+    cout << setw(7) << to_string(userId);
+    cout << setw(20) << getFullname();
+    cout << setw(7) << to_string(grade);
+    cout << setw(30) << email;
+    cout << setw(16) << address;
+    cout << setw(19) << phone_num;
+    cout << setw(18) << dob <<"\n" ;
 
-    for(int i = 0; i < 128; i++){
+    for(int i = 0; i < 120; i++){
         cout << "-";
     }
     cout << "\n";

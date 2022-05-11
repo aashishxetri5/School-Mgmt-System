@@ -83,7 +83,7 @@ ostream& operator << (ostream& stream, Staff sObj){
     stream << sObj.address << "\t";
     stream << sObj.phone_num << "\t";
     stream << sObj.salary << "\t";
-    stream << sObj.subject<<"\n";
+    stream << sObj.subject << "\n";
 
     return stream;
 }
@@ -103,27 +103,16 @@ istream& operator >> (istream& stream, Staff &sObj){
 }
 
 void Staff::display_data(){
-    // cout << "\n\tID: "<< userId;
-    // cout << "\n\tFirst Name: "<< firstname;
-    // cout << "\n\tLast Name: "<< lastname;
-    // cout << "\n\tEmail: "<< email;
-    // cout << "\n\tAddress: "<< address;
-    // cout << "\n\tcontact number: "<< phone_num;
-    // cout << "\n\tSubject: "<< subject;
-    // cout << "\n\tSalary: "<<salary;
-    // cout << "\n\n";
+    
+    cout << setw(7) << to_string(userId);
+    cout << setw(24) << getFullname();
+    cout << setw(20) << email;
+    cout << setw(21) << address;
+    cout << setw(17) << phone_num;
+    cout << setw(8) << subject;
+    cout << setw(12) << "Rs. " << to_string(salary) << "\n" ;
 
-    cout << "|";
-    cout <<  setw(10) << userId <<"|";
-    cout <<  setw(14) << firstname <<"|";
-    cout <<  setw(14) << lastname <<"|";
-    cout <<  setw(30)<< email<<"|";
-    cout <<  setw(20) << address <<"|";
-    cout <<  setw(13) << phone_num <<"|";
-    cout <<  setw(13) << subject <<"|";
-    cout <<  setw(5) << salary <<"|\n" ;
-
-    for(int i = 0; i < 128; i++){
+    for(int i = 0; i < 120; i++){
         cout << "-";
     }
     cout << "\n";
