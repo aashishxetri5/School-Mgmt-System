@@ -359,77 +359,63 @@ bool update(T &obj, ifstream &record, int userId, string oldname){
 
 void DataController::changePassword(User *user){
 
-	Registration temp_registration;
-	string new_pass, confirm_pass, username;
+	string new_pass, confirm_pass;
 	User temp_user;
 
 	ifstream oldFile;
-	ofstream newFile("../Files/personal_Infos/newfile.dat", ios::out|ios::app);
+	ofstream newFile("../Files/logins/newfile.dat", ios::out|ios::app);
 	string oldname, newname = "newfile.dat";
 
-	string whoseInfo = user ->getUserType();
-
-	if(!whoseInfo.compare("Admin")){
-		whoseInfo = temp_registration.chooseWhoseInfo();
-	}
-
-	cout << "UserName: ";
-	cin >>  username;
+	string whoseInfo = user->getUserType();
 
 	if(!whoseInfo.compare("Student")){	
-		oldFile.open("../Files/Logins/Login_std.dat", ios::in);
-		oldname = "Login_std.dat";
+		oldFile.open("../Files/Logins/Login_Std.dat", ios::in);
+		oldname = "Login_Std.dat";
 
-	}
-	else if(!whoseInfo.compare("Staff")){
+	} else if(!whoseInfo.compare("Staff")){
 		oldFile.open("../Files/Logins/Login_Staff.dat", ios::in);
 		oldname = "Login_Staff.dat";
 	
-	}
-	else{
+	} else{
 		oldFile.open("../Files/Logins/Login_Admin.dat", ios::in);
 		oldname = "Login_Admin.dat";
 	}
-
-	while(1){
 	
-		cout << "New password: ";
-		cin >> new_pass;
+	cout << "\n\tNew password: ";
+	cin >> new_pass;
 
-		cout << "Confirm Password: ";
-		cin >> confirm_pass;
+	cout << "\n\tConfirm Password: ";
+	cin >> confirm_pass;
 
-		if(!new_pass.compare(confirm_pass)){
-			break;
-		}
-		system("cls");
-	}
-
-	if(!oldFile){
-		cout << "file open error";
-		exit(0);
-	}
-
-	oldFile >> temp_user;
-	while(!oldFile.eof()){
+	if(!new_pass.compare(confirm_pass)) {
 		
-		if(!username.compare(temp_user.get_username())){
-			temp_user.set_password(new_pass);
+		if(!oldFile){
+			cout << "\n\tFile open error";
+		} else {
+
+			oldFile >> temp_user;
+			while(!oldFile.eof()){
+		
+				if(temp_user.getUserId() == user->getUserId()){
+					temp_user.set_password(new_pass);
+				}
+				newFile << temp_user;
+				oldFile >> temp_user;
+
+			}
+
+			oldFile.close();
+			newFile.close();
+			system("pause");
+			remove(("../Files/Logins/" + oldname).c_str());
+			rename(("../Files/Logins/" + newname).c_str(), ("../Files/Logins/" + oldname).c_str());
+
+			cout << "\n\tPassword sucessfully changed!\n\t";
 		}
-		newFile << temp_user;
-		oldFile >> temp_user;
-
+	} else {
+		cout << "\n\n\tPasswords do not match\n\t";
 	}
-
-	oldFile.close();
-	newFile.close();
-
-	remove(("../Files/Logins/" + oldname).c_str());
-	rename(("../Files/Logins/" + newname).c_str(), ("../Files/Logins/" + oldname).c_str());
-
-	cout << "Password sucessfully changed!";
 	system("pause");
-
 }
 
 void DataController::viewLoginInfo(){
