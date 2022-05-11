@@ -83,7 +83,7 @@ ostream& operator << (ostream& stream, Staff sObj){
     stream << sObj.address << "\t";
     stream << sObj.phone_num << "\t";
     stream << sObj.salary << "\t";
-    stream << sObj.subject;
+    stream << sObj.subject<<"\n";
 
     return stream;
 }
