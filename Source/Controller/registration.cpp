@@ -131,9 +131,9 @@ public:
 
 	//Creates/Opens the file to store the student's general data as well as the login data. 
 	void store_student(Student *student) {
-		fstream student_file("Student.dat", ios::out|ios::app);
+		fstream student_file("../Files/personal_Infos/Student.dat", ios::out|ios::app);
 		
-		fstream student_loginfile("Login_Std.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
+		fstream student_loginfile("../Files/Logins/Login_Std.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 
 		User *user = new User(student->getUserId(), setLoginCredentials( student->getFirstname(), student->getUserId()), "qwerty");
 
@@ -158,11 +158,11 @@ public:
 		 fstream rec_loginfile;
 
 		if(whoseInfo == "Staff"){
-			rec_file.open("Staff.dat", ios::out|ios::app);
-			rec_loginfile.open("Login_Staff.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
+			rec_file.open("../Files/personal_Infos/Staff.dat", ios::out|ios::app);
+			rec_loginfile.open("../Files/Logins/Login_Staff.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 		} else {
-			rec_file.open("Admin.dat", ios::out|ios::app);
-			rec_loginfile.open("Login_Admin.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
+			rec_file.open("../Files/personal_Infos/Admin.dat", ios::out|ios::app);
+			rec_loginfile.open("../Files/Logins/Login_Admin.dat", ios::out|ios::app); //Create login file and add record when each new User is registered.
 		}
 
 		User *user = new User(staff->getUserId(), setLoginCredentials( staff->getFirstname(), staff->getUserId()), "qwerty");
@@ -182,41 +182,7 @@ public:
 		rec_file.close();
 		rec_loginfile.close();
 	}
-
-// get is not necessary for the registration.
-// However, might be required in the future...
-
-// Student get_student(){
-// 	ifstream student_file("Student.txt", ios::in);
-// 	Student temp;
-// 	student_file.seekg(0, ios::beg);
-// 	if(!student_file){
-// 		cout << "File not found";
-
-// 	}
-
-// 	student_file >> temp;
-// 	student_file.close();
-// 	return temp;
-// }
-
-// Staff get_staff(){
-// 	Staff temp;
-
-// 	ifstream staff_file("Staff.txt", ios::in);
-
-// 	staff_file.seekg(0, ios::beg); //set the cursor to the beg of the file
-
-// 	if(!staff_file){
-// 		cout << "File not found";
-// 	}
-
-// 	staff_file >> temp;   //store the data of the student from the file to the tmeporary class
-// 	staff_file.close();
-// 	return temp;
-// }
-
-
+	
 	string setLoginCredentials(string fname, int userId) {
 		return ( fname + to_string(userId) );
 	}

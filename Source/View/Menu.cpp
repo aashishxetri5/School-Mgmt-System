@@ -144,7 +144,7 @@ bool Menu::performRequestedOperation(User *user) {
 			dc.viewGeneralRecord(user->getUserType());
 		} 
 		else {
-		//	dc.getLoggedUserInfo(user);
+			dc.getLoggedUserInfo(user);
 		}
 		dc.~DataController();
 		system("pause");
@@ -180,7 +180,7 @@ bool Menu::performRequestedOperation(User *user) {
 		break;
 	case 6:
         cout << "search record";
-		// search();
+		dc.search();
 		break;
 	case 7:
 		DataController dc;
@@ -212,4 +212,3 @@ bool Menu::performRequestedOperation(User *user) {
 	}
     return true;
 }
-
