@@ -21,6 +21,8 @@ void student_header();
 
 void user_header();
 
+bool valid_userId(int &userId);
+
 using namespace std;
 
 class DataController {
@@ -33,7 +35,7 @@ public:
 	template <typename T>
     void delete_file(int, T &, string [], ifstream &, ifstream &);
 
-	void deleteRecord();
+	bool deleteRecord();
 	
 	void viewGeneralRecord(string);
 
@@ -45,14 +47,14 @@ public:
 
 	void getLoggedUserInfo(User *user);
 
-	void updateRecord(string whoseInfo);
+	bool updateRecord(string whoseInfo);
 
-	void search();
+	bool search();
 
 };
 
 
-void DataController::search(){
+bool DataController::search(){
 
 	Registration temp;
 	string whoseInfo = temp.chooseWhoseInfo();
@@ -62,8 +64,9 @@ void DataController::search(){
 
 	ifstream record, login_record;
 
-	cout << "Enter the user Id: ";
-	cin >> userId;
+	if(!valid_userId(userId)) {return false;}
+
+	user.setUserId(userId);
 
 	if(!whoseInfo.compare("Student")){
 		record.open("../Files/personal_Infos/Student.dat");
@@ -79,6 +82,8 @@ void DataController::search(){
 		searchRecord<Staff>(user, userId, record, login_record);
 
 	}
+
+	return true;
 
 }
 
@@ -135,7 +140,7 @@ void DataController::searchRecord(User &user, int userId, ifstream &record, ifst
 
 }
 
-void DataController::updateRecord(string whoseInfo){
+bool DataController::updateRecord(string whoseInfo){
 
 /* 
 	for now:
@@ -148,6 +153,7 @@ void DataController::updateRecord(string whoseInfo){
  	enum Options{firstName = 1, lastName, email, address, contact, grade, dob, subject, salary};
 	int newdata;
 	string newString, oldname;
+	string string_userId;
 	int userId;
 	bool isuser;
 	
@@ -160,12 +166,21 @@ void DataController::updateRecord(string whoseInfo){
 		Registration temp_registration;
 		whoseInfo= temp_registration.chooseWhoseInfo();
 	}
-
 	
 	int updateChoice = chooseUpdate(whoseInfo);
 
-	cout << "User ID: ";
-	cin >> userId;
+
+	try{
+		cout << "\n\tUser ID: ";
+		cin >> string_userId;
+		userId = stoi(string_userId);
+	}
+	catch(std::invalid_argument const& ex){ //catch error if string is not integer.
+		cout << "\n\tPlease enter numeric choice.\n\t";
+		system("pause");
+		return false;
+	}
+	
 	
 	if(!whoseInfo.compare("Student")){
 		oldname = "Student.dat";
@@ -184,7 +199,7 @@ void DataController::updateRecord(string whoseInfo){
 	switch(updateChoice){
 	
 		case firstName:
-			cout << "New First Name: ";
+			cout << "\n\tNew First Name: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setFirstname(newString);
@@ -195,7 +210,7 @@ void DataController::updateRecord(string whoseInfo){
 			break;
 
 		case lastName:
-			cout << "New Last Name: ";
+			cout << "\n\tNew Last Name: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setLastname(newString);
@@ -206,7 +221,7 @@ void DataController::updateRecord(string whoseInfo){
 			break;
 
 		case email:
-		 	cout << "New Email: ";
+		 	cout << "\n\tNew Email: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setEmail(newString);
@@ -218,7 +233,7 @@ void DataController::updateRecord(string whoseInfo){
 			break;
 
 		case address:
-			cout << "New Address: ";
+			cout << "\n\tNew Address: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setAddress(newString);
@@ -229,7 +244,7 @@ void DataController::updateRecord(string whoseInfo){
 			break;
 
 		case contact:
-			cout << "New Contact: ";
+			cout << "\n\tNew Contact: ";
 			cin >> newString;
 			if(!whoseInfo.compare("Student")){
 				temp_student.setPhonenum(newString);
@@ -240,33 +255,35 @@ void DataController::updateRecord(string whoseInfo){
 			break;
 
 		case grade:
-			cout << "New Grade: ";
+			cout << "\n\tNew Grade: ";
 			cin >> newdata;
 			temp_student.setGrade(newdata);
 			break;
 
 		case dob:
-			cout << "New Date of birth[mm/dd/yyyy]: ";
+			cout << "\n\tNew Date of birth[mm/dd/yyyy]: ";
 			cin >> newString;
 			temp_student.setDate(newString);
 			break;
 
 		case subject:
-			cout << "New Subject: ";
+			cout << "\n\tNew Subject: ";
 			cin >> newString;
 			temp_staff.setSubject(newString);
 			break;
 
 		case salary: 
-			cout << "New Salary: ";
+			cout << "\n\tNew Salary: ";
 			cin >> newdata;
 			temp_staff.setSalary(newdata);
 			break;
 
 		default:
-			cout << "Invalid choice";
+			cout << "\n\tInvalid choice\n\t";
 			system("pause");
 			system("cls");
+			record.close();
+			remove(("../Files/personal_Infos/" + oldname).c_str());
 			return updateRecord(whoseInfo);
 	}
 	
@@ -280,33 +297,41 @@ void DataController::updateRecord(string whoseInfo){
 	}
 	
 	update_record.close();
-	
+	return true;
 }
 
 int chooseUpdate(string whoseInfo){
 
 	int choice;
+	string s_choice;
 
-	cout << "Update options\n";
-	cout << "1. First Name\n";
-	cout << "2. last Name\n";
-	cout << "3. Email\n";
-	cout << "4. Address\n";
-	cout << "5. Phone Numeber\n";
+
+	cout << "\n\tUpdate options";
+	cout << "\n\t1. First Name";
+	cout << "\n\t2. last Name";
+	cout << "\n\t3. Email";
+	cout << "\n\t4. Address";
+	cout << "\n\t5. Phone Number";
 
 	if(!whoseInfo.compare("Student")){
-		cout << "6. Grade\n";
-		cout << "7. Date Of Birth\n";
+		cout << "\n\t6. Grade";
+		cout << "\n\t7. Date Of Birth";
 
 	}
 
 	if(!whoseInfo.compare("Staff")){
-		cout << "6. Subject\n";  //8
-		cout << "7. Salary\n";  //9
+		cout << "\n\t6. Subject";  //8
+		cout << "\n\t7. Salary";  //9
 	}
 
-	cout << "Enter your choice: ";
-	cin >> choice;
+	try{
+		cout << "\n\tEnter your choice: ";
+		cin >> s_choice;
+		choice = stoi(s_choice);
+	}
+	catch(std::invalid_argument const &ex){
+		choice = 11;
+	}
 
 	if(choice >= 1 && choice <= 7){
 		return choice;
@@ -315,6 +340,7 @@ int chooseUpdate(string whoseInfo){
 		return (choice + 2);
 	}
 	
+	system("cls");
 	return chooseUpdate(whoseInfo);
 }
 
@@ -441,7 +467,7 @@ void DataController::viewLoginInfo(){
 	string username;
 	ifstream userFile;
 
-	cout << "Enter username: ";
+	cout << "\n\tEnter username: ";
 	cin >> username;
 
 	if(!whoseInfo.compare("Student")){	
@@ -473,6 +499,7 @@ void DataController::viewLoginInfo(){
 	}
 
 	userFile.close();
+	cout << "\n\t";
 	system("pause");
 
 }
@@ -595,7 +622,7 @@ void DataController::viewGeneralRecord(string whoseInfo){
 
 }
 
-void DataController::deleteRecord() {
+bool DataController::deleteRecord() {
 	int userId;
 	Registration temp_registration;
 	string whoseInfo = temp_registration.chooseWhoseInfo();   //admin chooses the type of user to delete
@@ -609,8 +636,7 @@ void DataController::deleteRecord() {
     
 		file_name[0] = "Student.dat";
 		file_name[1] = "Login_std.dat";
-		cout << "\n\tEnter a User Id: ";
-		cin >> userId;
+		if(!valid_userId(userId)){return false;}
 		Student temp_user;
 		delete_file <Student> (userId, temp_user, file_name, record, login_rec);
 	}
@@ -618,8 +644,7 @@ void DataController::deleteRecord() {
 		record.open("../Files/personal_Infos/Staff.dat", ios::in);
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
-		cout << "\n\tEnter a User Id: ";
-		cin >> userId;
+		if(!valid_userId(userId)){return false;}
 		Staff temp_user;
 		delete_file<Staff> (userId, temp_user, file_name, record, login_rec);
 	}
@@ -627,11 +652,11 @@ void DataController::deleteRecord() {
 		record.open("../Files/personal_Infos/Admin.dat", ios::in);
 		file_name[0] = "Staff.dat";
 		file_name[1] = "Login_Staff.dat";
-		cout << "Enter a User Id: ";
-		cin >> userId;
+		if(!valid_userId(userId)){return false;}
 		Staff temp_user;
 		delete_file<Staff> (userId, temp_user, file_name, record, login_rec);
 	}
+	return true;
 	
 }
 
@@ -681,6 +706,25 @@ void user_header(){
 		cout << "-";
 	}
 	cout << "\n";
+}
+
+
+bool valid_userId(int &userId){
+
+	string s_userId;
+	try{
+		cout << "\n\tEnter your userId: ";
+		cin >> s_userId;
+    	userId = stoi(s_userId);   //stoi changes the int-string to integer.
+		 
+	}
+	catch(std::invalid_argument const& ex){ //catch error if string is not integer.
+		cout << "\n\tPlease enter numeric choice.\n\t";
+		system("pause");
+		return false;
+	}
+
+	return true;
 }
 
 #endif
