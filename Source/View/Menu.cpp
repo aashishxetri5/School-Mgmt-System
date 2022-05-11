@@ -60,7 +60,7 @@ bool Menu::login(User *user) {
     	user->setUserId( stoi(userId) );   //stoi changes the int-string to integer.
 		 
 	}
-	catch(std::invalid_argument const& ex){ //catch error if string is not integer.
+	catch(std::invalid_argument){ //catch error if string is not integer.
 		cout << "\n\tPlease enter numeric choice.\n\t";
 		system("pause");
 		return false;

@@ -175,7 +175,7 @@ bool DataController::updateRecord(string whoseInfo){
 		cin >> string_userId;
 		userId = stoi(string_userId);
 	}
-	catch(std::invalid_argument const& ex){ //catch error if string is not integer.
+	catch(std::invalid_argument){ //catch error if string is not integer.
 		cout << "\n\tPlease enter numeric choice.\n\t";
 		system("pause");
 		return false;
@@ -329,7 +329,7 @@ int chooseUpdate(string whoseInfo){
 		cin >> s_choice;
 		choice = stoi(s_choice);
 	}
-	catch(std::invalid_argument const &ex){
+	catch(std::invalid_argument){
 		choice = 11;
 	}
 
@@ -718,7 +718,7 @@ bool valid_userId(int &userId){
     	userId = stoi(s_userId);   //stoi changes the int-string to integer.
 		 
 	}
-	catch(std::invalid_argument const& ex){ //catch error if string is not integer.
+	catch(std::invalid_argument){ //catch error if string is not integer.
 		cout << "\n\tPlease enter numeric choice.\n\t";
 		system("pause");
 		return false;
