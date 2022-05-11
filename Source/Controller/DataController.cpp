@@ -29,8 +29,6 @@ public:
 
 	template <typename className> 
 	void searchRecord(User &user, int userId, ifstream &record, ifstream &login_record);
-
-    void getLoggedoldFile(User *);
     
 	template <typename T>
     void delete_file(int, T &, string [], ifstream &, ifstream &);
