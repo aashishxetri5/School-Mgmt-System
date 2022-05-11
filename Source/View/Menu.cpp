@@ -132,7 +132,7 @@ bool Menu::mainOptions(User *user) {
 	    system("cls");
         return false;
             
-	}else if( (!user->getUserType().compare("Student") || !user->getUserType().compare("Staff")) && (menuChoice > 3 && menuChoice < 10)){
+	}else if( (!user->getUserType().compare("Student") || !user->getUserType().compare("Staff")) && (menuChoice > 3 && menuChoice < 9)){
         /* Preventing Students and Staffs from accessing Administrative Controls. */
 	    cout <<"\n\tInvalid input...\n\t";
 	    system("pause");
@@ -156,9 +156,10 @@ bool Menu::performRequestedOperation(User *user) {
 			dc.getLoggedUserInfo(user);
 		}
 		dc.~DataController();
+		
 		system("pause");
 		system("cls");
-		mainOptions(user);
+
 		break;
 	case 2:
 		
@@ -192,6 +193,8 @@ bool Menu::performRequestedOperation(User *user) {
 			return mainOptions(user);
 		}
 		dc.~DataController();
+		cout << "\n\tRecord Deleted Successfully!!\n\n\t";
+		system("pause");
 		break;
 	case 6:
 		if(!dc.search()){
@@ -215,7 +218,6 @@ bool Menu::performRequestedOperation(User *user) {
 		mc.~MarksController();
 		break;
 	case 9:
-        cout << "change password";
 		dc.changePassword(user);
 		break;
 	case 10:
