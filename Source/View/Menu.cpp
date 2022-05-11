@@ -51,12 +51,20 @@ int Menu::loginMenu() {
 //take credentials
 bool Menu::login(User *user) {
     string temp_data = "";
-	int userId;
+	string userId;
     char temp;
 
-    cout << "\n\tEnter your userId: ";
-	cin >> userId;
-    user->setUserId( userId );
+	try{
+		cout << "\n\tEnter your userId: ";
+		cin >> userId;
+    	user->setUserId( stoi(userId) );   //stoi changes the int-string to integer.
+		 
+	}
+	catch(std::invalid_argument const& ex){ //catch error if string is not integer.
+		cout << "\n\tPlease enter numeric choice.\n\t";
+		system("pause");
+		return false;
+	}
 	
 	cin.ignore();
 
@@ -153,14 +161,11 @@ bool Menu::performRequestedOperation(User *user) {
 		mainOptions(user);
 		break;
 	case 2:
-		// if(!user->getUserType().compare("Admin") ){
-        //     cout << "udpate admin record";
-		// 	dc.updateRecord();
-		// } else {
-        //     cout << "udpate std/student record";
-		// 	dc.up;
-		// }
-		dc.updateRecord(user->getUserType());
+		
+		if(!dc.updateRecord(user->getUserType())){
+			return mainOptions(user);
+		}
+		cout << "\n\t";
 		system("pause");
 		break;
 	case 3:
@@ -170,6 +175,7 @@ bool Menu::performRequestedOperation(User *user) {
 		} else if(!user->getUserType().compare("Admin")) {
 			mc.getAllMarksheet();
 		}
+		cout << "\n\t";
 		system("pause");
 		mc.~MarksController();
 		break;
@@ -182,11 +188,15 @@ bool Menu::performRequestedOperation(User *user) {
 		}
 		break;
 	case 5:
-		dc.deleteRecord();
+		if(!dc.deleteRecord()){
+			return mainOptions(user);
+		}
 		dc.~DataController();
 		break;
 	case 6:
-		dc.search();
+		if(!dc.search()){
+			return mainOptions(user);
+		}
 		break;
 	case 7:
 		DataController dc;
@@ -219,10 +229,12 @@ bool Menu::performRequestedOperation(User *user) {
 	case 0:
 		cout << "\tExiting...";
 		exit(0);
+
 	default:
 		cout << "\tInvalid choice!!!\n\t";
 		system("pause");
-		return false;
+		system("cls");
+		return mainOptions(user);
 	}
     return true;
 }
